@@ -1,0 +1,90 @@
+package com.github.nfwork.dbfound.starter;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.dbcp.BasicDataSource;
+import org.springframework.util.StringUtils;
+
+import com.github.nfwork.dbfound.starter.config.DBItemconfig;
+import com.github.nfwork.dbfound.starter.config.SystemConfig;
+import com.github.nfwork.dbfound.starter.config.WebConfig;
+import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
+import com.nfwork.dbfound.core.DBFoundConfig;
+import com.nfwork.dbfound.db.DataSourceConnectionProvide;
+import com.nfwork.dbfound.model.ModelReader;
+import com.nfwork.dbfound.util.LogUtil;
+import com.nfwork.dbfound.web.WebWriter;
+import com.nfwork.dbfound.web.file.FileUploadUtil;
+import com.nfwork.dbfound.web.file.FileUtil;
+import com.nfwork.dbfound.web.i18n.MultiLangUtil;
+
+public class DBFoundEngine {
+
+	/**
+	 * init system config
+	 * 
+	 * @param config
+	 */
+	public void initSystem(SystemConfig config) {
+		LogUtil.setOpenLog(config.isOpenLog());
+		ModelReader.setModelLoadRoot(config.getModeRootPath());
+		DBFoundConfig.setQueryLimit(config.isQueryLimit());
+		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
+		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
+		LogUtil.info("dbfound engine init system success");
+	}
+
+	/**
+	 * init web config
+	 * 
+	 * @param config
+	 */
+	public void initWeb(WebConfig config) {
+		if (config.getI18nProvide() != null) {
+			MultiLangUtil.init(config.getI18nProvide());
+		}
+		WebWriter.setEncoding(config.getEncoding());
+		if (config.getUploadFolder() != null) {
+			FileUtil.init(DBFoundConfig.getRealPath(config.getUploadFolder()));
+		}
+		FileUploadUtil.maxUploadSize = config.getMaxUploadSize();
+		LogUtil.info("dbfound engine init web success");
+	}
+
+	/**
+	 * init dbitem config
+	 * 
+	 * @param dbconfig
+	 * @throws IllegalAccessException
+	 * @throws InvocationTargetException
+	 */
+	public void initDBItem(DBItemconfig dbconfig) throws IllegalAccessException, InvocationTargetException {
+		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
+			BasicDataSource ds = new BasicDataSource();
+			BeanUtils.copyProperties(ds, dbconfig);
+			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds,
+					dbconfig.getDialect());
+			provide.regist();
+			DBFoundConfig.getDsp().add(provide);
+			LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
+		}
+	}
+	
+	/**
+	 * destory dbfound engine
+	 */
+	public  List<DataSourceConnectionProvide> getDatasourceProvide() {
+		return DBFoundConfig.getDsp();
+	}
+
+	/**
+	 * destory dbfound engine
+	 */
+	public void destory() {
+		DBFoundConfig.destory();
+		LogUtil.info("dbfound engine destory success");
+	}
+
+}
