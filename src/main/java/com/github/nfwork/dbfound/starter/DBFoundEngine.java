@@ -20,6 +20,11 @@ import com.nfwork.dbfound.web.file.FileUploadUtil;
 import com.nfwork.dbfound.web.file.FileUtil;
 import com.nfwork.dbfound.web.i18n.MultiLangUtil;
 
+/**
+ * DBFoundEngine
+ * @author John
+ * 2019-11-15 15:24:56
+ */
 public class DBFoundEngine {
 
 	/**

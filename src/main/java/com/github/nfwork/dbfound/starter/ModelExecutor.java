@@ -69,7 +69,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query list, return list<map>
+	 * query list, return list map
 	 * 
 	 * @param context
 	 * @param modelName
@@ -101,7 +101,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query list data, return list<T>
+	 * query list data, return list object
 	 * 
 	 * @param context
 	 * @param modelName
@@ -134,7 +134,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query xml sql, include select , reuturn QueryResponseObject<Map>
+	 * query xml sql, include select , reuturn QueryResponseObject Map
 	 * 
 	 * @param context
 	 * @param modelName
@@ -147,7 +147,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query xml sql, include select , return QueryResponseObject<T>
+	 * query xml sql, include select , return QueryResponseObject T
 	 * 
 	 * @param context
 	 * @param modelName
@@ -160,7 +160,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query xml sql, include select , reuturn QueryResponseObject<Map>
+	 * query xml sql, include select , reuturn QueryResponseObject  Map
 	 * 
 	 * @param context
 	 * @param modelName
@@ -176,7 +176,7 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query xml sql, include select , return QueryResponseObject<T>
+	 * query xml sql, include select , return QueryResponseObject T
 	 * 
 	 * @param context
 	 * @param modelName
