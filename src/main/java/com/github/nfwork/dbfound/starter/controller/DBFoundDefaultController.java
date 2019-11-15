@@ -1,5 +1,7 @@
 package com.github.nfwork.dbfound.starter.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,7 @@ import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.excel.ExcelWriter;
+import com.nfwork.dbfound.model.ModelEngine;
 
 @RestController
 public class DBFoundDefaultController {
@@ -47,7 +50,13 @@ public class DBFoundDefaultController {
 		try {
 			String uri = context.request.getRequestURI();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
-			return service.execute(context, modelName, executeName);
+			
+			Object gridData = context.getData(ModelEngine.defaultBatchPath);
+			if (gridData != null && gridData instanceof List) {
+				return service.batchExecute(context, modelName, executeName);
+			}else {
+				return service.execute(context, modelName, executeName);
+			}
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
 		}
@@ -62,7 +71,7 @@ public class DBFoundDefaultController {
 	public ResponseObject export(@ContextAware Context context, @PathVariable String queryName) {
 		try {
 			String uri = context.request.getRequestURI();
-			String modelName = uri.substring(1, uri.indexOf(".execute"));
+			String modelName = uri.substring(1, uri.indexOf(".export"));
 			ExcelWriter.excelExport(context, modelName, queryName);
 			return null;
 		} catch (Exception e) {
