@@ -26,6 +26,10 @@ import com.nfwork.dbfound.web.i18n.MultiLangUtil;
  * 2019-11-15 15:24:56
  */
 public class DBFoundEngine {
+	
+	private SystemConfig systemConfig;
+	
+	private WebConfig webConfig;
 
 	/**
 	 * init system config
@@ -33,6 +37,7 @@ public class DBFoundEngine {
 	 * @param config
 	 */
 	public void initSystem(SystemConfig config) {
+		this.systemConfig = config;
 		LogUtil.setOpenLog(config.isOpenLog());
 		ModelReader.setModelLoadRoot(config.getModeRootPath());
 		DBFoundConfig.setQueryLimit(config.isQueryLimit());
@@ -47,6 +52,7 @@ public class DBFoundEngine {
 	 * @param config
 	 */
 	public void initWeb(WebConfig config) {
+		this.webConfig = config;
 		if (config.getI18nProvide() != null) {
 			MultiLangUtil.init(config.getI18nProvide());
 		}
@@ -78,9 +84,9 @@ public class DBFoundEngine {
 	}
 	
 	/**
-	 * destory dbfound engine
+	 * get Datasource Provide List
 	 */
-	public  List<DataSourceConnectionProvide> getDatasourceProvide() {
+	public  List<DataSourceConnectionProvide> getDatasourceProvideList() {
 		return DBFoundConfig.getDsp();
 	}
 
@@ -90,6 +96,14 @@ public class DBFoundEngine {
 	public void destory() {
 		DBFoundConfig.destory();
 		LogUtil.info("dbfound engine destory success");
+	}
+
+	public SystemConfig getSystemConfig() {
+		return systemConfig;
+	}
+
+	public WebConfig getWebConfig() {
+		return webConfig;
 	}
 
 }

@@ -73,7 +73,7 @@ public class DBFoundAutoConfigure {
 
 	@Bean
 	public ChainedTransactionManager dbfoundTransactionManager(DBFoundEngine dbFoundEngine) {
-		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvide();
+		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvideList();
 		PlatformTransactionManager[] pmanagerList = new PlatformTransactionManager[provideList.size()];
 		int index = 0;
 		for (DataSourceConnectionProvide dataSourceConnectionProvide : provideList) {
