@@ -24,6 +24,7 @@ public class DBFoundDefaultService {
 		return modelExecutor.execute(context, modelName, executeName);
 	}
 
+	@Transactional
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
 		return modelExecutor.batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
 	}
