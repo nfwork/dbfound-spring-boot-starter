@@ -9,6 +9,7 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.annotation.ContextAware;
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.web.file.FileUploadUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,8 +31,10 @@ public class ContextArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
     	HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
     	HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-        return Context.getCurrentContext(request, response, dbfoundEngine.getWebConfig().isOpenSession());
-        
+    	// 初始化文件上传组件
+    	Context context = Context.getCurrentContext(request, response, dbfoundEngine.getWebConfig().isOpenSession());
+		FileUploadUtil.initFileUpload(context);
+        return context;
     }
 
 }
