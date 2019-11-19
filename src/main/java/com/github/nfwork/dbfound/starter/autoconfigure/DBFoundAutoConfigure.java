@@ -16,6 +16,7 @@ import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionhandle;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
+import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 
 @Configuration
 public class DBFoundAutoConfigure {
@@ -74,6 +75,9 @@ public class DBFoundAutoConfigure {
 	@Bean
 	public ChainedTransactionManager dbfoundTransactionManager(DBFoundEngine dbFoundEngine) {
 		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvideList();
+		if (provideList == null || provideList.isEmpty()) {
+			throw new DBFoundRuntimeException("init dbfound engine failed, at leat have one datasource config in springboot config file");
+		}
 		PlatformTransactionManager[] pmanagerList = new PlatformTransactionManager[provideList.size()];
 		int index = 0;
 		for (DataSourceConnectionProvide dataSourceConnectionProvide : provideList) {
