@@ -15,10 +15,9 @@ import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.model.ModelReader;
+import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import com.nfwork.dbfound.web.WebWriter;
-import com.nfwork.dbfound.web.file.FileUploadUtil;
-import com.nfwork.dbfound.web.file.FileUtil;
 import com.nfwork.dbfound.web.i18n.MultiLangUtil;
 
 /**
@@ -44,7 +43,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setQueryLimit(config.isQueryLimit());
 		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
 		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
-		LogUtil.info("dbfound engine init system success");
+		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.beanToJson(systemConfig));
 	}
 
 	/**
@@ -58,12 +57,8 @@ public class DBFoundEngine {
 			MultiLangUtil.init(config.getI18nProvide());
 		}
 		WebWriter.setEncoding(config.getEncoding());
-		if (config.getUploadFolder() != null) {
-			FileUtil.init(DBFoundConfig.getRealPath(config.getUploadFolder()));
-		}
 		Context.setOpenSession(webConfig.isOpenSession());
-		FileUploadUtil.maxUploadSize = config.getMaxUploadSize();
-		LogUtil.info("dbfound engine init web success");
+		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.beanToJson(webConfig));
 	}
 
 	/**

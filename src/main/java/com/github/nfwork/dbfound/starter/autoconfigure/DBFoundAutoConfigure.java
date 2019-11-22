@@ -28,6 +28,8 @@ public class DBFoundAutoConfigure {
 	public DBFoundEngine dbFoundEngine() throws Exception {
 
 		DBFoundEngine dbFoundEngine = new DBFoundEngine();
+		
+		DBFoundConfig.setInited(true);
 
 		// init system
 		dbFoundEngine.initSystem(config.getSystem());
@@ -46,8 +48,6 @@ public class DBFoundAutoConfigure {
 		dbFoundEngine.initDBItem(config.getDatasource().db7);
 		dbFoundEngine.initDBItem(config.getDatasource().db8);
 		dbFoundEngine.initDBItem(config.getDatasource().db9);
-
-		DBFoundConfig.setInited(true);
 
 		return dbFoundEngine;
 	}

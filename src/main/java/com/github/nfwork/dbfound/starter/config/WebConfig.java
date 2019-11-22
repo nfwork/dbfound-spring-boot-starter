@@ -4,8 +4,6 @@ public class WebConfig {
 
 	private String i18nProvide;
 	private String encoding = "utf-8";
-	private String uploadFolder;
-	private int maxUploadSize = 10;
 	private boolean openSession = true;
 
 	public String getI18nProvide() {
@@ -22,22 +20,6 @@ public class WebConfig {
 
 	public void setEncoding(String encoding) {
 		this.encoding = encoding;
-	}
-
-	public String getUploadFolder() {
-		return uploadFolder;
-	}
-
-	public void setUploadFolder(String uploadFolder) {
-		this.uploadFolder = uploadFolder;
-	}
-
-	public int getMaxUploadSize() {
-		return maxUploadSize;
-	}
-
-	public void setMaxUploadSize(int maxUploadSize) {
-		this.maxUploadSize = maxUploadSize;
 	}
 
 	public boolean isOpenSession() {
