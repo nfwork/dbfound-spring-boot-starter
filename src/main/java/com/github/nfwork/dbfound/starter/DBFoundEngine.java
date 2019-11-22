@@ -11,6 +11,7 @@ import com.github.nfwork.dbfound.starter.config.DBItemconfig;
 import com.github.nfwork.dbfound.starter.config.SystemConfig;
 import com.github.nfwork.dbfound.starter.config.WebConfig;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
+import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.model.ModelReader;
@@ -60,6 +61,7 @@ public class DBFoundEngine {
 		if (config.getUploadFolder() != null) {
 			FileUtil.init(DBFoundConfig.getRealPath(config.getUploadFolder()));
 		}
+		Context.setOpenSession(webConfig.isOpenSession());
 		FileUploadUtil.maxUploadSize = config.getMaxUploadSize();
 		LogUtil.info("dbfound engine init web success");
 	}
