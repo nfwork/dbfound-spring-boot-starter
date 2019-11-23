@@ -32,7 +32,7 @@ public class DBFoundDefaultController {
 	@RequestMapping("/**/*.query!{queryName}")
 	public ResponseObject query(@ContextAware Context context, @PathVariable String queryName) {
 		try {
-			String uri = context.request.getRequestURI();
+			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".query"));
 			return service.query(context, modelName, queryName);
 		} catch (Exception e) {
@@ -48,7 +48,7 @@ public class DBFoundDefaultController {
 	@RequestMapping("/**/*.execute!{executeName}")
 	public ResponseObject execute(@ContextAware Context context, @PathVariable String executeName) {
 		try {
-			String uri = context.request.getRequestURI();
+			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 			
 			Object gridData = context.getData(ModelEngine.defaultBatchPath);
@@ -70,7 +70,7 @@ public class DBFoundDefaultController {
 	@RequestMapping("/**/*.export!{queryName}")
 	public ResponseObject export(@ContextAware Context context, @PathVariable String queryName) {
 		try {
-			String uri = context.request.getRequestURI();
+			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".export"));
 			ExcelWriter.excelExport(context, modelName, queryName);
 			return null;
