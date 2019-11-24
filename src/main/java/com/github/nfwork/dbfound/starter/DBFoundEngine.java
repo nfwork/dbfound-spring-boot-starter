@@ -17,6 +17,7 @@ import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.model.ModelReader;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
+import com.nfwork.dbfound.util.URLUtil;
 import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.i18n.MultiLangUtil;
 
@@ -57,6 +58,7 @@ public class DBFoundEngine {
 			MultiLangUtil.init(config.getI18nProvide());
 		}
 		WebWriter.setEncoding(config.getEncoding());
+		URLUtil.setBasePath(webConfig.getBasePath());
 		Context.setOpenSession(webConfig.isOpenSession());
 		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.beanToJson(webConfig));
 	}

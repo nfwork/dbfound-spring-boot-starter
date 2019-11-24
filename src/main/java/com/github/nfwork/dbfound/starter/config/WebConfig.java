@@ -5,6 +5,7 @@ public class WebConfig {
 	private String i18nProvide;
 	private String encoding = "utf-8";
 	private boolean openSession = true;
+	private String basePath="";
 
 	public String getI18nProvide() {
 		return i18nProvide;
@@ -30,4 +31,12 @@ public class WebConfig {
 		this.openSession = openSession;
 	}
 
+	public String getBasePath() {
+		return basePath;
+	}
+
+	public void setBasePath(String basePath) {
+		this.basePath = basePath;
+	}
+	
 }
