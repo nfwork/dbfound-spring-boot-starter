@@ -82,14 +82,14 @@ dbfound.datasource.db0.dialect=MySqlDialect
 ```java
 dbfound.datasource.db0.provideName=database01
 dbfound.datasource.db0.url=jdbc:mysql://192.168.1.111:3306/dbfound
-dbfound.datasource.db0.username=jbjava
-dbfound.datasource.db0.password=jb98
+dbfound.datasource.db0.username=
+dbfound.datasource.db0.password=
 dbfound.datasource.db0.dialect=MySqlDialect
 
 dbfound.datasource.db1.provideName=database02
 dbfound.datasource.db1.url=jdbc:mysql://192.168.1.112:3306/dbfound02
-dbfound.datasource.db1.username=jbjava
-dbfound.datasource.db1.password=jb98
+dbfound.datasource.db1.username=
+dbfound.datasource.db1.password=
 dbfound.datasource.db1.dialect=MySqlDialect
 ```
 
