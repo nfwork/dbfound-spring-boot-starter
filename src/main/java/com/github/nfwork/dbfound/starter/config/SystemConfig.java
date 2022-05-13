@@ -4,10 +4,12 @@ import com.nfwork.dbfound.core.DBFoundConfig;
 
 public class SystemConfig {
 	private boolean openLog = true;
+	private boolean underscoreToCamelCase = false;
 	private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
 	private boolean queryLimit = true;
 	private int queryLimitSize = 5000;
 	private int reportQueryLimitSize = 50000;
+
 
 	public String getModeRootPath() {
 		return modeRootPath;
@@ -47,5 +49,13 @@ public class SystemConfig {
 
 	public void setReportQueryLimitSize(int reportQueryLimitSize) {
 		this.reportQueryLimitSize = reportQueryLimitSize;
+	}
+
+	public boolean isUnderscoreToCamelCase() {
+		return underscoreToCamelCase;
+	}
+
+	public void setUnderscoreToCamelCase(boolean underscoreToCamelCase) {
+		this.underscoreToCamelCase = underscoreToCamelCase;
 	}
 }

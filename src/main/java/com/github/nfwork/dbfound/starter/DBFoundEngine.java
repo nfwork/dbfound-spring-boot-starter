@@ -44,6 +44,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setQueryLimit(config.isQueryLimit());
 		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
 		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
+		DBFoundConfig.setUnderscoreToCamelCase(config.isUnderscoreToCamelCase());
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.beanToJson(systemConfig));
 	}
 
