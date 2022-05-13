@@ -10,16 +10,29 @@ import com.nfwork.dbfound.model.ModelEngine;
 
 /**
  * model executor
- * 
+ *
  * @author John
  *
  */
 public class ModelExecutor {
 
 	/**
+	 *  execute xml sql, user param
+	 * @param modelName
+	 * @param executeName
+	 * @param param
+	 * @return
+	 */
+	public  ResponseObject execute(String modelName, String executeName, Object param){
+		Context context = new Context();
+		context.setParamData("data",param);
+		return ModelEngine.execute(context, modelName, executeName, "param.data");
+	}
+
+	/**
 	 * execute xml sql, include insert update delete; currentPaht is default
 	 * param.
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param executeName
@@ -31,7 +44,7 @@ public class ModelExecutor {
 
 	/**
 	 * execute xml sql, include insert update delete;
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param executeName
@@ -43,9 +56,22 @@ public class ModelExecutor {
 	}
 
 	/**
+	 *  user list data,batch execute
+	 * @param modelName
+	 * @param executeName
+	 * @param dataList
+	 * @return
+	 */
+	public ResponseObject batchExecute(String modelName, String executeName, List<Object> dataList) {
+		Context context = new Context();
+		context.setParamData("dataList",dataList);
+		return ModelEngine.batchExecute(context, modelName, executeName,"param.dataList");
+	}
+
+	/**
 	 * batch execute xml sql, include insert update delete; currentPaht is
 	 * default param.GridData;
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param executeName
@@ -57,7 +83,7 @@ public class ModelExecutor {
 
 	/**
 	 * batch execute xml sql, include insert update delete;
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param executeName
@@ -69,8 +95,38 @@ public class ModelExecutor {
 	}
 
 	/**
+	 * query list , user param
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @return
+	 */
+	public List<Map<String, Object>>  queryList(String modelName, String queryName, Object param) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		List<Map<String, Object>>  dataList = ModelEngine.query(context, modelName, queryName, "param.data",false).getDatas();
+		return dataList;
+	}
+
+	/**
+	 * query list , user param
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @param class1
+	 * @param <T>
+	 * @return
+	 */
+	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		List<T> dataList = ModelEngine.query(context, modelName, queryName, "param.data",false,class1).getDatas();
+		return dataList;
+	}
+
+	/**
 	 * query list, return list map
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -78,31 +134,14 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> queryList(Context context, String modelName, String queryName) {
-		List<Map<String, Object>> datasList = ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath,
+		List<Map<String, Object>> dataList = ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath,
 				false).getDatas();
-		return datasList;
-	}
-
-	/**
-	 * query one line data, return a map
-	 * 
-	 * @param context
-	 * @param modelName
-	 * @param queryName
-	 * @return
-	 */
-	public Map<String, Object> queryOne(Context context, String modelName, String queryName) {
-		List<Map<String, Object>> datasList = queryList(context, modelName, queryName);
-		if (datasList != null && datasList.size() > 0) {
-			return datasList.get(0);
-		} else {
-			return null;
-		}
+		return dataList;
 	}
 
 	/**
 	 * query list data, return list object
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -110,14 +149,66 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
-		List<T> datasList = ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath, false, class1)
+		List<T> dataList = ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath, false, class1)
 				.getDatas();
-		return datasList;
+		return dataList;
+	}
+
+
+	/**
+	 * query one line data, return a map
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @return
+	 */
+	public Map<String, Object> queryOne(String modelName, String queryName, Object param) {
+		List<Map<String, Object>> dataList = queryList(modelName, queryName,param);
+		if (dataList != null && dataList.size() > 0) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a map
+	 *
+	 * @param context
+	 * @param modelName
+	 * @param queryName
+	 * @return
+	 */
+	public Map<String, Object> queryOne(Context context, String modelName, String queryName) {
+		List<Map<String, Object>> dataList = queryList(context, modelName, queryName);
+		if (dataList != null && dataList.size() > 0) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	/**
 	 * query one line data, return a Object T
-	 * 
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @param class1
+	 * @param <T>
+	 * @return
+	 */
+	public <T> T queryOne( String modelName, String queryName, Object param,Class<T> class1) {
+		List<T> dataList = queryList( modelName, queryName, param, class1);
+		if (dataList != null && dataList.size() > 0) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a Object T
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -125,17 +216,54 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public <T> T queryOne(Context context, String modelName, String queryName, Class<T> class1) {
-		List<T> datasList = queryList(context, modelName, queryName, class1);
-		if (datasList != null && datasList.size() > 0) {
-			return datasList.get(0);
+		List<T> dataList = queryList(context, modelName, queryName, class1);
+		if (dataList != null && dataList.size() > 0) {
+			return dataList.get(0);
 		} else {
 			return null;
 		}
 	}
 
+
+	/**
+	 * query page list , user param
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @param start
+	 * @param limit
+	 * @return
+	 */
+	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		context.setParamData("start",start);
+		context.setParamData("limit",limit);
+		return ModelEngine.query(context, modelName, queryName, "param.data",true);
+	}
+
+	/**
+	 * query page list , user param
+	 * @param modelName
+	 * @param queryName
+	 * @param param
+	 * @param start
+	 * @param limit
+	 * @param class1
+	 * @param <T>
+	 * @return
+	 */
+	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, int start,int limit,Class<T> class1) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		context.setParamData("start",start);
+		context.setParamData("limit",limit);
+		return ModelEngine.query(context, modelName, queryName, "param.data",true, class1);
+	}
+
 	/**
 	 * query xml sql, include select , reuturn QueryResponseObject Map
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -148,7 +276,7 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , return QueryResponseObject T
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -161,7 +289,7 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , reuturn QueryResponseObject  Map
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
@@ -177,7 +305,7 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , return QueryResponseObject T
-	 * 
+	 *
 	 * @param context
 	 * @param modelName
 	 * @param queryName
