@@ -7,9 +7,9 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.util.StringUtils;
 
-import com.github.nfwork.dbfound.starter.config.DBItemconfig;
-import com.github.nfwork.dbfound.starter.config.SystemConfig;
-import com.github.nfwork.dbfound.starter.config.WebConfig;
+import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.DBItemconfig;
+import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.SystemConfig;
+import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.WebConfig;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.DBFoundConfig;

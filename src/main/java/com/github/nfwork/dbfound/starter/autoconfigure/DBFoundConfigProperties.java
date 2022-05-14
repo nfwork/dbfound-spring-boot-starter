@@ -1,10 +1,7 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 
+import com.nfwork.dbfound.core.DBFoundConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-
-import com.github.nfwork.dbfound.starter.config.DBItemconfig;
-import com.github.nfwork.dbfound.starter.config.SystemConfig;
-import com.github.nfwork.dbfound.starter.config.WebConfig;
 
 @ConfigurationProperties(prefix = "dbfound", ignoreUnknownFields = false)
 public class DBFoundConfigProperties {
@@ -14,6 +11,30 @@ public class DBFoundConfigProperties {
 	WebConfig web = new WebConfig();
 
 	DataSrouce datasource = new DataSrouce();
+
+	public SystemConfig getSystem() {
+		return system;
+	}
+
+	public void setSystem(SystemConfig system) {
+		this.system = system;
+	}
+
+	public WebConfig getWeb() {
+		return web;
+	}
+
+	public void setWeb(WebConfig web) {
+		this.web = web;
+	}
+
+	public DataSrouce getDatasource() {
+		return datasource;
+	}
+
+	public void setDatasource(DataSrouce datasource) {
+		this.datasource = datasource;
+	}
 
 	public static class DataSrouce {
 		DBItemconfig db0 = new DBItemconfig();
@@ -88,28 +109,203 @@ public class DBFoundConfigProperties {
 		}
 	}
 
-	public SystemConfig getSystem() {
-		return system;
+	public  static  class DBItemconfig {
+		private String dialect = "MySqlDialect";
+		private String driverClassName = "com.mysql.jdbc.Driver";
+		private String provideName = "_default";
+		private String url = "";
+		private String username = "";
+		private String password = "";
+		private int initialSize = 5;
+		private int maxActive = 10;
+		private int maxIdle = 5;
+		private boolean testOnBorrow = true;
+		private String validationQuery = "select 1";
+
+		public String getDialect() {
+			return dialect;
+		}
+
+		public void setDialect(String dialect) {
+			this.dialect = dialect;
+		}
+
+		public String getDriverClassName() {
+			return driverClassName;
+		}
+
+		public void setDriverClassName(String driverClassName) {
+			this.driverClassName = driverClassName;
+		}
+
+		public String getUrl() {
+			return url;
+		}
+
+		public void setUrl(String url) {
+			this.url = url;
+		}
+
+		public String getUsername() {
+			return username;
+		}
+
+		public void setUsername(String username) {
+			this.username = username;
+		}
+
+		public String getPassword() {
+			return password;
+		}
+
+		public void setPassword(String password) {
+			this.password = password;
+		}
+
+		public int getInitialSize() {
+			return initialSize;
+		}
+
+		public void setInitialSize(int initialSize) {
+			this.initialSize = initialSize;
+		}
+
+		public int getMaxActive() {
+			return maxActive;
+		}
+
+		public void setMaxActive(int maxActive) {
+			this.maxActive = maxActive;
+		}
+
+		public int getMaxIdle() {
+			return maxIdle;
+		}
+
+		public void setMaxIdle(int maxIdle) {
+			this.maxIdle = maxIdle;
+		}
+
+		public boolean isTestOnBorrow() {
+			return testOnBorrow;
+		}
+
+		public void setTestOnBorrow(boolean testOnBorrow) {
+			this.testOnBorrow = testOnBorrow;
+		}
+
+		public String getValidationQuery() {
+			return validationQuery;
+		}
+
+		public void setValidationQuery(String validationQuery) {
+			this.validationQuery = validationQuery;
+		}
+
+		public String getProvideName() {
+			return provideName;
+		}
+
+		public void setProvideName(String provideName) {
+			this.provideName = provideName;
+		}
 	}
 
-	public void setSystem(SystemConfig system) {
-		this.system = system;
+	public static class WebConfig {
+
+		private String i18nProvide;
+		private String encoding = "utf-8";
+		private boolean openSession = true;
+		private String basePath="";
+
+		public String getI18nProvide() {
+			return i18nProvide;
+		}
+
+		public void setI18nProvide(String i18nProvide) {
+			this.i18nProvide = i18nProvide;
+		}
+
+		public String getEncoding() {
+			return encoding;
+		}
+
+		public void setEncoding(String encoding) {
+			this.encoding = encoding;
+		}
+
+		public boolean isOpenSession() {
+			return openSession;
+		}
+
+		public void setOpenSession(boolean openSession) {
+			this.openSession = openSession;
+		}
+
+		public String getBasePath() {
+			return basePath;
+		}
+
+		public void setBasePath(String basePath) {
+			this.basePath = basePath;
+		}
+
 	}
 
-	public WebConfig getWeb() {
-		return web;
-	}
+	public static class SystemConfig {
+		private boolean openLog = true;
+		private boolean underscoreToCamelCase = false;
+		private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
+		private boolean queryLimit = true;
+		private int queryLimitSize = 5000;
+		private int reportQueryLimitSize = 50000;
 
-	public void setWeb(WebConfig web) {
-		this.web = web;
-	}
+		public String getModeRootPath() {
+			return modeRootPath;
+		}
 
-	public DataSrouce getDatasource() {
-		return datasource;
-	}
+		public void setModeRootPath(String modeRootPath) {
+			this.modeRootPath = modeRootPath;
+		}
 
-	public void setDatasource(DataSrouce datasource) {
-		this.datasource = datasource;
+		public boolean isOpenLog() {
+			return openLog;
+		}
+
+		public void setOpenLog(boolean openLog) {
+			this.openLog = openLog;
+		}
+
+		public boolean isQueryLimit() {
+			return queryLimit;
+		}
+
+		public void setQueryLimit(boolean queryLimit) {
+			this.queryLimit = queryLimit;
+		}
+
+		public int getQueryLimitSize() {
+			return queryLimitSize;
+		}
+
+		public void setQueryLimitSize(int queryLimitSize) {
+			this.queryLimitSize = queryLimitSize;
+		}
+
+		public int getReportQueryLimitSize() {
+			return reportQueryLimitSize;
+		}
+
+		public void setReportQueryLimitSize(int reportQueryLimitSize) {
+			this.reportQueryLimitSize = reportQueryLimitSize;
+		}
+
+		public boolean isUnderscoreToCamelCase() {
+			return underscoreToCamelCase;
+		}
+
+		public void setUnderscoreToCamelCase(boolean underscoreToCamelCase) {
+			this.underscoreToCamelCase = underscoreToCamelCase;
+		}
 	}
-	
 }
