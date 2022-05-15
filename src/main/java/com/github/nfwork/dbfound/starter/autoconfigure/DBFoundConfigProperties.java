@@ -259,6 +259,9 @@ public class DBFoundConfigProperties {
 		private boolean queryLimit = true;
 		private int queryLimitSize = 5000;
 		private int reportQueryLimitSize = 50000;
+		private boolean ModelModifyCheck = true;
+		private String DateFormat = "yyyy-MM-dd";
+		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 
 		public String getModeRootPath() {
 			return modeRootPath;
@@ -306,6 +309,30 @@ public class DBFoundConfigProperties {
 
 		public void setUnderscoreToCamelCase(boolean underscoreToCamelCase) {
 			this.underscoreToCamelCase = underscoreToCamelCase;
+		}
+
+		public boolean isModelModifyCheck() {
+			return ModelModifyCheck;
+		}
+
+		public void setModelModifyCheck(boolean modelModifyCheck) {
+			ModelModifyCheck = modelModifyCheck;
+		}
+
+		public String getDateFormat() {
+			return DateFormat;
+		}
+
+		public void setDateFormat(String dateFormat) {
+			DateFormat = dateFormat;
+		}
+
+		public String getDateTimeFormat() {
+			return DateTimeFormat;
+		}
+
+		public void setDateTimeFormat(String dateTimeFormat) {
+			DateTimeFormat = dateTimeFormat;
 		}
 	}
 }
