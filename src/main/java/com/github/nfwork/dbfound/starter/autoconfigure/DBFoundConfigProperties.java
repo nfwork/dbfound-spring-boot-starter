@@ -217,6 +217,7 @@ public class DBFoundConfigProperties {
 		private String encoding = "utf-8";
 		private boolean openSession = true;
 		private String basePath="";
+		private boolean jsonStringAutoCover = true;
 
 		public String getI18nProvide() {
 			return i18nProvide;
@@ -250,6 +251,13 @@ public class DBFoundConfigProperties {
 			this.basePath = basePath;
 		}
 
+		public boolean isJsonStringAutoCover() {
+			return jsonStringAutoCover;
+		}
+
+		public void setJsonStringAutoCover(boolean jsonStringAutoCover) {
+			this.jsonStringAutoCover = jsonStringAutoCover;
+		}
 	}
 
 	public static class SystemConfig {

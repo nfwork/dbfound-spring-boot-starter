@@ -64,6 +64,7 @@ public class DBFoundEngine {
 		WebWriter.setEncoding(config.getEncoding());
 		URLUtil.setBasePath(webConfig.getBasePath());
 		Context.setOpenSession(webConfig.isOpenSession());
+		DBFoundConfig.setJsonStringAutoCover(config.isJsonStringAutoCover());
 		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.beanToJson(webConfig));
 	}
 
