@@ -21,7 +21,7 @@ public class DBFoundExceptionhandle {
 			HttpServletRequest request, HttpServletResponse response) {
 		ResponseObject ro = new ResponseObject();
 		try {
-
+			response.setStatus(500);
 			ro.setSuccess(false);
 			exception = getException(exception);
 			ro.setMessage(exception.getMessage());
