@@ -47,6 +47,18 @@ public class DBFoundConfigProperties {
 		DBItemconfig db7 = new DBItemconfig();
 		DBItemconfig db8 = new DBItemconfig();
 		DBItemconfig db9 = new DBItemconfig();
+
+		DBItemconfig db10 = new DBItemconfig();
+		DBItemconfig db11 = new DBItemconfig();
+		DBItemconfig db12 = new DBItemconfig();
+		DBItemconfig db13 = new DBItemconfig();
+		DBItemconfig db14 = new DBItemconfig();
+		DBItemconfig db15 = new DBItemconfig();
+		DBItemconfig db16 = new DBItemconfig();
+		DBItemconfig db17 = new DBItemconfig();
+		DBItemconfig db18 = new DBItemconfig();
+		DBItemconfig db19 = new DBItemconfig();
+
 		public DBItemconfig getDb0() {
 			return db0;
 		}
@@ -106,6 +118,86 @@ public class DBFoundConfigProperties {
 		}
 		public void setDb9(DBItemconfig db9) {
 			this.db9 = db9;
+		}
+
+		public DBItemconfig getDb10() {
+			return db10;
+		}
+
+		public void setDb10(DBItemconfig db10) {
+			this.db10 = db10;
+		}
+
+		public DBItemconfig getDb11() {
+			return db11;
+		}
+
+		public void setDb11(DBItemconfig db11) {
+			this.db11 = db11;
+		}
+
+		public DBItemconfig getDb12() {
+			return db12;
+		}
+
+		public void setDb12(DBItemconfig db12) {
+			this.db12 = db12;
+		}
+
+		public DBItemconfig getDb13() {
+			return db13;
+		}
+
+		public void setDb13(DBItemconfig db13) {
+			this.db13 = db13;
+		}
+
+		public DBItemconfig getDb14() {
+			return db14;
+		}
+
+		public void setDb14(DBItemconfig db14) {
+			this.db14 = db14;
+		}
+
+		public DBItemconfig getDb15() {
+			return db15;
+		}
+
+		public void setDb15(DBItemconfig db15) {
+			this.db15 = db15;
+		}
+
+		public DBItemconfig getDb16() {
+			return db16;
+		}
+
+		public void setDb16(DBItemconfig db16) {
+			this.db16 = db16;
+		}
+
+		public DBItemconfig getDb17() {
+			return db17;
+		}
+
+		public void setDb17(DBItemconfig db17) {
+			this.db17 = db17;
+		}
+
+		public DBItemconfig getDb18() {
+			return db18;
+		}
+
+		public void setDb18(DBItemconfig db18) {
+			this.db18 = db18;
+		}
+
+		public DBItemconfig getDb19() {
+			return db19;
+		}
+
+		public void setDb19(DBItemconfig db19) {
+			this.db19 = db19;
 		}
 	}
 
