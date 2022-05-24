@@ -6,6 +6,7 @@ import java.net.SocketException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.nfwork.dbfound.exception.CollisionException;
 import org.springframework.stereotype.Component;
 
 import com.nfwork.dbfound.dto.ResponseObject;
@@ -21,7 +22,11 @@ public class DBFoundExceptionhandle {
 			HttpServletRequest request, HttpServletResponse response) {
 		ResponseObject ro = new ResponseObject();
 		try {
-			response.setStatus(500);
+			if (exception instanceof CollisionException){
+				response.setStatus(403);
+			}else{
+				response.setStatus(500);
+			}
 			ro.setSuccess(false);
 			exception = getException(exception);
 			ro.setMessage(exception.getMessage());
