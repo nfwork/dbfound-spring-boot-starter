@@ -34,7 +34,12 @@ public class DBFoundDefaultController {
 		try {
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".query"));
-			return service.query(context, modelName, queryName);
+			ResponseObject object = service.query(context, modelName, queryName);
+			if(context.isOutMessage()){
+				return object;
+			}else{
+				return null;
+			}
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
 		}
@@ -52,10 +57,17 @@ public class DBFoundDefaultController {
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 			
 			Object gridData = context.getData(ModelEngine.defaultBatchPath);
+
+			ResponseObject object;
 			if (gridData != null && gridData instanceof List) {
-				return service.batchExecute(context, modelName, executeName);
+				object = service.batchExecute(context, modelName, executeName);
 			}else {
-				return service.execute(context, modelName, executeName);
+				object = service.execute(context, modelName, executeName);
+			}
+			if(context.isOutMessage()){
+				return object;
+			}else{
+				return null;
 			}
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);

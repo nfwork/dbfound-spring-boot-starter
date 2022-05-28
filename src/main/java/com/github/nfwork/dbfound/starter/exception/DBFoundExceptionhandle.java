@@ -39,7 +39,7 @@ public class DBFoundExceptionhandle {
 			}
 			if (exception instanceof FileDownLoadInterrupt) {
 				LogUtil.warn(exception.getMessage());
-				return ro;
+				return null;
 			}
 
 			String em = exception.getMessage();
