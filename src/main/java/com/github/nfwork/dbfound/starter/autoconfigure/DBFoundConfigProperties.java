@@ -308,6 +308,7 @@ public class DBFoundConfigProperties {
 		private String i18nProvide;
 		private String encoding = "utf-8";
 		private boolean openSession = true;
+		private boolean openDefaultController = true;
 		private String basePath="";
 		private boolean jsonStringAutoCover = true;
 
@@ -349,6 +350,14 @@ public class DBFoundConfigProperties {
 
 		public void setJsonStringAutoCover(boolean jsonStringAutoCover) {
 			this.jsonStringAutoCover = jsonStringAutoCover;
+		}
+
+		public boolean isOpenDefaultController() {
+			return openDefaultController;
+		}
+
+		public void setOpenDefaultController(boolean openDefaultController) {
+			this.openDefaultController = openDefaultController;
 		}
 	}
 
