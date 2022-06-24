@@ -1,5 +1,6 @@
 package com.github.nfwork.dbfound.starter.service;
 
+import com.nfwork.dbfound.excel.ExcelWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +18,10 @@ public class DBFoundDefaultService {
 
 	public ResponseObject query(Context context, String modelName, String queryName) {
 		return modelExecutor.query(context, modelName, queryName);
+	}
+
+	public void export(Context context, String modelName, String queryName) throws Exception {
+		 ExcelWriter.excelExport(context, modelName, queryName);
 	}
 
 	@Transactional

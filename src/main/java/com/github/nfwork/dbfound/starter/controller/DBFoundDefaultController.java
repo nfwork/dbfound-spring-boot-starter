@@ -84,7 +84,7 @@ public class DBFoundDefaultController {
 		try {
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".export"));
-			ExcelWriter.excelExport(context, modelName, queryName);
+			service.export(context,modelName,queryName);
 			return null;
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
