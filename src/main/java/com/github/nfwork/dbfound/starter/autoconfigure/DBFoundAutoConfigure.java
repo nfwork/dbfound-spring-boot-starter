@@ -2,8 +2,12 @@ package com.github.nfwork.dbfound.starter.autoconfigure;
 
 import java.util.List;
 
+import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.transaction.ChainedTransactionManager;
@@ -20,7 +24,9 @@ import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 
 @Configuration
-public class DBFoundAutoConfigure {
+public class DBFoundAutoConfigure implements ApplicationContextAware {
+
+	private ApplicationContext applicationContext;
 
 	@Autowired
 	private DBFoundConfigProperties config;
@@ -61,6 +67,9 @@ public class DBFoundAutoConfigure {
 		dbFoundEngine.initDBItem(config.getDatasource().db18);
 		dbFoundEngine.initDBItem(config.getDatasource().db19);
 
+		//init adapter factory
+		new SpringAdapterFactory(applicationContext);
+
 		return dbFoundEngine;
 	}
 
@@ -98,5 +107,10 @@ public class DBFoundAutoConfigure {
 		}
 		ChainedTransactionManager chainedManager = new ChainedTransactionManager(pmanagerList);
 		return chainedManager;
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+		this.applicationContext = applicationContext;
 	}
 }
