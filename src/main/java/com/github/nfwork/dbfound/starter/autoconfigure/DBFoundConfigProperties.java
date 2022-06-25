@@ -213,6 +213,7 @@ public class DBFoundConfigProperties {
 		private int maxIdle = 5;
 		private boolean testOnBorrow = true;
 		private String validationQuery = "select 1";
+		private boolean joinChainedTransaction = true;
 
 		public String getDialect() {
 			return dialect;
@@ -300,6 +301,14 @@ public class DBFoundConfigProperties {
 
 		public void setProvideName(String provideName) {
 			this.provideName = provideName;
+		}
+
+		public boolean isJoinChainedTransaction() {
+			return joinChainedTransaction;
+		}
+
+		public void setJoinChainedTransaction(boolean joinChainedTransaction) {
+			this.joinChainedTransaction = joinChainedTransaction;
 		}
 	}
 

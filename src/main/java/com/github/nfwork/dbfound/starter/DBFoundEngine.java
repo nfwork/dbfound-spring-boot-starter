@@ -1,7 +1,9 @@
 package com.github.nfwork.dbfound.starter;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbcp.BasicDataSource;
@@ -32,10 +34,11 @@ public class DBFoundEngine {
 	
 	private WebConfig webConfig;
 
+	private final Set<String> provideNameSet = new HashSet<>();
+
 	/**
 	 * init system config
-	 * 
-	 * @param config
+	 *
 	 */
 	public void initSystem(SystemConfig config) {
 		this.systemConfig = config;
@@ -53,8 +56,7 @@ public class DBFoundEngine {
 
 	/**
 	 * init web config
-	 * 
-	 * @param config
+	 *
 	 */
 	public void initWeb(WebConfig config) {
 		this.webConfig = config;
@@ -70,20 +72,21 @@ public class DBFoundEngine {
 
 	/**
 	 * init dbitem config
-	 * 
-	 * @param dbconfig
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
+	 *
 	 */
 	public void initDBItem(DBItemconfig dbconfig) throws IllegalAccessException, InvocationTargetException {
 		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
-			BasicDataSource ds = new BasicDataSource();
-			BeanUtils.copyProperties(ds, dbconfig);
-			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds,
-					dbconfig.getDialect());
-			provide.regist();
-			DBFoundConfig.getDsp().add(provide);
-			LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
+			if(!provideNameSet.contains(dbconfig.getProvideName())){
+				provideNameSet.add(dbconfig.getProvideName());
+				BasicDataSource ds = new BasicDataSource();
+				BeanUtils.copyProperties(ds, dbconfig);
+				SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
+				provide.setJoinChainedTransaction(dbconfig.isJoinChainedTransaction());
+
+				provide.regist();
+				DBFoundConfig.getDsp().add(provide);
+				LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
+			}
 		}
 	}
 	

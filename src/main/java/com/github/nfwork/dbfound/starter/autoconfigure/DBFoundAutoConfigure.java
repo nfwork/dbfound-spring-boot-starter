@@ -1,7 +1,9 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,13 +102,19 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 		if (provideList == null || provideList.isEmpty()) {
 			throw new DBFoundRuntimeException("init dbfound engine failed, at leat have one datasource config in springboot config file");
 		}
-		PlatformTransactionManager[] pmanagerList = new PlatformTransactionManager[provideList.size()];
-		int index = 0;
+
+		ArrayList<PlatformTransactionManager> platformTransactionManagerList = new ArrayList<>();
+
 		for (DataSourceConnectionProvide dataSourceConnectionProvide : provideList) {
-			pmanagerList[index++] = new DataSourceTransactionManager(dataSourceConnectionProvide.getDataSource());
+			if(dataSourceConnectionProvide instanceof SpringDataSourceProvide){
+				SpringDataSourceProvide sourceProvide = (SpringDataSourceProvide) dataSourceConnectionProvide;
+				if(sourceProvide.isJoinChainedTransaction()){
+					platformTransactionManagerList.add(new DataSourceTransactionManager(dataSourceConnectionProvide.getDataSource()));
+				}
+			}
 		}
-		ChainedTransactionManager chainedManager = new ChainedTransactionManager(pmanagerList);
-		return chainedManager;
+		PlatformTransactionManager[] managers = platformTransactionManagerList.toArray(new PlatformTransactionManager[platformTransactionManagerList.size()]);
+		return new ChainedTransactionManager(managers);
 	}
 
 	@Override
