@@ -31,8 +31,7 @@ public class ContextArgumentResolver implements HandlerMethodArgumentResolver {
 			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
 		HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
 		HttpServletResponse response = webRequest.getNativeResponse(HttpServletResponse.class);
-		Context context = Context.getCurrentContext(request, response, dbfoundEngine.getWebConfig().isOpenSession());
-		return context;
+		return Context.getCurrentContext(request, response);
 	}
 
 }
