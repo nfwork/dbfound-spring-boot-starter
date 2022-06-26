@@ -8,6 +8,7 @@ import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.model.ModelEngine;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DBFoundDefaultService {
@@ -23,10 +24,12 @@ public class DBFoundDefaultService {
 		 ExcelWriter.excelExport(context, modelName, queryName);
 	}
 
+	@Transactional(rollbackFor = Exception.class, transactionManager="dbfoundTransactionManager")
 	public ResponseObject execute(Context context, String modelName, String executeName) {
 		return modelExecutor.execute(context, modelName, executeName);
 	}
 
+	@Transactional(rollbackFor = Exception.class, transactionManager="dbfoundTransactionManager")
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
 		return modelExecutor.batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
 	}

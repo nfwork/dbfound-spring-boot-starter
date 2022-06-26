@@ -6,8 +6,6 @@ import java.util.List;
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
-import com.github.nfwork.dbfound.starter.service.ChainedTransactionService;
-import com.github.nfwork.dbfound.starter.service.DBFoundTransactionService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -86,13 +84,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 
 	@Bean
 	public DBFoundDefaultService dbFoundDefaultService() {
-		DBFoundDefaultService service;
-		if(config.getSystem().getTransactionManager() == DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
-			service = new DBFoundTransactionService();
-		}else {
-			service = new ChainedTransactionService();
-		}
-		return service;
+		return new DBFoundDefaultService();
 	}
 
 	@Bean
@@ -106,19 +98,19 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	}
 
 	@Bean
-	@ConditionalOnProperty(matchIfMissing = false, name = "dbfound.system.transaction-manager", havingValue = "dbfound_transaction_manager" )
-	public DBFoundTransactionManager dbfoundTransactionManager(){
-		return new DBFoundTransactionManager();
+	public PlatformTransactionManager dbfoundTransactionManager(ModelExecutor modelExecutor,DBFoundEngine dbFoundEngine){
+		if(config.getSystem().getTransactionManager()== DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
+			return new DBFoundTransactionManager(modelExecutor);
+		}else{
+			return chainedTransactionManager(dbFoundEngine);
+		}
 	}
 
-	@Bean
-	@ConditionalOnProperty(matchIfMissing = true, name = "dbfound.system.transaction-manager", havingValue = "chained_transaction_manager" )
 	public ChainedTransactionManager chainedTransactionManager(DBFoundEngine dbFoundEngine) {
 		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvideList();
 		if (provideList == null || provideList.isEmpty()) {
 			throw new DBFoundRuntimeException("init dbfound engine failed, at leat have one datasource config in springboot config file");
 		}
-
 		ArrayList<PlatformTransactionManager> platformTransactionManagerList = new ArrayList<>();
 
 		for (DataSourceConnectionProvide dataSourceConnectionProvide : provideList) {

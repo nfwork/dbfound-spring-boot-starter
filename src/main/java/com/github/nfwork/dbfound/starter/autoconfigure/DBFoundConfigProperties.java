@@ -380,7 +380,7 @@ public class DBFoundConfigProperties {
 		private boolean ModelModifyCheck = true;
 		private String DateFormat = "yyyy-MM-dd";
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-		private TransactionManagerType transactionManager = TransactionManagerType.CHAINED_TRANSACTION_MANAGER;
+		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
 			return modeRootPath;

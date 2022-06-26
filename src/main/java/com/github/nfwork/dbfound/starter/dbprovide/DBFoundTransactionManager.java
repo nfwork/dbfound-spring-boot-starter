@@ -1,14 +1,21 @@
 package com.github.nfwork.dbfound.starter.dbprovide;
 
+import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.core.Transaction;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
+
 public class DBFoundTransactionManager extends AbstractPlatformTransactionManager {
 
     private final ThreadLocal<TransactionObject> threadLocal = new ThreadLocal<>();
+
+    public DBFoundTransactionManager( ModelExecutor modelExecutor){
+        modelExecutor.setDbFoundTransactionManager(this);
+    }
 
     @Override
     protected Object doGetTransaction() throws TransactionException {
@@ -23,55 +30,43 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
     @Override
     protected void doBegin(Object o, TransactionDefinition transactionDefinition) throws TransactionException {
         TransactionObject transactionObject = (TransactionObject) o;
-        if(transactionObject.getContext() != null){
-            transactionObject.getContext().getTransaction().begin();
-        }
+        transactionObject.transaction.begin();
     }
 
     @Override
     protected void doCommit(DefaultTransactionStatus defaultTransactionStatus) throws TransactionException {
-        TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject.getContext() != null){
-            transactionObject.getContext().getTransaction().commit();
+        TransactionObject transactionObject = threadLocal.get();
+        if(transactionObject!=null){
+           transactionObject.transaction.commit();
         }
     }
 
     @Override
     protected void doRollback(DefaultTransactionStatus defaultTransactionStatus) throws TransactionException {
         TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject.getContext() != null){
-            transactionObject.getContext().getTransaction().rollback();
+        if(transactionObject!=null){
+            transactionObject.transaction.rollback();
         }
     }
-
 
     @Override
     protected void doCleanupAfterCompletion(Object transaction) {
         TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject.getContext() != null){
-            transactionObject.getContext().getTransaction().end();
+        if(transactionObject!=null){
+            transactionObject.transaction.end();
             threadLocal.remove();
         }
         super.doCleanupAfterCompletion(transaction);
     }
 
-    public void begin(Context context){
+    public void registContext(Context context){
         TransactionObject transactionObject =  threadLocal.get();
         if(transactionObject != null){
-            context.getTransaction().begin();
-            transactionObject.setContext(context);
+            context.setTransaction(transactionObject.transaction);
         }
     }
 
     public static class  TransactionObject{
-        Context context;
-
-        public Context getContext() {
-            return context;
-        }
-
-        public void setContext(Context context) {
-            this.context = context;
-        }
+        Transaction transaction = new Transaction();
     }
 }

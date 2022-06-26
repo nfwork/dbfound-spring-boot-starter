@@ -3,6 +3,7 @@ package com.github.nfwork.dbfound.starter;
 import java.util.List;
 import java.util.Map;
 
+import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.QueryResponseObject;
 import com.nfwork.dbfound.dto.ResponseObject;
@@ -16,6 +17,8 @@ import com.nfwork.dbfound.model.ModelEngine;
  */
 public class ModelExecutor {
 
+	DBFoundTransactionManager dbFoundTransactionManager;
+
 	/**
 	 *  execute xml sql, user param
 	 * @param modelName
@@ -26,6 +29,9 @@ public class ModelExecutor {
 	public  ResponseObject execute(String modelName, String executeName, Object param){
 		Context context = new Context();
 		context.setParamData("data",param);
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.execute(context, modelName, executeName, "param.data");
 	}
 
@@ -39,6 +45,9 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.execute(context, modelName, executeName);
 	}
 
@@ -52,6 +61,9 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName, String currentPath) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.execute(context, modelName, executeName, currentPath);
 	}
 
@@ -65,6 +77,9 @@ public class ModelExecutor {
 	public ResponseObject batchExecute(String modelName, String executeName, List<Object> dataList) {
 		Context context = new Context();
 		context.setParamData("dataList",dataList);
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.batchExecute(context, modelName, executeName,"param.dataList");
 	}
 
@@ -78,6 +93,9 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.batchExecute(context, modelName, executeName);
 	}
 
@@ -91,6 +109,9 @@ public class ModelExecutor {
 	 * @return
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName, String currentPath) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.batchExecute(context, modelName, executeName, currentPath);
 	}
 
@@ -319,4 +340,11 @@ public class ModelExecutor {
 		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging, class1);
 	}
 
+	public DBFoundTransactionManager getDbFoundTransactionManager() {
+		return dbFoundTransactionManager;
+	}
+
+	public void setDbFoundTransactionManager(DBFoundTransactionManager dbFoundTransactionManager) {
+		this.dbFoundTransactionManager = dbFoundTransactionManager;
+	}
 }
