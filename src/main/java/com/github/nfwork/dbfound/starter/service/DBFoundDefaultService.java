@@ -24,12 +24,12 @@ public class DBFoundDefaultService {
 		 ExcelWriter.excelExport(context, modelName, queryName);
 	}
 
-	@Transactional(rollbackFor = Exception.class, transactionManager="dbfoundTransactionManager")
+	@Transactional("dbfoundTransactionManager")
 	public ResponseObject execute(Context context, String modelName, String executeName) {
 		return modelExecutor.execute(context, modelName, executeName);
 	}
 
-	@Transactional(rollbackFor = Exception.class, transactionManager="dbfoundTransactionManager")
+	@Transactional("dbfoundTransactionManager")
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
 		return modelExecutor.batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
 	}
