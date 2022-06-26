@@ -44,15 +44,21 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
         }
     }
 
+
     @Override
     protected void doCleanupAfterCompletion(Object transaction) {
-        threadLocal.remove();
+        TransactionObject transactionObject =  threadLocal.get();
+        if(transactionObject.getContext() != null){
+            transactionObject.getContext().getTransaction().end();
+            threadLocal.remove();
+        }
         super.doCleanupAfterCompletion(transaction);
     }
 
-    public void setContext(Context context){
+    public void begin(Context context){
         TransactionObject transactionObject =  threadLocal.get();
         if(transactionObject != null){
+            context.getTransaction().begin();
             transactionObject.setContext(context);
         }
     }

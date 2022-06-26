@@ -9,13 +9,13 @@ import org.springframework.transaction.annotation.Transactional;
 public class ChainedTransactionService extends DBFoundDefaultService{
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, transactionManager="chainedTransactionManager")
     public ResponseObject execute(Context context, String modelName, String executeName) {
         return super.execute(context, modelName, executeName);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional(rollbackFor = Exception.class, transactionManager="chainedTransactionManager")
     public ResponseObject batchExecute(Context context, String modelName, String executeName) {
         return super.batchExecute(context, modelName, executeName);
     }

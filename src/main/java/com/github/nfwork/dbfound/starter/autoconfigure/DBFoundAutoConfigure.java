@@ -87,7 +87,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	@Bean
 	public DBFoundDefaultService dbFoundDefaultService() {
 		DBFoundDefaultService service;
-		if(config.getSystem().getTransactionManagerType() == DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
+		if(config.getSystem().getTransactionManager() == DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
 			service = new DBFoundTransactionService();
 		}else {
 			service = new ChainedTransactionService();
@@ -105,13 +105,15 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 		return new ModelExecutor();
 	}
 
-	//@Bean
-	public PlatformTransactionManager dbfoundTransactionManager(){
+	@Bean
+	@ConditionalOnProperty(matchIfMissing = false, name = "dbfound.system.transaction-manager", havingValue = "dbfound_transaction_manager" )
+	public DBFoundTransactionManager dbfoundTransactionManager(){
 		return new DBFoundTransactionManager();
 	}
 
 	@Bean
-	public ChainedTransactionManager dbfoundTransactionManager(DBFoundEngine dbFoundEngine) {
+	@ConditionalOnProperty(matchIfMissing = true, name = "dbfound.system.transaction-manager", havingValue = "chained_transaction_manager" )
+	public ChainedTransactionManager chainedTransactionManager(DBFoundEngine dbFoundEngine) {
 		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvideList();
 		if (provideList == null || provideList.isEmpty()) {
 			throw new DBFoundRuntimeException("init dbfound engine failed, at leat have one datasource config in springboot config file");
