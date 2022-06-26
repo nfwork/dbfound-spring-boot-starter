@@ -380,6 +380,7 @@ public class DBFoundConfigProperties {
 		private boolean ModelModifyCheck = true;
 		private String DateFormat = "yyyy-MM-dd";
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+		private TransactionManagerType transactionManagerType = TransactionManagerType.CHAINED_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
 			return modeRootPath;
@@ -452,5 +453,18 @@ public class DBFoundConfigProperties {
 		public void setDateTimeFormat(String dateTimeFormat) {
 			DateTimeFormat = dateTimeFormat;
 		}
+
+		public TransactionManagerType getTransactionManagerType() {
+			return transactionManagerType;
+		}
+
+		public void setTransactionManagerType(TransactionManagerType transactionManagerType) {
+			this.transactionManagerType = transactionManagerType;
+		}
+	}
+
+	public static enum TransactionManagerType{
+		DBFOUND_TRANSACTION_MANAGER,
+		CHAINED_TRANSACTION_MANAGER;
 	}
 }

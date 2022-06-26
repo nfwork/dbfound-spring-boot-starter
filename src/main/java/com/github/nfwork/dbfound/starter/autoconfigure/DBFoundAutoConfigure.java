@@ -3,8 +3,11 @@ package com.github.nfwork.dbfound.starter.autoconfigure;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
+import com.github.nfwork.dbfound.starter.service.ChainedTransactionService;
+import com.github.nfwork.dbfound.starter.service.DBFoundTransactionService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -83,7 +86,13 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 
 	@Bean
 	public DBFoundDefaultService dbFoundDefaultService() {
-		return new DBFoundDefaultService();
+		DBFoundDefaultService service;
+		if(config.getSystem().getTransactionManagerType() == DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
+			service = new DBFoundTransactionService();
+		}else {
+			service = new ChainedTransactionService();
+		}
+		return service;
 	}
 
 	@Bean
@@ -94,6 +103,11 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	@Bean
 	public ModelExecutor modelExecutor() {
 		return new ModelExecutor();
+	}
+
+	//@Bean
+	public PlatformTransactionManager dbfoundTransactionManager(){
+		return new DBFoundTransactionManager();
 	}
 
 	@Bean
