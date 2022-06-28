@@ -19,7 +19,11 @@ public class ModelExecutor {
 	DBFoundTransactionManager dbFoundTransactionManager;
 
 	/**
-	 *  execute xml sql, user param
+	 * execute xml sql, user param
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @param param param
+	 * @return ResponseObject
 	 */
 	public  ResponseObject execute(String modelName, String executeName, Object param){
 		Context context = new Context();
@@ -32,7 +36,10 @@ public class ModelExecutor {
 
 	/**
 	 * execute xml sql, include insert update delete; currentPaht is default
-	 * param.
+	 * @param context context
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @return ResponseObject
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName) {
 		if(dbFoundTransactionManager != null){
@@ -43,6 +50,11 @@ public class ModelExecutor {
 
 	/**
 	 * execute xml sql, include insert update delete;
+	 * @param context context
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @param currentPath currentPath
+	 * @return ResponseObject
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName, String currentPath) {
 		if(dbFoundTransactionManager != null){
@@ -52,7 +64,11 @@ public class ModelExecutor {
 	}
 
 	/**
-	 *  user list data,batch execute
+	 * user list data,batch execute
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @param dataList  a list param
+	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(String modelName, String executeName, List<Object> dataList) {
 		Context context = new Context();
@@ -64,8 +80,11 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * batch execute xml sql, include insert update delete; currentPaht is
-	 * default param.GridData;
+	 * batch execute xml sql, include insert update delete; currentPaht is default param.GridData;
+	 * @param context context
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
 		if(dbFoundTransactionManager != null){
@@ -76,7 +95,11 @@ public class ModelExecutor {
 
 	/**
 	 * batch execute xml sql, include insert update delete;
-	 *
+	 * @param context context
+	 * @param modelName model name
+	 * @param executeName execute name
+	 * @param currentPath current path
+	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName, String currentPath) {
 		if(dbFoundTransactionManager != null){
@@ -87,6 +110,10 @@ public class ModelExecutor {
 
 	/**
 	 * query list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @return List data
 	 */
 	@SuppressWarnings("rawtypes")
 	public List queryList(String modelName, String queryName, Object param) {
@@ -97,6 +124,12 @@ public class ModelExecutor {
 
 	/**
 	 * query list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list T
 	 */
 	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
 		Context context = new Context();
@@ -105,7 +138,11 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query list, return list map
+	 * query list
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @return List
 	 */
 	@SuppressWarnings("rawtypes")
 	public List queryList(Context context, String modelName, String queryName) {
@@ -114,6 +151,12 @@ public class ModelExecutor {
 
 	/**
 	 * query list data, return list object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list of T
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
 		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath, false, class1).getDatas();
@@ -122,6 +165,10 @@ public class ModelExecutor {
 
 	/**
 	 * query one line data, return a map
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @return Object
 	 */
 	public Object queryOne(String modelName, String queryName, Object param) {
 		List dataList = queryList(modelName, queryName,param);
@@ -133,7 +180,11 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query one line data, return a map
+	 * query one line data, return a object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @return Object
 	 */
 	@SuppressWarnings("rawtypes")
 	public Object queryOne(Context context, String modelName, String queryName) {
@@ -147,6 +198,12 @@ public class ModelExecutor {
 
 	/**
 	 * query one line data, return a Object T
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
 	 */
 	public <T> T queryOne( String modelName, String queryName, Object param,Class<T> class1) {
 		List<T> dataList = queryList( modelName, queryName, param, class1);
@@ -159,6 +216,12 @@ public class ModelExecutor {
 
 	/**
 	 * query one line data, return a Object T
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
 	 */
 	public <T> T queryOne(Context context, String modelName, String queryName, Class<T> class1) {
 		List<T> dataList = queryList(context, modelName, queryName, class1);
@@ -172,6 +235,12 @@ public class ModelExecutor {
 
 	/**
 	 * query page list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param start start with
+	 * @param limit limit pager size
+	 * @return QueryResponseObject
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
@@ -184,6 +253,14 @@ public class ModelExecutor {
 
 	/**
 	 * query page list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param start start with
+	 * @param limit limit pager size
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, int start,int limit,Class<T> class1) {
 		Context context = new Context();
@@ -194,7 +271,11 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * query xml sql, include select , reuturn QueryResponseObject Map
+	 *  query xml sql, include select , reuturn QueryResponseObject Map
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @return QueryResponseObject
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName) {
@@ -203,7 +284,12 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , return QueryResponseObject T
-	 *
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
 		return ModelEngine.query(context, modelName, queryName, class1);
@@ -211,7 +297,12 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , reuturn QueryResponseObject  Map
-	 *
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param currentPath current path
+	 * @param autoPaging auto paging
+	 * @return QueryResponseObject
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,
@@ -221,7 +312,14 @@ public class ModelExecutor {
 
 	/**
 	 * query xml sql, include select , return QueryResponseObject T
-	 *
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param currentPath current path
+	 * @param autoPaging auto paging
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String currentPath,
 			boolean autoPaging, Class<T> class1) {
