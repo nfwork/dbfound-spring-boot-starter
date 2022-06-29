@@ -43,10 +43,9 @@ public class DBFoundExceptionhandle {
 			}
 
 			String em = exception.getMessage();
-			if (exception instanceof DBFoundRuntimeException) {
+			if (exception instanceof CollisionException) {
 				LogUtil.info(exception.getClass().getName() + ":" + em);
 			} else {
-				em = exception.getClass().getName() + ":" + em;
 				LogUtil.error(em, exception);
 			}
 
