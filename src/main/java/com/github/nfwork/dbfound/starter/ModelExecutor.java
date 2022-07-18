@@ -70,7 +70,7 @@ public class ModelExecutor {
 	 * @param dataList  a list param
 	 * @return ResponseObject
 	 */
-	public ResponseObject batchExecute(String modelName, String executeName, List<?> dataList) {
+	public ResponseObject batchExecute(String modelName, String executeName, List<Object> dataList) {
 		Context context = new Context();
 		context.setParamData("dataList",dataList);
 		if(dbFoundTransactionManager != null){
@@ -115,7 +115,8 @@ public class ModelExecutor {
 	 * @param param param object
 	 * @return List data
 	 */
-	public List<?> queryList(String modelName, String queryName, Object param) {
+	@SuppressWarnings("rawtypes")
+	public List queryList(String modelName, String queryName, Object param) {
 		Context context = new Context();
 		context.setParamData("data",param);
 		return ModelEngine.query(context, modelName, queryName, "param.data",false).getDatas();
@@ -143,7 +144,8 @@ public class ModelExecutor {
 	 * @param queryName query name
 	 * @return List
 	 */
-	public List<?> queryList(Context context, String modelName, String queryName) {
+	@SuppressWarnings("rawtypes")
+	public List queryList(Context context, String modelName, String queryName) {
 		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath,false).getDatas();
 	}
 
@@ -169,7 +171,7 @@ public class ModelExecutor {
 	 * @return Object
 	 */
 	public Object queryOne(String modelName, String queryName, Object param) {
-		List<?> dataList = queryList(modelName, queryName,param);
+		List dataList = queryList(modelName, queryName,param);
 		if (dataList != null && dataList.size() > 0) {
 			return dataList.get(0);
 		} else {
@@ -184,8 +186,9 @@ public class ModelExecutor {
 	 * @param queryName query name
 	 * @return Object
 	 */
+	@SuppressWarnings("rawtypes")
 	public Object queryOne(Context context, String modelName, String queryName) {
-		List<?> dataList = queryList(context, modelName, queryName);
+		List dataList = queryList(context, modelName, queryName);
 		if (dataList != null && dataList.size() > 0) {
 			return dataList.get(0);
 		} else {
@@ -239,7 +242,8 @@ public class ModelExecutor {
 	 * @param limit limit pager size
 	 * @return QueryResponseObject
 	 */
-	public QueryResponseObject<?> query(String modelName, String queryName, Object param, int start,int limit) {
+	@SuppressWarnings("rawtypes")
+	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
 		Context context = new Context();
 		context.setParamData("data",param);
 		context.setParamData("start",start);
@@ -273,7 +277,8 @@ public class ModelExecutor {
 	 * @param queryName query name
 	 * @return QueryResponseObject
 	 */
-	public QueryResponseObject<?> query(Context context, String modelName, String queryName) {
+	@SuppressWarnings("rawtypes")
+	public QueryResponseObject query(Context context, String modelName, String queryName) {
 		return ModelEngine.query(context, modelName, queryName);
 	}
 
@@ -299,7 +304,8 @@ public class ModelExecutor {
 	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
-	public QueryResponseObject<?> query(Context context, String modelName, String queryName, String currentPath,
+	@SuppressWarnings("rawtypes")
+	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,
 			boolean autoPaging) {
 		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging);
 	}
