@@ -70,7 +70,7 @@ public class ModelExecutor {
 	 * @param dataList  a list param
 	 * @return ResponseObject
 	 */
-	public ResponseObject batchExecute(String modelName, String executeName, List<Object> dataList) {
+	public ResponseObject batchExecute(String modelName, String executeName, List dataList) {
 		Context context = new Context();
 		context.setParamData("dataList",dataList);
 		if(dbFoundTransactionManager != null){
