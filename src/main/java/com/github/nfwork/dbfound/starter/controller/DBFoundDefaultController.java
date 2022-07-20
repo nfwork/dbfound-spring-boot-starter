@@ -58,7 +58,7 @@ public class DBFoundDefaultController {
 			Object gridData = context.getData(ModelEngine.defaultBatchPath);
 
 			ResponseObject object;
-			if (gridData != null && gridData instanceof List) {
+			if (gridData instanceof List) {
 				object = service.batchExecute(context, modelName, executeName);
 			}else {
 				object = service.execute(context, modelName, executeName);
