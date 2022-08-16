@@ -380,6 +380,8 @@ public class DBFoundConfigProperties {
 		private boolean ModelModifyCheck = true;
 		private String DateFormat = "yyyy-MM-dd";
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+		private boolean useDSql = true;
+		private boolean sqlCompareIgnoreCase = true;
 		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
@@ -460,6 +462,22 @@ public class DBFoundConfigProperties {
 
 		public void setTransactionManager(TransactionManagerType transactionManager) {
 			this.transactionManager = transactionManager;
+		}
+
+		public boolean isUseDSql() {
+			return useDSql;
+		}
+
+		public void setUseDSql(boolean useDSql) {
+			this.useDSql = useDSql;
+		}
+
+		public boolean isSqlCompareIgnoreCase() {
+			return sqlCompareIgnoreCase;
+		}
+
+		public void setSqlCompareIgnoreCase(boolean sqlCompareIgnoreCase) {
+			this.sqlCompareIgnoreCase = sqlCompareIgnoreCase;
 		}
 	}
 

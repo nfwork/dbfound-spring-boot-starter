@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.nfwork.dbfound.model.dsql.DSqlConfig;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.util.StringUtils;
@@ -51,6 +52,8 @@ public class DBFoundEngine {
 		DBFoundConfig.setDateFormat(config.getDateFormat());
 		DBFoundConfig.setDateTimeFormat(config.getDateTimeFormat());
 		DBFoundConfig.setModelModifyCheck(config.isModelModifyCheck());
+		DSqlConfig.setCompareIgnoreCase(config.isSqlCompareIgnoreCase());
+		DSqlConfig.setUseDSql(config.isUseDSql());
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.beanToJson(systemConfig));
 	}
 
