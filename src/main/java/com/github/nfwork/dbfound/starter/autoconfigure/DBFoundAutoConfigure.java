@@ -20,7 +20,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionhandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
@@ -88,8 +88,8 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	}
 
 	@Bean
-	public DBFoundExceptionhandle dbFoundExceptionhandle() {
-		return new DBFoundExceptionhandle();
+	public DBFoundExceptionHandle dbFoundExceptionHandle() {
+		return new DBFoundExceptionHandle();
 	}
 
 	@Bean
