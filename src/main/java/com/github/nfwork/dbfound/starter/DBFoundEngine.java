@@ -53,7 +53,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setDateTimeFormat(config.getDateTimeFormat());
 		DBFoundConfig.setModelModifyCheck(config.isModelModifyCheck());
 		DSqlConfig.setCompareIgnoreCase(config.isSqlCompareIgnoreCase());
-		DSqlConfig.setUseDSql(config.isUseDSql());
+		DSqlConfig.setOpenDSql(config.isOpenDSql());
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.beanToJson(systemConfig));
 	}
 

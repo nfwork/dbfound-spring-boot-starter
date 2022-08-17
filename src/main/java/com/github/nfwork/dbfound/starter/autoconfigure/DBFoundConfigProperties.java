@@ -380,7 +380,7 @@ public class DBFoundConfigProperties {
 		private boolean ModelModifyCheck = true;
 		private String DateFormat = "yyyy-MM-dd";
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
-		private boolean useDSql = true;
+		private boolean openDSql = true;
 		private boolean sqlCompareIgnoreCase = true;
 		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
@@ -464,12 +464,12 @@ public class DBFoundConfigProperties {
 			this.transactionManager = transactionManager;
 		}
 
-		public boolean isUseDSql() {
-			return useDSql;
+		public boolean isOpenDSql() {
+			return openDSql;
 		}
 
-		public void setUseDSql(boolean useDSql) {
-			this.useDSql = useDSql;
+		public void setOpenDSql(boolean openDSql) {
+			this.openDSql = openDSql;
 		}
 
 		public boolean isSqlCompareIgnoreCase() {
