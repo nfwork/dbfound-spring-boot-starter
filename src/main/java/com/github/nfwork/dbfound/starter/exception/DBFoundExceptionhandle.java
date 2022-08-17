@@ -1,25 +1,18 @@
 package com.github.nfwork.dbfound.starter.exception;
-
-import java.lang.reflect.InvocationTargetException;
-import java.net.SocketException;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.nfwork.dbfound.exception.CollisionException;
 import org.springframework.stereotype.Component;
-
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.DBFoundPackageException;
-import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 import com.nfwork.dbfound.exception.FileDownLoadInterrupt;
 import com.nfwork.dbfound.util.LogUtil;
 
 @Component
-public class DBFoundExceptionhandle {
+public class DBFoundExceptionHandle {
 
-	public ResponseObject handle(Exception exception,
-			HttpServletRequest request, HttpServletResponse response) {
+	public ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response) {
 		ResponseObject ro = new ResponseObject();
 		try {
 			if (exception instanceof CollisionException){
@@ -27,29 +20,26 @@ public class DBFoundExceptionhandle {
 			}else{
 				response.setStatus(500);
 			}
-			ro.setSuccess(false);
 			exception = getException(exception);
-			ro.setMessage(exception.getMessage());
 
-			if (exception instanceof SocketException
-					|| exception.getCause() instanceof SocketException) {
-				LogUtil.warn("client socket exception:"
-						+ exception.getMessage());
-				return ro;
-			}
 			if (exception instanceof FileDownLoadInterrupt) {
 				LogUtil.warn(exception.getMessage());
 				return null;
 			}
 
 			String em = exception.getMessage();
+			String code = null;
 			if (exception instanceof CollisionException) {
+				code = ((CollisionException) exception).getCode();
 				LogUtil.info(exception.getClass().getName() + ":" + em);
-			} else {
+			}else {
 				LogUtil.error(em, exception);
+				em = exception.getClass().getName() + ":" + em;
 			}
 
 			ro.setMessage(em);
+			ro.setSuccess(false);
+			ro.setCode(code);
 		} catch (Exception e) {
 			LogUtil.error(e.getMessage(), e);
 		}
@@ -59,17 +49,8 @@ public class DBFoundExceptionhandle {
 
 	private static Exception getException(Exception exception) {
 		if (exception instanceof DBFoundPackageException) {
-			DBFoundPackageException pkgException = (DBFoundPackageException) exception;
-			if (pkgException.getMessage() != null) {
-				return pkgException;
-			}
 			Throwable throwable = exception.getCause();
-			if (throwable != null && throwable instanceof Exception) {
-				return (Exception) throwable;
-			}
-		} else if (exception instanceof InvocationTargetException) {
-			Throwable throwable = exception.getCause();
-			if (throwable != null && throwable instanceof Exception) {
+			if (throwable instanceof Exception) {
 				return (Exception) throwable;
 			}
 		}
