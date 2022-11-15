@@ -5,6 +5,7 @@ import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.Transaction;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 
@@ -13,7 +14,10 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
 
     private final ThreadLocal<TransactionObject> threadLocal = new ThreadLocal<>();
 
-    public DBFoundTransactionManager( ModelExecutor modelExecutor){
+    private final Isolation configIsolationLevel ;
+
+    public DBFoundTransactionManager( ModelExecutor modelExecutor, Isolation isolationLevel){
+        this.configIsolationLevel = isolationLevel;
         modelExecutor.setDbFoundTransactionManager(this);
     }
 
@@ -28,8 +32,13 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
     }
 
     @Override
-    protected void doBegin(Object o, TransactionDefinition transactionDefinition) throws TransactionException {
+    protected void doBegin(Object o, TransactionDefinition definition) throws TransactionException {
         TransactionObject transactionObject = (TransactionObject) o;
+        if (definition.getIsolationLevel() != TransactionDefinition.ISOLATION_DEFAULT) {
+            transactionObject.transaction.setTransactionIsolation(definition.getIsolationLevel());
+        } else if(configIsolationLevel.value() != TransactionDefinition.ISOLATION_DEFAULT){
+            transactionObject.transaction.setTransactionIsolation(configIsolationLevel.value());
+        }
         transactionObject.transaction.begin();
     }
 

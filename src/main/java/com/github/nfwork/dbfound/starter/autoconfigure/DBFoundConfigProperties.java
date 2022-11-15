@@ -2,6 +2,7 @@ package com.github.nfwork.dbfound.starter.autoconfigure;
 
 import com.nfwork.dbfound.core.DBFoundConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.transaction.annotation.Isolation;
 
 @ConfigurationProperties(prefix = "dbfound", ignoreUnknownFields = false)
 public class DBFoundConfigProperties {
@@ -382,6 +383,7 @@ public class DBFoundConfigProperties {
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 		private boolean openDSql = true;
 		private boolean sqlCompareIgnoreCase = true;
+		private Isolation defaultTransactionIsolationLevel = Isolation.DEFAULT;
 		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
@@ -478,6 +480,14 @@ public class DBFoundConfigProperties {
 
 		public void setSqlCompareIgnoreCase(boolean sqlCompareIgnoreCase) {
 			this.sqlCompareIgnoreCase = sqlCompareIgnoreCase;
+		}
+
+		public Isolation getDefaultTransactionIsolationLevel() {
+			return defaultTransactionIsolationLevel;
+		}
+
+		public void setDefaultTransactionIsolationLevel(Isolation defaultTransactionIsolationLevel) {
+			this.defaultTransactionIsolationLevel = defaultTransactionIsolationLevel;
 		}
 	}
 
