@@ -14,10 +14,10 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
 
     private final ThreadLocal<TransactionObject> threadLocal = new ThreadLocal<>();
 
-    private final Isolation configIsolationLevel ;
+    private final Isolation transactionIsolation ;
 
-    public DBFoundTransactionManager( ModelExecutor modelExecutor, Isolation isolationLevel){
-        this.configIsolationLevel = isolationLevel;
+    public DBFoundTransactionManager( ModelExecutor modelExecutor, Isolation transactionIsolation){
+        this.transactionIsolation = transactionIsolation;
         modelExecutor.setDbFoundTransactionManager(this);
     }
 
@@ -36,8 +36,8 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
         TransactionObject transactionObject = (TransactionObject) o;
         if (definition.getIsolationLevel() != TransactionDefinition.ISOLATION_DEFAULT) {
             transactionObject.transaction.setTransactionIsolation(definition.getIsolationLevel());
-        } else if(configIsolationLevel.value() != TransactionDefinition.ISOLATION_DEFAULT){
-            transactionObject.transaction.setTransactionIsolation(configIsolationLevel.value());
+        } else if(transactionIsolation.value() != TransactionDefinition.ISOLATION_DEFAULT){
+            transactionObject.transaction.setTransactionIsolation(transactionIsolation.value());
         }
         transactionObject.transaction.begin();
     }

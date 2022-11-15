@@ -383,7 +383,7 @@ public class DBFoundConfigProperties {
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 		private boolean openDSql = true;
 		private boolean sqlCompareIgnoreCase = true;
-		private Isolation defaultTransactionIsolationLevel = Isolation.DEFAULT;
+		private Isolation transactionIsolation = Isolation.DEFAULT;
 		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
@@ -482,12 +482,12 @@ public class DBFoundConfigProperties {
 			this.sqlCompareIgnoreCase = sqlCompareIgnoreCase;
 		}
 
-		public Isolation getDefaultTransactionIsolationLevel() {
-			return defaultTransactionIsolationLevel;
+		public Isolation getTransactionIsolation() {
+			return transactionIsolation;
 		}
 
-		public void setDefaultTransactionIsolationLevel(Isolation defaultTransactionIsolationLevel) {
-			this.defaultTransactionIsolationLevel = defaultTransactionIsolationLevel;
+		public void setTransactionIsolation(Isolation transactionIsolation) {
+			this.transactionIsolation = transactionIsolation;
 		}
 	}
 
