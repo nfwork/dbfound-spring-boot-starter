@@ -256,6 +256,20 @@ public class ModelExecutor {
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param param param object
+	 * @return QueryResponseObject
+	 */
+	@SuppressWarnings("rawtypes")
+	public QueryResponseObject query(String modelName, String queryName, Object param) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		return ModelEngine.query(context, modelName, queryName, "param.data",false);
+	}
+
+	/**
+	 * query page list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
 	 * @param start start with
 	 * @param limit limit pager size
 	 * @param class1 entity class
@@ -268,6 +282,21 @@ public class ModelExecutor {
 		context.setParamData("start",start);
 		context.setParamData("limit",limit);
 		return ModelEngine.query(context, modelName, queryName, "param.data",true, class1);
+	}
+
+	/**
+	 * query page list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return QueryResponseObject T
+	 */
+	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, Class<T> class1) {
+		Context context = new Context();
+		context.setParamData("data",param);
+		return ModelEngine.query(context, modelName, queryName, "param.data",false, class1);
 	}
 
 	/**
