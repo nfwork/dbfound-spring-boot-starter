@@ -376,10 +376,7 @@ public class DBFoundConfigProperties {
 		private boolean underscoreToCamelCase = false;
 		private boolean camelCaseToUnderscore = false;
 		private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
-		private boolean queryLimit = true;
-		private int queryLimitSize = 5000;
-		private int reportQueryLimitSize = 50000;
-		private boolean ModelModifyCheck = true;
+		private boolean modelModifyCheck = false;
 		private String DateFormat = "yyyy-MM-dd";
 		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 		private boolean openDSql = true;
@@ -403,30 +400,6 @@ public class DBFoundConfigProperties {
 			this.openLog = openLog;
 		}
 
-		public boolean isQueryLimit() {
-			return queryLimit;
-		}
-
-		public void setQueryLimit(boolean queryLimit) {
-			this.queryLimit = queryLimit;
-		}
-
-		public int getQueryLimitSize() {
-			return queryLimitSize;
-		}
-
-		public void setQueryLimitSize(int queryLimitSize) {
-			this.queryLimitSize = queryLimitSize;
-		}
-
-		public int getReportQueryLimitSize() {
-			return reportQueryLimitSize;
-		}
-
-		public void setReportQueryLimitSize(int reportQueryLimitSize) {
-			this.reportQueryLimitSize = reportQueryLimitSize;
-		}
-
 		public boolean isUnderscoreToCamelCase() {
 			return underscoreToCamelCase;
 		}
@@ -436,11 +409,11 @@ public class DBFoundConfigProperties {
 		}
 
 		public boolean isModelModifyCheck() {
-			return ModelModifyCheck;
+			return modelModifyCheck;
 		}
 
 		public void setModelModifyCheck(boolean modelModifyCheck) {
-			ModelModifyCheck = modelModifyCheck;
+			this.modelModifyCheck = modelModifyCheck;
 		}
 
 		public String getDateFormat() {
@@ -500,8 +473,8 @@ public class DBFoundConfigProperties {
 		}
 	}
 
-	public static enum TransactionManagerType{
+	public enum TransactionManagerType{
 		DBFOUND_TRANSACTION_MANAGER,
-		CHAINED_TRANSACTION_MANAGER;
+		CHAINED_TRANSACTION_MANAGER
 	}
 }

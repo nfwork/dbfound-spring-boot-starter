@@ -41,9 +41,6 @@ public class DBFoundEngine {
 		this.systemConfig = config;
 		DBFoundConfig.setOpenLog(config.isOpenLog());
 		DBFoundConfig.setModelLoadRoot(config.getModeRootPath());
-		DBFoundConfig.setQueryLimit(config.isQueryLimit());
-		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
-		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
 		DBFoundConfig.setUnderscoreToCamelCase(config.isUnderscoreToCamelCase());
 		DBFoundConfig.setCamelCaseToUnderscore(config.isCamelCaseToUnderscore());
 		DBFoundConfig.setDateFormat(config.getDateFormat());
@@ -101,7 +98,7 @@ public class DBFoundEngine {
 	 * destory dbfound engine
 	 */
 	public void destroy() {
-		DBFoundConfig.destory();
+		DBFoundConfig.destroy();
 		LogUtil.info("dbfound engine destory success");
 	}
 
