@@ -374,6 +374,7 @@ public class DBFoundConfigProperties {
 	public static class SystemConfig {
 		private boolean openLog = true;
 		private boolean underscoreToCamelCase = false;
+		private boolean camelCaseToUnderscore = false;
 		private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
 		private boolean queryLimit = true;
 		private int queryLimitSize = 5000;
@@ -488,6 +489,14 @@ public class DBFoundConfigProperties {
 
 		public void setTransactionIsolation(Isolation transactionIsolation) {
 			this.transactionIsolation = transactionIsolation;
+		}
+
+		public boolean isCamelCaseToUnderscore() {
+			return camelCaseToUnderscore;
+		}
+
+		public void setCamelCaseToUnderscore(boolean camelCaseToUnderscore) {
+			this.camelCaseToUnderscore = camelCaseToUnderscore;
 		}
 	}
 

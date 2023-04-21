@@ -45,6 +45,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
 		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
 		DBFoundConfig.setUnderscoreToCamelCase(config.isUnderscoreToCamelCase());
+		DBFoundConfig.setCamelCaseToUnderscore(config.isCamelCaseToUnderscore());
 		DBFoundConfig.setDateFormat(config.getDateFormat());
 		DBFoundConfig.setDateTimeFormat(config.getDateTimeFormat());
 		DBFoundConfig.setModelModifyCheck(config.isModelModifyCheck());
