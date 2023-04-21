@@ -14,14 +14,10 @@ import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.D
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.SystemConfig;
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.WebConfig;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
-import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
-import com.nfwork.dbfound.model.ModelReader;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
-import com.nfwork.dbfound.util.URLUtil;
-import com.nfwork.dbfound.web.WebWriter;
 import com.nfwork.dbfound.web.i18n.MultiLangUtil;
 
 /**
@@ -43,8 +39,8 @@ public class DBFoundEngine {
 	 */
 	public void initSystem(SystemConfig config) {
 		this.systemConfig = config;
-		LogUtil.setOpenLog(config.isOpenLog());
-		ModelReader.setModelLoadRoot(config.getModeRootPath());
+		DBFoundConfig.setOpenLog(config.isOpenLog());
+		DBFoundConfig.setModelLoadRoot(config.getModeRootPath());
 		DBFoundConfig.setQueryLimit(config.isQueryLimit());
 		DBFoundConfig.setQueryLimitSize(config.getQueryLimitSize());
 		DBFoundConfig.setReportQueryLimitSize(config.getReportQueryLimitSize());
@@ -66,9 +62,9 @@ public class DBFoundEngine {
 		if (config.getI18nProvide() != null) {
 			MultiLangUtil.init(config.getI18nProvide());
 		}
-		WebWriter.setEncoding(config.getEncoding());
-		URLUtil.setBasePath(webConfig.getBasePath());
-		Context.setOpenSession(webConfig.isOpenSession());
+		DBFoundConfig.setEncoding(config.getEncoding());
+		DBFoundConfig.setBasePath(webConfig.getBasePath());
+		DBFoundConfig.setOpenSession(webConfig.isOpenSession());
 		DBFoundConfig.setJsonStringAutoCover(config.isJsonStringAutoCover());
 		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.beanToJson(webConfig));
 	}
@@ -103,7 +99,7 @@ public class DBFoundEngine {
 	/**
 	 * destory dbfound engine
 	 */
-	public void destory() {
+	public void destroy() {
 		DBFoundConfig.destory();
 		LogUtil.info("dbfound engine destory success");
 	}

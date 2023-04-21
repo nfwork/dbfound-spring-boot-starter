@@ -34,7 +34,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	@Autowired
 	private DBFoundConfigProperties config;
 
-	@Bean(destroyMethod = "destory")
+	@Bean(destroyMethod = "destroy")
 	public DBFoundEngine dbFoundEngine() throws Exception {
 
 		DBFoundEngine dbFoundEngine = new DBFoundEngine();
