@@ -377,8 +377,8 @@ public class DBFoundConfigProperties {
 		private boolean camelCaseToUnderscore = false;
 		private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
 		private boolean modelModifyCheck = false;
-		private String DateFormat = "yyyy-MM-dd";
-		private String DateTimeFormat = "yyyy-MM-dd HH:mm:ss";
+		private String dateFormat = "yyyy-MM-dd";
+		private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
 		private boolean openDSql = true;
 		private boolean sqlCompareIgnoreCase = true;
 		private Isolation transactionIsolation = Isolation.DEFAULT;
@@ -417,19 +417,19 @@ public class DBFoundConfigProperties {
 		}
 
 		public String getDateFormat() {
-			return DateFormat;
+			return dateFormat;
 		}
 
 		public void setDateFormat(String dateFormat) {
-			DateFormat = dateFormat;
+			this.dateFormat = dateFormat;
 		}
 
 		public String getDateTimeFormat() {
-			return DateTimeFormat;
+			return dateTimeFormat;
 		}
 
 		public void setDateTimeFormat(String dateTimeFormat) {
-			DateTimeFormat = dateTimeFormat;
+			this.dateTimeFormat = dateTimeFormat;
 		}
 
 		public TransactionManagerType getTransactionManager() {
