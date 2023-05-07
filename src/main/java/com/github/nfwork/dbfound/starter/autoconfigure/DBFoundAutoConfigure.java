@@ -6,6 +6,7 @@ import java.util.List;
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
+import com.nfwork.dbfound.util.LogUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -40,6 +41,8 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 		DBFoundEngine dbFoundEngine = new DBFoundEngine();
 		
 		DBFoundConfig.setInited(true);
+
+		LogUtil.info("NFWork dbfound "+ DBFoundConfig.VERSION+" engine init begin");
 
 		// init system
 		dbFoundEngine.initSystem(config.getSystem());
