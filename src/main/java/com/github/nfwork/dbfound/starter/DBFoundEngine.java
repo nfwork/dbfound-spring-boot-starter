@@ -95,11 +95,12 @@ public class DBFoundEngine {
 	}
 
 	/**
-	 * destory dbfound engine
+	 * destroy dbfound engine
 	 */
 	public void destroy() {
+		LogUtil.info("NFWork dbfound " + DBFoundConfig.VERSION + " engine destroy begin");
 		DBFoundConfig.destroy();
-		LogUtil.info("dbfound engine destory success");
+		LogUtil.info("NFWork dbfound " + DBFoundConfig.VERSION + " engine destroy success");
 	}
 
 	public SystemConfig getSystemConfig() {
