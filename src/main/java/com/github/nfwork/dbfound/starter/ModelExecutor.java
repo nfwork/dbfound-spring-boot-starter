@@ -329,13 +329,40 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
+	 * @param autoPaging auto paging
+	 * @return QueryResponseObject
+	 */
+	@SuppressWarnings("rawtypes")
+	public QueryResponseObject query(Context context, String modelName, String queryName, boolean autoPaging) {
+		return ModelEngine.query(context, modelName, queryName, autoPaging);
+	}
+
+	/**
+	 * query xml sql, include select , return QueryResponseObject T
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param autoPaging auto paging
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return QueryResponseObject T
+	 */
+	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, boolean autoPaging, Class<T> class1) {
+		return ModelEngine.query(context, modelName, queryName, autoPaging, class1);
+	}
+
+	/**
+	 * query xml sql, include select , reuturn QueryResponseObject  Map
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
 	 * @param currentPath current path
 	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,
-			boolean autoPaging) {
+									 boolean autoPaging) {
 		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging);
 	}
 
