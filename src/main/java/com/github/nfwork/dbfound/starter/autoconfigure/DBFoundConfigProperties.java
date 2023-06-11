@@ -382,7 +382,6 @@ public class DBFoundConfigProperties {
 		private boolean openDSql = true;
 		private boolean sqlCompareIgnoreCase = true;
 		private Isolation transactionIsolation = Isolation.DEFAULT;
-		private TransactionManagerType transactionManager = TransactionManagerType.DBFOUND_TRANSACTION_MANAGER;
 
 		public String getModeRootPath() {
 			return modeRootPath;
@@ -432,14 +431,6 @@ public class DBFoundConfigProperties {
 			this.dateTimeFormat = dateTimeFormat;
 		}
 
-		public TransactionManagerType getTransactionManager() {
-			return transactionManager;
-		}
-
-		public void setTransactionManager(TransactionManagerType transactionManager) {
-			this.transactionManager = transactionManager;
-		}
-
 		public boolean isOpenDSql() {
 			return openDSql;
 		}
@@ -473,8 +464,4 @@ public class DBFoundConfigProperties {
 		}
 	}
 
-	public enum TransactionManagerType{
-		DBFOUND_TRANSACTION_MANAGER,
-		CHAINED_TRANSACTION_MANAGER
-	}
 }

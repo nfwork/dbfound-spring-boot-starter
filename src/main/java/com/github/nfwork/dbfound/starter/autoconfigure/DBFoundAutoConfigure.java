@@ -1,31 +1,24 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
-import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandleImpl;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
+import com.github.nfwork.dbfound.starter.service.DBFoundDefaultServiceImpl;
 import com.nfwork.dbfound.util.LogUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.transaction.ChainedTransactionManager;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
-import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.DBFoundConfig;
-import com.nfwork.dbfound.db.DataSourceConnectionProvide;
-import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 
 @Configuration
 public class DBFoundAutoConfigure implements ApplicationContextAware {
@@ -86,13 +79,15 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	}
 
 	@Bean
-	public DBFoundDefaultService dbFoundDefaultService() {
-		return new DBFoundDefaultService();
+	@ConditionalOnMissingBean(type = "com.github.nfwork.dbfound.starter.service.DBFoundDefaultService")
+	public DBFoundDefaultServiceImpl dbFoundDefaultService() {
+		return new DBFoundDefaultServiceImpl();
 	}
 
 	@Bean
-	public DBFoundExceptionHandle dbFoundExceptionHandle() {
-		return new DBFoundExceptionHandle();
+	@ConditionalOnMissingBean(type = "com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle")
+	public DBFoundExceptionHandleImpl dbFoundExceptionHandleImpl() {
+		return new DBFoundExceptionHandleImpl();
 	}
 
 	@Bean
@@ -102,30 +97,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 
 	@Bean
 	public PlatformTransactionManager dbfoundTransactionManager(ModelExecutor modelExecutor,DBFoundEngine dbFoundEngine){
-		if(config.getSystem().getTransactionManager()== DBFoundConfigProperties.TransactionManagerType.DBFOUND_TRANSACTION_MANAGER){
-			return new DBFoundTransactionManager(modelExecutor,config.getSystem().getTransactionIsolation());
-		}else{
-			return chainedTransactionManager(dbFoundEngine);
-		}
-	}
-
-	public ChainedTransactionManager chainedTransactionManager(DBFoundEngine dbFoundEngine) {
-		List<DataSourceConnectionProvide> provideList = dbFoundEngine.getDatasourceProvideList();
-		if (provideList == null || provideList.isEmpty()) {
-			throw new DBFoundRuntimeException("init dbfound engine failed, at leat have one datasource config in springboot config file");
-		}
-		ArrayList<PlatformTransactionManager> platformTransactionManagerList = new ArrayList<>();
-
-		for (DataSourceConnectionProvide dataSourceConnectionProvide : provideList) {
-			if(dataSourceConnectionProvide instanceof SpringDataSourceProvide){
-				SpringDataSourceProvide sourceProvide = (SpringDataSourceProvide) dataSourceConnectionProvide;
-				if(sourceProvide.isJoinChainedTransaction()){
-					platformTransactionManagerList.add(new DataSourceTransactionManager(dataSourceConnectionProvide.getDataSource()));
-				}
-			}
-		}
-		PlatformTransactionManager[] managers = platformTransactionManagerList.toArray(new PlatformTransactionManager[platformTransactionManagerList.size()]);
-		return new ChainedTransactionManager(managers);
+		return new DBFoundTransactionManager(modelExecutor,config.getSystem().getTransactionIsolation());
 	}
 
 	@Override
