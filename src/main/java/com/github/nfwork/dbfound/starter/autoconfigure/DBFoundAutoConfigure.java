@@ -80,7 +80,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 
 	@Bean
 	@ConditionalOnMissingBean(type = "com.github.nfwork.dbfound.starter.service.DBFoundDefaultService")
-	public DBFoundDefaultServiceImpl dbFoundDefaultService() {
+	public DBFoundDefaultServiceImpl dbFoundDefaultServiceImpl() {
 		return new DBFoundDefaultServiceImpl();
 	}
 
