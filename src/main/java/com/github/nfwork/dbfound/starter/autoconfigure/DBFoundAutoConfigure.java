@@ -96,7 +96,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	}
 
 	@Bean
-	public PlatformTransactionManager dbfoundTransactionManager(ModelExecutor modelExecutor,DBFoundEngine dbFoundEngine){
+	public PlatformTransactionManager dbfoundTransactionManager(ModelExecutor modelExecutor){
 		return new DBFoundTransactionManager(modelExecutor,config.getSystem().getTransactionIsolation());
 	}
 

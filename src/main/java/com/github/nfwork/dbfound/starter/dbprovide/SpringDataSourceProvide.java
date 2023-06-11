@@ -9,8 +9,6 @@ import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 
 public class SpringDataSourceProvide extends DataSourceConnectionProvide {
 
-	private boolean joinChainedTransaction = true;
-
 	public SpringDataSourceProvide(String provideName, BasicDataSource ds,
 			String dialect) {
 		super(provideName, ds, dialect);
@@ -26,11 +24,4 @@ public class SpringDataSourceProvide extends DataSourceConnectionProvide {
 		return DataSourceUtils.getConnection(getDataSource());
 	}
 
-	public boolean isJoinChainedTransaction() {
-		return joinChainedTransaction;
-	}
-
-	public void setJoinChainedTransaction(boolean joinChainedTransaction) {
-		this.joinChainedTransaction = joinChainedTransaction;
-	}
 }

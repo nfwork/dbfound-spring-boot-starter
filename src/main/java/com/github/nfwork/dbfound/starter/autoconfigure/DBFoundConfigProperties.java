@@ -211,10 +211,9 @@ public class DBFoundConfigProperties {
 		private String password = "";
 		private int initialSize = 5;
 		private int maxActive = 10;
-		private int maxIdle = 5;
+		private int maxIdle = 10;
 		private boolean testOnBorrow = true;
 		private String validationQuery = "select 1";
-		private boolean joinChainedTransaction = true;
 
 		public String getDialect() {
 			return dialect;
@@ -303,20 +302,12 @@ public class DBFoundConfigProperties {
 		public void setProvideName(String provideName) {
 			this.provideName = provideName;
 		}
-
-		public boolean isJoinChainedTransaction() {
-			return joinChainedTransaction;
-		}
-
-		public void setJoinChainedTransaction(boolean joinChainedTransaction) {
-			this.joinChainedTransaction = joinChainedTransaction;
-		}
 	}
 
 	public static class WebConfig {
 
 		private String i18nProvide;
-		private String encoding = "utf-8";
+		private String encoding = "UTF-8";
 		private boolean openSession = true;
 		private boolean openDefaultController = true;
 		private String basePath="";

@@ -78,7 +78,6 @@ public class DBFoundEngine {
 				BasicDataSource ds = new BasicDataSource();
 				BeanUtils.copyProperties(ds, dbconfig);
 				SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
-				provide.setJoinChainedTransaction(dbconfig.isJoinChainedTransaction());
 
 				provide.regist();
 				DBFoundConfig.getDsp().add(provide);
