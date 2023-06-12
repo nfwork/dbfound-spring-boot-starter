@@ -47,7 +47,7 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 		return ro;
 	}
 
-	private static Exception getException(Exception exception) {
+	protected static Exception getException(Exception exception) {
 		if (exception instanceof DBFoundPackageException) {
 			Throwable throwable = exception.getCause();
 			if (throwable instanceof Exception) {
