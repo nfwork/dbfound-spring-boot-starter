@@ -1,16 +1,14 @@
 package com.github.nfwork.dbfound.starter;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.nfwork.dbfound.model.dsql.DSqlConfig;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.util.StringUtils;
 
-import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.DBItemconfig;
+import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.DBItemConfig;
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.SystemConfig;
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.WebConfig;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
@@ -31,7 +29,6 @@ public class DBFoundEngine {
 	
 	private WebConfig webConfig;
 
-	private final Set<String> provideNameSet = new HashSet<>();
 
 	/**
 	 * init system config
@@ -71,18 +68,14 @@ public class DBFoundEngine {
 	 * init dbitem config
 	 *
 	 */
-	public void initDBItem(DBItemconfig dbconfig) throws IllegalAccessException, InvocationTargetException {
+	public void initDBItem(DBItemConfig dbconfig) throws IllegalAccessException, InvocationTargetException {
 		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
-			if(!provideNameSet.contains(dbconfig.getProvideName())){
-				provideNameSet.add(dbconfig.getProvideName());
-				BasicDataSource ds = new BasicDataSource();
-				BeanUtils.copyProperties(ds, dbconfig);
-				SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
+			BasicDataSource ds = new BasicDataSource();
+			BeanUtils.copyProperties(ds, dbconfig);
+			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
 
-				provide.regist();
-				DBFoundConfig.getDsp().add(provide);
-				LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
-			}
+			provide.regist();
+			LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
 		}
 	}
 	

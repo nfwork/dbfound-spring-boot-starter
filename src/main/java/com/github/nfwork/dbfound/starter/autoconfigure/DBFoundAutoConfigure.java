@@ -55,17 +55,9 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 		dbFoundEngine.initDBItem(config.getDatasource().db8);
 		dbFoundEngine.initDBItem(config.getDatasource().db9);
 
-		dbFoundEngine.initDBItem(config.getDatasource().db10);
-		dbFoundEngine.initDBItem(config.getDatasource().db11);
-		dbFoundEngine.initDBItem(config.getDatasource().db12);
-		dbFoundEngine.initDBItem(config.getDatasource().db13);
-		dbFoundEngine.initDBItem(config.getDatasource().db14);
-		dbFoundEngine.initDBItem(config.getDatasource().db15);
-		dbFoundEngine.initDBItem(config.getDatasource().db16);
-		dbFoundEngine.initDBItem(config.getDatasource().db17);
-		dbFoundEngine.initDBItem(config.getDatasource().db18);
-		dbFoundEngine.initDBItem(config.getDatasource().db19);
-
+		for(DBFoundConfigProperties.DBItemConfig dbItemConfig : config.getDatasourceExtension().values()){
+			dbFoundEngine.initDBItem(dbItemConfig);
+		}
 		//init adapter factory
 		new SpringAdapterFactory(applicationContext);
 

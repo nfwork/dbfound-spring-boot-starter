@@ -4,6 +4,9 @@ import com.nfwork.dbfound.core.DBFoundConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.transaction.annotation.Isolation;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 @ConfigurationProperties(prefix = "dbfound", ignoreUnknownFields = false)
 public class DBFoundConfigProperties {
 
@@ -12,6 +15,16 @@ public class DBFoundConfigProperties {
 	WebConfig web = new WebConfig();
 
 	DataSrouce datasource = new DataSrouce();
+
+	Map<String, DBItemConfig> datasourceExtension = new TreeMap<>();
+
+	public Map<String, DBItemConfig> getDatasourceExtension() {
+		return datasourceExtension;
+	}
+
+	public void setDatasourceExtension(Map<String, DBItemConfig> datasourceExtend) {
+		this.datasourceExtension = datasourceExtend;
+	}
 
 	public SystemConfig getSystem() {
 		return system;
@@ -38,171 +51,80 @@ public class DBFoundConfigProperties {
 	}
 
 	public static class DataSrouce {
-		DBItemconfig db0 = new DBItemconfig();
-		DBItemconfig db1 = new DBItemconfig();
-		DBItemconfig db2 = new DBItemconfig();
-		DBItemconfig db3 = new DBItemconfig();
-		DBItemconfig db4 = new DBItemconfig();
-		DBItemconfig db5 = new DBItemconfig();
-		DBItemconfig db6 = new DBItemconfig();
-		DBItemconfig db7 = new DBItemconfig();
-		DBItemconfig db8 = new DBItemconfig();
-		DBItemconfig db9 = new DBItemconfig();
+		DBItemConfig db0 = new DBItemConfig();
+		DBItemConfig db1 = new DBItemConfig();
+		DBItemConfig db2 = new DBItemConfig();
+		DBItemConfig db3 = new DBItemConfig();
+		DBItemConfig db4 = new DBItemConfig();
+		DBItemConfig db5 = new DBItemConfig();
+		DBItemConfig db6 = new DBItemConfig();
+		DBItemConfig db7 = new DBItemConfig();
+		DBItemConfig db8 = new DBItemConfig();
+		DBItemConfig db9 = new DBItemConfig();
 
-		DBItemconfig db10 = new DBItemconfig();
-		DBItemconfig db11 = new DBItemconfig();
-		DBItemconfig db12 = new DBItemconfig();
-		DBItemconfig db13 = new DBItemconfig();
-		DBItemconfig db14 = new DBItemconfig();
-		DBItemconfig db15 = new DBItemconfig();
-		DBItemconfig db16 = new DBItemconfig();
-		DBItemconfig db17 = new DBItemconfig();
-		DBItemconfig db18 = new DBItemconfig();
-		DBItemconfig db19 = new DBItemconfig();
-
-		public DBItemconfig getDb0() {
+		public DBItemConfig getDb0() {
 			return db0;
 		}
-		public void setDb0(DBItemconfig db0) {
+		public void setDb0(DBItemConfig db0) {
 			this.db0 = db0;
 		}
-		public DBItemconfig getDb1() {
+		public DBItemConfig getDb1() {
 			return db1;
 		}
-		public void setDb1(DBItemconfig db1) {
+		public void setDb1(DBItemConfig db1) {
 			this.db1 = db1;
 		}
-		public DBItemconfig getDb2() {
+		public DBItemConfig getDb2() {
 			return db2;
 		}
-		public void setDb2(DBItemconfig db2) {
+		public void setDb2(DBItemConfig db2) {
 			this.db2 = db2;
 		}
-		public DBItemconfig getDb3() {
+		public DBItemConfig getDb3() {
 			return db3;
 		}
-		public void setDb3(DBItemconfig db3) {
+		public void setDb3(DBItemConfig db3) {
 			this.db3 = db3;
 		}
-		public DBItemconfig getDb4() {
+		public DBItemConfig getDb4() {
 			return db4;
 		}
-		public void setDb4(DBItemconfig db4) {
+		public void setDb4(DBItemConfig db4) {
 			this.db4 = db4;
 		}
-		public DBItemconfig getDb5() {
+		public DBItemConfig getDb5() {
 			return db5;
 		}
-		public void setDb5(DBItemconfig db5) {
+		public void setDb5(DBItemConfig db5) {
 			this.db5 = db5;
 		}
-		public DBItemconfig getDb6() {
+		public DBItemConfig getDb6() {
 			return db6;
 		}
-		public void setDb6(DBItemconfig db6) {
+		public void setDb6(DBItemConfig db6) {
 			this.db6 = db6;
 		}
-		public DBItemconfig getDb7() {
+		public DBItemConfig getDb7() {
 			return db7;
 		}
-		public void setDb7(DBItemconfig db7) {
+		public void setDb7(DBItemConfig db7) {
 			this.db7 = db7;
 		}
-		public DBItemconfig getDb8() {
+		public DBItemConfig getDb8() {
 			return db8;
 		}
-		public void setDb8(DBItemconfig db8) {
+		public void setDb8(DBItemConfig db8) {
 			this.db8 = db8;
 		}
-		public DBItemconfig getDb9() {
+		public DBItemConfig getDb9() {
 			return db9;
 		}
-		public void setDb9(DBItemconfig db9) {
+		public void setDb9(DBItemConfig db9) {
 			this.db9 = db9;
-		}
-
-		public DBItemconfig getDb10() {
-			return db10;
-		}
-
-		public void setDb10(DBItemconfig db10) {
-			this.db10 = db10;
-		}
-
-		public DBItemconfig getDb11() {
-			return db11;
-		}
-
-		public void setDb11(DBItemconfig db11) {
-			this.db11 = db11;
-		}
-
-		public DBItemconfig getDb12() {
-			return db12;
-		}
-
-		public void setDb12(DBItemconfig db12) {
-			this.db12 = db12;
-		}
-
-		public DBItemconfig getDb13() {
-			return db13;
-		}
-
-		public void setDb13(DBItemconfig db13) {
-			this.db13 = db13;
-		}
-
-		public DBItemconfig getDb14() {
-			return db14;
-		}
-
-		public void setDb14(DBItemconfig db14) {
-			this.db14 = db14;
-		}
-
-		public DBItemconfig getDb15() {
-			return db15;
-		}
-
-		public void setDb15(DBItemconfig db15) {
-			this.db15 = db15;
-		}
-
-		public DBItemconfig getDb16() {
-			return db16;
-		}
-
-		public void setDb16(DBItemconfig db16) {
-			this.db16 = db16;
-		}
-
-		public DBItemconfig getDb17() {
-			return db17;
-		}
-
-		public void setDb17(DBItemconfig db17) {
-			this.db17 = db17;
-		}
-
-		public DBItemconfig getDb18() {
-			return db18;
-		}
-
-		public void setDb18(DBItemconfig db18) {
-			this.db18 = db18;
-		}
-
-		public DBItemconfig getDb19() {
-			return db19;
-		}
-
-		public void setDb19(DBItemconfig db19) {
-			this.db19 = db19;
 		}
 	}
 
-	public  static  class DBItemconfig {
+	public  static  class DBItemConfig {
 		private String dialect = "MySqlDialect";
 		private String driverClassName = "com.mysql.jdbc.Driver";
 		private String provideName = "_default";
