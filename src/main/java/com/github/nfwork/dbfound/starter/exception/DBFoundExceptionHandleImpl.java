@@ -5,9 +5,9 @@ import com.nfwork.dbfound.exception.CollisionException;
 import com.nfwork.dbfound.exception.DBFoundPackageException;
 import com.nfwork.dbfound.exception.FileDownLoadInterrupt;
 import com.nfwork.dbfound.util.LogUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 

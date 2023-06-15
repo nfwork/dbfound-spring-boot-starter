@@ -1,5 +1,7 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.core.MethodParameter;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -9,9 +11,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.annotation.ContextAware;
 import com.nfwork.dbfound.core.Context;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public class ContextArgumentResolver implements HandlerMethodArgumentResolver {
 

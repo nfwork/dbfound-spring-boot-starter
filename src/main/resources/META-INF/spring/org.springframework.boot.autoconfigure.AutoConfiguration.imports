@@ -1,0 +1,3 @@
+com.github.nfwork.dbfound.starter.autoconfigure.DBFoundAutoConfigure
+com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties
+com.github.nfwork.dbfound.starter.autoconfigure.ContextConfiguration

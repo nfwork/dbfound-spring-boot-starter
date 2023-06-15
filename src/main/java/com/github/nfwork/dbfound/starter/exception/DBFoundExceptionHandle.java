@@ -1,7 +1,7 @@
 package com.github.nfwork.dbfound.starter.exception;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import com.nfwork.dbfound.dto.ResponseObject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public interface DBFoundExceptionHandle {
 
