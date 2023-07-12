@@ -13,6 +13,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.transaction.PlatformTransactionManager;
 
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
@@ -83,6 +84,7 @@ public class DBFoundAutoConfigure implements ApplicationContextAware {
 	}
 
 	@Bean
+	@DependsOn("dbFoundEngine")
 	public ModelExecutor modelExecutor() {
 		return new ModelExecutor();
 	}
