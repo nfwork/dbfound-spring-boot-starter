@@ -48,6 +48,7 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
         } else if(transactionIsolation.value() != TransactionDefinition.ISOLATION_DEFAULT){
             transactionHolder.transaction.setTransactionIsolation(transactionIsolation.value());
         }
+        transactionHolder.transaction.setReadOnly(definition.isReadOnly());
         transactionHolder.transaction.begin();
     }
 
