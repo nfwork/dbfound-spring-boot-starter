@@ -126,7 +126,7 @@ public class DBFoundConfigProperties {
 
 	public  static  class DBItemConfig {
 		private String dialect = "MySqlDialect";
-		private String driverClassName = "com.mysql.jdbc.Driver";
+		private String driverClassName = "com.mysql.cj.jdbc.Driver";
 		private String provideName = "_default";
 		private String url = "";
 		private String username = "";
