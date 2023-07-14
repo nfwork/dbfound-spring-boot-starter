@@ -3,16 +3,15 @@ package com.github.nfwork.dbfound.starter.dbprovide;
 import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.core.Transaction;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
-
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 public class DBFoundTransactionManager extends AbstractPlatformTransactionManager {
-
-    private final ThreadLocal<TransactionObject> threadLocal = new ThreadLocal<>();
 
     private final Isolation transactionIsolation ;
 
@@ -23,59 +22,86 @@ public class DBFoundTransactionManager extends AbstractPlatformTransactionManage
 
     @Override
     protected Object doGetTransaction() throws TransactionException {
-        TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject == null){
-            transactionObject = new TransactionObject();
-            threadLocal.set(transactionObject);
+        TransactionHolder transactionHolder = new TransactionHolder();
+        Transaction transaction = (Transaction) TransactionSynchronizationManager.getResource(this);
+        if(transaction != null) {
+            transactionHolder.transaction = transaction;
+            transactionHolder.isNew = false;
         }
-        return transactionObject;
+        return transactionHolder;
     }
 
     @Override
     protected void doBegin(Object o, TransactionDefinition definition) throws TransactionException {
-        TransactionObject transactionObject = (TransactionObject) o;
-        if (definition.getIsolationLevel() != TransactionDefinition.ISOLATION_DEFAULT) {
-            transactionObject.transaction.setTransactionIsolation(definition.getIsolationLevel());
-        } else if(transactionIsolation.value() != TransactionDefinition.ISOLATION_DEFAULT){
-            transactionObject.transaction.setTransactionIsolation(transactionIsolation.value());
+        TransactionHolder transactionHolder = (TransactionHolder) o;
+
+        if(transactionHolder.transaction == null){
+            transactionHolder.transaction = new Transaction();
+            transactionHolder.isNew = true;
         }
-        transactionObject.transaction.begin();
+        if(transactionHolder.isNew){
+            transactionHolder.isNew = false;
+            TransactionSynchronizationManager.bindResource(this,transactionHolder.transaction);
+        }
+        if (definition.getIsolationLevel() != TransactionDefinition.ISOLATION_DEFAULT) {
+            transactionHolder.transaction.setTransactionIsolation(definition.getIsolationLevel());
+        } else if(transactionIsolation.value() != TransactionDefinition.ISOLATION_DEFAULT){
+            transactionHolder.transaction.setTransactionIsolation(transactionIsolation.value());
+        }
+        transactionHolder.transaction.begin();
     }
 
     @Override
     protected void doCommit(DefaultTransactionStatus defaultTransactionStatus) throws TransactionException {
-        TransactionObject transactionObject = threadLocal.get();
-        if(transactionObject!=null){
-           transactionObject.transaction.commit();
-        }
+        TransactionHolder transactionHolder = (TransactionHolder)defaultTransactionStatus.getTransaction();
+        transactionHolder.transaction.commit();
     }
 
     @Override
     protected void doRollback(DefaultTransactionStatus defaultTransactionStatus) throws TransactionException {
-        TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject!=null){
-            transactionObject.transaction.rollback();
+        TransactionHolder transactionHolder =  (TransactionHolder)defaultTransactionStatus.getTransaction();
+        transactionHolder.transaction.rollback();
+    }
+
+    protected boolean isExistingTransaction(Object transaction) {
+        TransactionHolder transactionHolder = (TransactionHolder)transaction;
+        return !transactionHolder.isNew && transactionHolder.transaction != null;
+    }
+
+    protected Object doSuspend(Object transaction) {
+        TransactionHolder transactionHolder = (TransactionHolder) transaction;
+        transactionHolder.transaction = null;
+        return TransactionSynchronizationManager.unbindResource(this);
+    }
+
+    protected void doResume(@Nullable Object obj, Object suspendedResources) {
+        TransactionHolder transactionHolder = (TransactionHolder) obj;
+        if(transactionHolder != null) {
+            transactionHolder.transaction = (Transaction) suspendedResources;
         }
+        try{
+            TransactionSynchronizationManager.unbindResource(this);
+        }catch (Exception ignore){}
+        TransactionSynchronizationManager.bindResource(this, suspendedResources);
     }
 
     @Override
     protected void doCleanupAfterCompletion(Object transaction) {
-        TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject!=null){
-            transactionObject.transaction.end();
-            threadLocal.remove();
-        }
+        TransactionHolder transactionHolder =  (TransactionHolder) transaction;
+        transactionHolder.transaction.end();
+        try{
+            TransactionSynchronizationManager.unbindResource(this);
+        }catch (Exception ignore){}
         super.doCleanupAfterCompletion(transaction);
     }
 
     public void registContext(Context context){
-        TransactionObject transactionObject =  threadLocal.get();
-        if(transactionObject != null){
-            context.setTransaction(transactionObject.transaction);
-        }
+        Transaction transaction = (Transaction) TransactionSynchronizationManager.getResource(this);
+        context.setTransaction(transaction);
     }
 
-    public static class  TransactionObject{
-        Transaction transaction = new Transaction();
+    public static class TransactionHolder {
+        Transaction transaction;
+        boolean isNew = true;
     }
 }
