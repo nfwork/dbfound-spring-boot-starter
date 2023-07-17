@@ -124,7 +124,7 @@ public class DBFoundConfigProperties {
 		}
 	}
 
-	public  static  class DBItemConfig {
+	public static class DBItemConfig {
 		private String dialect = "MySqlDialect";
 		private String driverClassName = "com.mysql.cj.jdbc.Driver";
 		private String provideName = "_default";
@@ -134,6 +134,7 @@ public class DBFoundConfigProperties {
 		private int initialSize = 5;
 		private int maxActive = 10;
 		private int maxIdle = 10;
+		private int maxWait = 5000;
 		private boolean testOnBorrow = true;
 		private String validationQuery = "select 1";
 
@@ -223,6 +224,14 @@ public class DBFoundConfigProperties {
 
 		public void setProvideName(String provideName) {
 			this.provideName = provideName;
+		}
+
+		public int getMaxWait() {
+			return maxWait;
+		}
+
+		public void setMaxWait(int maxWait) {
+			this.maxWait = maxWait;
 		}
 	}
 
