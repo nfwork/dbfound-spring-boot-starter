@@ -118,6 +118,9 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public List queryList(String modelName, String queryName, Object param) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		return ModelEngine.query(context, modelName, queryName, "param.data",false).getDatas();
 	}
@@ -133,6 +136,9 @@ public class ModelExecutor {
 	 */
 	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		return ModelEngine.query(context, modelName, queryName, "param.data",false,class1).getDatas();
 	}
@@ -146,6 +152,9 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List queryList(Context context, String modelName, String queryName) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath,false).getDatas();
 	}
 
@@ -159,6 +168,9 @@ public class ModelExecutor {
 	 * @return list of T
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath, false, class1).getDatas();
 	}
 
@@ -245,6 +257,9 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		context.setParamData("start",start);
 		context.setParamData("limit",limit);
@@ -261,6 +276,9 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(String modelName, String queryName, Object param) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		return ModelEngine.query(context, modelName, queryName, "param.data",false);
 	}
@@ -278,6 +296,9 @@ public class ModelExecutor {
 	 */
 	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, int start,int limit,Class<T> class1) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		context.setParamData("start",start);
 		context.setParamData("limit",limit);
@@ -295,6 +316,9 @@ public class ModelExecutor {
 	 */
 	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, Class<T> class1) {
 		Context context = new Context();
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		context.setParamData("data",param);
 		return ModelEngine.query(context, modelName, queryName, "param.data",false, class1);
 	}
@@ -308,6 +332,9 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName);
 	}
 
@@ -321,6 +348,9 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, class1);
 	}
 
@@ -334,6 +364,9 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName, boolean autoPaging) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, autoPaging);
 	}
 
@@ -348,6 +381,9 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, boolean autoPaging, Class<T> class1) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, autoPaging, class1);
 	}
 
@@ -361,8 +397,10 @@ public class ModelExecutor {
 	 * @return QueryResponseObject
 	 */
 	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,
-									 boolean autoPaging) {
+	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,boolean autoPaging) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging);
 	}
 
@@ -377,8 +415,10 @@ public class ModelExecutor {
 	 * @param <T> T
 	 * @return QueryResponseObject T
 	 */
-	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String currentPath,
-			boolean autoPaging, Class<T> class1) {
+	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String currentPath, boolean autoPaging, Class<T> class1) {
+		if(dbFoundTransactionManager != null){
+			dbFoundTransactionManager.registContext(context);
+		}
 		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging, class1);
 	}
 
