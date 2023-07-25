@@ -297,7 +297,7 @@ public class DBFoundConfigProperties {
 		private boolean openLog = true;
 		private boolean underscoreToCamelCase = false;
 		private boolean camelCaseToUnderscore = false;
-		private String modeRootPath = DBFoundConfig.CLASSPATH + "/model";
+		private String modelRootPath = DBFoundConfig.CLASSPATH + "/model";
 		private boolean modelModifyCheck = false;
 		private String dateFormat = "yyyy-MM-dd";
 		private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -305,12 +305,12 @@ public class DBFoundConfigProperties {
 		private boolean sqlCompareIgnoreCase = true;
 		private Isolation transactionIsolation = Isolation.DEFAULT;
 
-		public String getModeRootPath() {
-			return modeRootPath;
+		public String getModelRootPath() {
+			return modelRootPath;
 		}
 
-		public void setModeRootPath(String modeRootPath) {
-			this.modeRootPath = modeRootPath;
+		public void setModelRootPath(String modelRootPath) {
+			this.modelRootPath = modelRootPath;
 		}
 
 		public boolean isOpenLog() {
