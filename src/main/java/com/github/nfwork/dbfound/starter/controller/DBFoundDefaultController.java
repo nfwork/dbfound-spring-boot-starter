@@ -1,10 +1,13 @@
 package com.github.nfwork.dbfound.starter.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.nfwork.dbfound.starter.annotation.ContextAware;
@@ -13,6 +16,7 @@ import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.model.ModelEngine;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class DBFoundDefaultController {
@@ -45,13 +49,14 @@ public class DBFoundDefaultController {
 	}
 
 	@RequestMapping("/**/*.execute")
-	public ResponseObject execute(@ContextAware Context context) {
-		return execute(context, null);
+	public ResponseObject execute(@ContextAware Context context,@RequestParam Map<String, MultipartFile> fileMap) {
+		return execute(context, fileMap, null);
 	}
 
 	@RequestMapping("/**/*.execute!{executeName}")
-	public ResponseObject execute(@ContextAware Context context, @PathVariable String executeName) {
+	public ResponseObject execute(@ContextAware Context context,@RequestParam Map<String,MultipartFile> fileMap, @PathVariable String executeName) {
 		try {
+			FileUploadManager.initUpload(context, fileMap);
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 			
