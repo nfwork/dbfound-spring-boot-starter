@@ -31,6 +31,11 @@ public class SpringFilePart implements FilePart {
     }
 
     @Override
+    public Object targetObject() {
+        return multipartFile;
+    }
+
+    @Override
     public byte[] getContent() throws IOException {
         return multipartFile.getBytes();
     }
