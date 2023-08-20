@@ -49,14 +49,13 @@ public class DBFoundDefaultController {
 	}
 
 	@RequestMapping("/**/*.execute")
-	public ResponseObject execute(@ContextAware Context context,@RequestParam Map<String, MultipartFile> fileMap) {
-		return execute(context, fileMap, null);
+	public ResponseObject execute(@ContextAware Context context) {
+		return execute(context, null);
 	}
 
 	@RequestMapping("/**/*.execute!{executeName}")
-	public ResponseObject execute(@ContextAware Context context,@RequestParam Map<String,MultipartFile> fileMap, @PathVariable String executeName) {
+	public ResponseObject execute(@ContextAware Context context,  @PathVariable String executeName) {
 		try {
-			FileUploadManager.initUpload(context, fileMap);
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 			
