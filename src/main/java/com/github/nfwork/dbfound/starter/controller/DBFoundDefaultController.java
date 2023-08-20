@@ -1,13 +1,9 @@
 package com.github.nfwork.dbfound.starter.controller;
 
 import java.util.List;
-import java.util.Map;
-
-import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.nfwork.dbfound.starter.annotation.ContextAware;
@@ -16,7 +12,6 @@ import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.model.ModelEngine;
-import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 public class DBFoundDefaultController {
