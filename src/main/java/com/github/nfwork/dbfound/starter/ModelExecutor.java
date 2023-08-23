@@ -1,12 +1,26 @@
 package com.github.nfwork.dbfound.starter;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
+import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.db.ConnectionProvide;
+import com.nfwork.dbfound.db.ConnectionProvideManager;
 import com.nfwork.dbfound.dto.QueryResponseObject;
 import com.nfwork.dbfound.dto.ResponseObject;
+import com.nfwork.dbfound.exception.SqlExecuteException;
 import com.nfwork.dbfound.model.ModelEngine;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLExceptionTranslator;
+import org.springframework.jdbc.support.SQLStateSQLExceptionTranslator;
+
+import javax.sql.DataSource;
 
 /**
  * model executor
@@ -16,7 +30,9 @@ import com.nfwork.dbfound.model.ModelEngine;
  */
 public class ModelExecutor {
 
-	DBFoundTransactionManager dbFoundTransactionManager;
+	private DBFoundTransactionManager dbFoundTransactionManager;
+
+	private final Map<String,SQLExceptionTranslator> sqlExceptionTranslatorMap = new ConcurrentHashMap<>();
 
 	/**
 	 * execute xml sql, user param
@@ -28,10 +44,7 @@ public class ModelExecutor {
 	public  ResponseObject execute(String modelName, String executeName, Object param){
 		Context context = new Context();
 		context.setParamData("data",param);
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.execute(context, modelName, executeName, "param.data");
+		return execute(context, modelName, executeName, "param.data");
 	}
 
 	/**
@@ -42,10 +55,7 @@ public class ModelExecutor {
 	 * @return ResponseObject
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.execute(context, modelName, executeName);
+		return execute(context, modelName, executeName, ModelEngine.defaultPath);
 	}
 
 	/**
@@ -57,10 +67,14 @@ public class ModelExecutor {
 	 * @return ResponseObject
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName, String currentPath) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
+		try {
+			if(dbFoundTransactionManager != null){
+				dbFoundTransactionManager.registContext(context);
+			}
+			return ModelEngine.execute(context, modelName, executeName, currentPath);
+		}catch (SqlExecuteException exception){
+			throw translateException(exception);
 		}
-		return ModelEngine.execute(context, modelName, executeName, currentPath);
 	}
 
 	/**
@@ -73,10 +87,7 @@ public class ModelExecutor {
 	public ResponseObject batchExecute(String modelName, String executeName, List dataList) {
 		Context context = new Context();
 		context.setParamData("dataList",dataList);
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.batchExecute(context, modelName, executeName,"param.dataList");
+		return batchExecute(context, modelName, executeName,"param.dataList");
 	}
 
 	/**
@@ -87,10 +98,7 @@ public class ModelExecutor {
 	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.batchExecute(context, modelName, executeName);
+		return batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
 	}
 
 	/**
@@ -102,10 +110,14 @@ public class ModelExecutor {
 	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName, String currentPath) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
+		try {
+			if(dbFoundTransactionManager != null){
+				dbFoundTransactionManager.registContext(context);
+			}
+			return ModelEngine.batchExecute(context, modelName, executeName, currentPath);
+		}catch (SqlExecuteException exception){
+			throw translateException(exception);
 		}
-		return ModelEngine.batchExecute(context, modelName, executeName, currentPath);
 	}
 
 	/**
@@ -118,11 +130,8 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public List queryList(String modelName, String queryName, Object param) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
-		return ModelEngine.query(context, modelName, queryName, "param.data",false).getDatas();
+		return query(context, modelName, queryName, "param.data",false).getDatas();
 	}
 
 	/**
@@ -136,11 +145,8 @@ public class ModelExecutor {
 	 */
 	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
-		return ModelEngine.query(context, modelName, queryName, "param.data",false,class1).getDatas();
+		return query(context, modelName, queryName, "param.data",false,class1).getDatas();
 	}
 
 	/**
@@ -152,10 +158,7 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List queryList(Context context, String modelName, String queryName) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath,false).getDatas();
+		return query(context, modelName, queryName, ModelEngine.defaultPath,false).getDatas();
 	}
 
 	/**
@@ -168,10 +171,7 @@ public class ModelExecutor {
 	 * @return list of T
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, ModelEngine.defaultPath, false, class1).getDatas();
+		return query(context, modelName, queryName, ModelEngine.defaultPath, false, class1).getDatas();
 	}
 
 
@@ -257,13 +257,10 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
 		context.setParamData("start",start);
 		context.setParamData("limit",limit);
-		return ModelEngine.query(context, modelName, queryName, "param.data",true);
+		return query(context, modelName, queryName, "param.data",true);
 	}
 
 	/**
@@ -276,11 +273,8 @@ public class ModelExecutor {
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(String modelName, String queryName, Object param) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
-		return ModelEngine.query(context, modelName, queryName, "param.data",false);
+		return query(context, modelName, queryName, "param.data",false);
 	}
 
 	/**
@@ -296,13 +290,10 @@ public class ModelExecutor {
 	 */
 	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, int start,int limit,Class<T> class1) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
 		context.setParamData("start",start);
 		context.setParamData("limit",limit);
-		return ModelEngine.query(context, modelName, queryName, "param.data",true, class1);
+		return query(context, modelName, queryName, "param.data",true, class1);
 	}
 
 	/**
@@ -316,11 +307,8 @@ public class ModelExecutor {
 	 */
 	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, Class<T> class1) {
 		Context context = new Context();
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
 		context.setParamData("data",param);
-		return ModelEngine.query(context, modelName, queryName, "param.data",false, class1);
+		return query(context, modelName, queryName, "param.data",false, class1);
 	}
 
 	/**
@@ -332,10 +320,7 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName);
+		return query(context, modelName, queryName, true, null);
 	}
 
 	/**
@@ -348,10 +333,7 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, class1);
+		return query(context, modelName, queryName, ModelEngine.defaultPath, true, class1);
 	}
 
 	/**
@@ -364,10 +346,7 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName, boolean autoPaging) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, autoPaging);
+		return query(context, modelName, queryName, ModelEngine.defaultPath, autoPaging, null);
 	}
 
 	/**
@@ -381,10 +360,7 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, boolean autoPaging, Class<T> class1) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, autoPaging, class1);
+		return query(context, modelName, queryName, ModelEngine.defaultPath, autoPaging, class1);
 	}
 
 	/**
@@ -398,10 +374,7 @@ public class ModelExecutor {
 	 */
 	@SuppressWarnings("rawtypes")
 	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,boolean autoPaging) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
-		}
-		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging);
+		return query(context, modelName, queryName, currentPath, autoPaging, null);
 	}
 
 	/**
@@ -416,10 +389,14 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String currentPath, boolean autoPaging, Class<T> class1) {
-		if(dbFoundTransactionManager != null){
-			dbFoundTransactionManager.registContext(context);
+		try {
+			if (dbFoundTransactionManager != null) {
+				dbFoundTransactionManager.registContext(context);
+			}
+			return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging, class1);
+		}catch (SqlExecuteException exception){
+			throw translateException(exception);
 		}
-		return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging, class1);
 	}
 
 	public DBFoundTransactionManager getDbFoundTransactionManager() {
@@ -428,5 +405,32 @@ public class ModelExecutor {
 
 	public void setDbFoundTransactionManager(DBFoundTransactionManager dbFoundTransactionManager) {
 		this.dbFoundTransactionManager = dbFoundTransactionManager;
+	}
+
+	protected DataAccessException translateException(SqlExecuteException ex) {
+		DataAccessException dae = getExceptionTranslator(ex.getProvideName()).translate(ex.getTask(), ex.getSql(), (SQLException) ex.getCause());
+		return (dae != null ? dae : new UncategorizedSQLException(ex.getTask(), ex.getSql(), (SQLException) ex.getCause()));
+	}
+
+	private SQLExceptionTranslator getExceptionTranslator(String provideName) {
+		SQLExceptionTranslator exceptionTranslator = sqlExceptionTranslatorMap.get(provideName);
+		if (exceptionTranslator != null) {
+			return exceptionTranslator;
+		}
+		synchronized (this) {
+			exceptionTranslator = sqlExceptionTranslatorMap.get(provideName);
+			if (exceptionTranslator == null) {
+				ConnectionProvide provide = ConnectionProvideManager.getConnectionProvide(provideName);
+				if(provide instanceof SpringDataSourceProvide) {
+					DataSource dataSource = ((SpringDataSourceProvide) provide).getDataSource();
+					exceptionTranslator = new SQLErrorCodeSQLExceptionTranslator(dataSource);
+				}
+				else {
+					exceptionTranslator = new SQLStateSQLExceptionTranslator();
+				}
+				sqlExceptionTranslatorMap.put(provideName, exceptionTranslator);
+			}
+			return exceptionTranslator;
+		}
 	}
 }
