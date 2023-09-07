@@ -4,7 +4,7 @@
 
 	<groupId>com.github.nfwork</groupId>
 	<artifactId>dbfound-spring-boot-starter</artifactId>
-	<version>4.0.6</version>
+	<version>4.0.7</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.github.nfwork</groupId>
 			<artifactId>dbfound</artifactId>
-			<version>4.0.6</version>
+			<version>4.0.7</version>
 		</dependency>
 	</dependencies>
 
