@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.nfwork.dbfound.model.dsql.DSqlConfig;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.util.StringUtils;
 
@@ -71,7 +70,17 @@ public class DBFoundEngine {
 	public void initDBItem(DBItemConfig dbconfig) throws IllegalAccessException, InvocationTargetException {
 		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
 			BasicDataSource ds = new BasicDataSource();
-			BeanUtils.copyProperties(ds, dbconfig);
+			ds.setUrl(dbconfig.getUrl());
+			ds.setDriverClassName(dbconfig.getDriverClassName());
+			ds.setUsername(dbconfig.getUsername());
+			ds.setPassword(dbconfig.getPassword());
+			ds.setInitialSize(dbconfig.getInitialSize());
+			ds.setMaxWait(dbconfig.getMaxWait());
+			ds.setMaxIdle(dbconfig.getMaxIdle());
+			ds.setMaxActive(dbconfig.getMaxActive());
+			ds.setTestOnBorrow(dbconfig.isTestOnBorrow());
+			ds.setValidationQuery(dbconfig.getValidationQuery());
+
 			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
 
 			provide.regist();
