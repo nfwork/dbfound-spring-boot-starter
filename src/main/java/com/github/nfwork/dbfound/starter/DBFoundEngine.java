@@ -45,7 +45,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setModelModifyCheck(config.isModelModifyCheck());
 		DSqlConfig.setCompareIgnoreCase(config.isSqlCompareIgnoreCase());
 		DSqlConfig.setOpenDSql(config.isOpenDSql());
-		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.beanToJson(systemConfig));
+		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.toJson(systemConfig));
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class DBFoundEngine {
 		DBFoundConfig.setBasePath(webConfig.getBasePath());
 		DBFoundConfig.setOpenSession(webConfig.isOpenSession());
 		DBFoundConfig.setJsonStringAutoCover(config.isJsonStringAutoCover());
-		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.beanToJson(webConfig));
+		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.toJson(webConfig));
 	}
 
 	/**
