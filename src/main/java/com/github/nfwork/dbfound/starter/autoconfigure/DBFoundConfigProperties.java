@@ -132,9 +132,9 @@ public class DBFoundConfigProperties {
 		private String username = "";
 		private String password = "";
 		private int initialSize = 5;
-		private int maxActive = 10;
+		private int maxTotal = 10;
 		private int maxIdle = 10;
-		private int maxWait = 5000;
+		private int maxWaitMillis = 5000;
 		private boolean testOnBorrow = true;
 		private String validationQuery = "select 1";
 
@@ -186,12 +186,12 @@ public class DBFoundConfigProperties {
 			this.initialSize = initialSize;
 		}
 
-		public int getMaxActive() {
-			return maxActive;
+		public int getMaxTotal() {
+			return maxTotal;
 		}
 
-		public void setMaxActive(int maxActive) {
-			this.maxActive = maxActive;
+		public void setMaxTotal(int maxTotal) {
+			this.maxTotal = maxTotal;
 		}
 
 		public int getMaxIdle() {
@@ -226,12 +226,12 @@ public class DBFoundConfigProperties {
 			this.provideName = provideName;
 		}
 
-		public int getMaxWait() {
-			return maxWait;
+		public int getMaxWaitMillis() {
+			return maxWaitMillis;
 		}
 
-		public void setMaxWait(int maxWait) {
-			this.maxWait = maxWait;
+		public void setMaxWaitMillis(int maxWaitMillis) {
+			this.maxWaitMillis = maxWaitMillis;
 		}
 	}
 

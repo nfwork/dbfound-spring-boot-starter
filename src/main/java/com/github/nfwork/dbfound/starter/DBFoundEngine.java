@@ -1,10 +1,9 @@
 package com.github.nfwork.dbfound.starter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.nfwork.dbfound.model.dsql.DSqlConfig;
-import org.apache.commons.dbcp.BasicDataSource;
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.springframework.util.StringUtils;
 
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.DBItemConfig;
@@ -67,7 +66,7 @@ public class DBFoundEngine {
 	 * init dbitem config
 	 *
 	 */
-	public void initDBItem(DBItemConfig dbconfig) throws IllegalAccessException, InvocationTargetException {
+	public void initDBItem(DBItemConfig dbconfig){
 		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
 			BasicDataSource ds = new BasicDataSource();
 			ds.setUrl(dbconfig.getUrl());
@@ -75,12 +74,11 @@ public class DBFoundEngine {
 			ds.setUsername(dbconfig.getUsername());
 			ds.setPassword(dbconfig.getPassword());
 			ds.setInitialSize(dbconfig.getInitialSize());
-			ds.setMaxWait(dbconfig.getMaxWait());
+			ds.setMaxWaitMillis(dbconfig.getMaxWaitMillis());
 			ds.setMaxIdle(dbconfig.getMaxIdle());
-			ds.setMaxActive(dbconfig.getMaxActive());
+			ds.setMaxTotal(dbconfig.getMaxTotal());
 			ds.setTestOnBorrow(dbconfig.isTestOnBorrow());
 			ds.setValidationQuery(dbconfig.getValidationQuery());
-
 			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
 
 			provide.regist();
