@@ -2,14 +2,15 @@ package com.github.nfwork.dbfound.starter.dbprovide;
 
 import java.sql.Connection;
 
-import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
 import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 
+import javax.sql.DataSource;
+
 public class SpringDataSourceProvide extends DataSourceConnectionProvide {
 
-	public SpringDataSourceProvide(String provideName, BasicDataSource ds,
+	public SpringDataSourceProvide(String provideName, DataSource ds,
 			String dialect) {
 		super(provideName, ds, dialect);
 	}
