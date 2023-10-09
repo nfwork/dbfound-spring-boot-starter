@@ -128,15 +128,13 @@ public class DBFoundConfigProperties {
 		private String dialect = "MySqlDialect";
 		private String driverClassName = "com.mysql.cj.jdbc.Driver";
 		private String provideName = "_default";
-		private String url = "";
-		private String username = "";
-		private String password = "";
-		private int initialSize = 5;
-		private int maxTotal = 10;
-		private int maxIdle = 10;
-		private int maxWaitMillis = 5000;
-		private boolean testOnBorrow = true;
-		private String validationQuery = "select 1";
+		private String url;
+		private String username;
+		private String password;
+		private int minimumIdle = 5;
+		private int maximumPoolSize = 10;
+		private String connectionTestQuery;
+		private int ConnectionTimeout = 10000;
 
 		public String getDialect() {
 			return dialect;
@@ -178,46 +176,6 @@ public class DBFoundConfigProperties {
 			this.password = password;
 		}
 
-		public int getInitialSize() {
-			return initialSize;
-		}
-
-		public void setInitialSize(int initialSize) {
-			this.initialSize = initialSize;
-		}
-
-		public int getMaxTotal() {
-			return maxTotal;
-		}
-
-		public void setMaxTotal(int maxTotal) {
-			this.maxTotal = maxTotal;
-		}
-
-		public int getMaxIdle() {
-			return maxIdle;
-		}
-
-		public void setMaxIdle(int maxIdle) {
-			this.maxIdle = maxIdle;
-		}
-
-		public boolean isTestOnBorrow() {
-			return testOnBorrow;
-		}
-
-		public void setTestOnBorrow(boolean testOnBorrow) {
-			this.testOnBorrow = testOnBorrow;
-		}
-
-		public String getValidationQuery() {
-			return validationQuery;
-		}
-
-		public void setValidationQuery(String validationQuery) {
-			this.validationQuery = validationQuery;
-		}
-
 		public String getProvideName() {
 			return provideName;
 		}
@@ -226,12 +184,36 @@ public class DBFoundConfigProperties {
 			this.provideName = provideName;
 		}
 
-		public int getMaxWaitMillis() {
-			return maxWaitMillis;
+		public int getMinimumIdle() {
+			return minimumIdle;
 		}
 
-		public void setMaxWaitMillis(int maxWaitMillis) {
-			this.maxWaitMillis = maxWaitMillis;
+		public void setMinimumIdle(int minimumIdle) {
+			this.minimumIdle = minimumIdle;
+		}
+
+		public int getMaximumPoolSize() {
+			return maximumPoolSize;
+		}
+
+		public void setMaximumPoolSize(int maximumPoolSize) {
+			this.maximumPoolSize = maximumPoolSize;
+		}
+
+		public String getConnectionTestQuery() {
+			return connectionTestQuery;
+		}
+
+		public void setConnectionTestQuery(String connectionTestQuery) {
+			this.connectionTestQuery = connectionTestQuery;
+		}
+
+		public int getConnectionTimeout() {
+			return ConnectionTimeout;
+		}
+
+		public void setConnectionTimeout(int connectionTimeout) {
+			ConnectionTimeout = connectionTimeout;
 		}
 	}
 

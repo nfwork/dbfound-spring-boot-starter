@@ -3,8 +3,9 @@ package com.github.nfwork.dbfound.starter;
 import java.util.List;
 
 import com.nfwork.dbfound.model.dsql.DSqlConfig;
-import org.apache.commons.dbcp2.BasicDataSource;
-import org.springframework.util.StringUtils;
+import com.nfwork.dbfound.util.DataUtil;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.DBItemConfig;
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.SystemConfig;
@@ -66,23 +67,22 @@ public class DBFoundEngine {
 	 * init dbitem config
 	 *
 	 */
-	public void initDBItem(DBItemConfig dbconfig){
-		if (!StringUtils.isEmpty(dbconfig.getUrl())) {
-			BasicDataSource ds = new BasicDataSource();
-			ds.setUrl(dbconfig.getUrl());
-			ds.setDriverClassName(dbconfig.getDriverClassName());
-			ds.setUsername(dbconfig.getUsername());
-			ds.setPassword(dbconfig.getPassword());
-			ds.setInitialSize(dbconfig.getInitialSize());
-			ds.setMaxWaitMillis(dbconfig.getMaxWaitMillis());
-			ds.setMaxIdle(dbconfig.getMaxIdle());
-			ds.setMaxTotal(dbconfig.getMaxTotal());
-			ds.setTestOnBorrow(dbconfig.isTestOnBorrow());
-			ds.setValidationQuery(dbconfig.getValidationQuery());
-			SpringDataSourceProvide provide = new SpringDataSourceProvide(dbconfig.getProvideName(), ds, dbconfig.getDialect());
+	public void initDBItem(DBItemConfig config){
+		if (DataUtil.isNotNull(config.getUrl())) {
+			HikariConfig hikari = new HikariConfig();
+			hikari.setJdbcUrl(config.getUrl());
+			hikari.setDriverClassName(config.getDriverClassName());
+			hikari.setPassword(config.getPassword());
+			hikari.setUsername(config.getUsername());
+			hikari.setConnectionTimeout(config.getConnectionTimeout());
+			hikari.setConnectionTestQuery(config.getConnectionTestQuery());
+			hikari.setMaximumPoolSize(config.getMaximumPoolSize());
+			hikari.setMinimumIdle(config.getMinimumIdle());
 
+			HikariDataSource ds = new HikariDataSource(hikari);
+			SpringDataSourceProvide provide = new SpringDataSourceProvide(config.getProvideName(), ds, config.getDialect());
 			provide.regist();
-			LogUtil.info("dbfound engine init datasource success, provideName:" +dbconfig.getProvideName() +", url:"+dbconfig.getUrl());
+			LogUtil.info("dbfound engine init datasource success, provideName:" +config.getProvideName() +", url:"+config.getUrl());
 		}
 	}
 	
