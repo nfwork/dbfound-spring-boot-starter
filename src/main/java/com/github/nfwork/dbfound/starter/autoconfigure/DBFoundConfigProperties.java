@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.transaction.annotation.Isolation;
 
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.LinkedHashMap;
 
 @ConfigurationProperties(prefix = "dbfound", ignoreUnknownFields = false)
 public class DBFoundConfigProperties {
@@ -16,7 +16,7 @@ public class DBFoundConfigProperties {
 
 	DataSrouce datasource = new DataSrouce();
 
-	Map<String, DBItemConfig> datasourceExtension = new TreeMap<>();
+	Map<String, DBItemConfig> datasourceExtension = new LinkedHashMap<>();
 
 	public Map<String, DBItemConfig> getDatasourceExtension() {
 		return datasourceExtension;
