@@ -4,14 +4,14 @@
 
 	<groupId>com.github.nfwork</groupId>
 	<artifactId>dbfound-spring-boot-starter</artifactId>
-	<version>3.3.2</version>
+	<version>3.4.0</version>
 	<packaging>jar</packaging>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.1.4.RELEASE</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<version>2.6.9</version>
+		<relativePath />
 	</parent>
 	
 	<name>dbfound spring boot starter</name>
@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.github.nfwork</groupId>
 			<artifactId>dbfound</artifactId>
-			<version>3.3.12</version>
+			<version>3.4.0</version>
 		</dependency>
 	</dependencies>
 
