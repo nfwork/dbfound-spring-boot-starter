@@ -1,6 +1,8 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandleImpl;
+import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -29,19 +31,19 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.open-default-controller", havingValue = "true" )
-    public DBFoundDefaultController dbFoundDefaultController() {
+    public DBFoundDefaultController dbfoundDefaultController() {
         return new DBFoundDefaultController();
     }
 
     @Bean
-    @ConditionalOnMissingBean(type = "com.github.nfwork.dbfound.starter.service.DBFoundDefaultService")
-    public DBFoundDefaultServiceImpl dbFoundDefaultServiceImpl() {
+    @ConditionalOnMissingBean(DBFoundDefaultService.class)
+    public DBFoundDefaultServiceImpl dbfoundDefaultServiceImpl() {
         return new DBFoundDefaultServiceImpl();
     }
 
     @Bean
-    @ConditionalOnMissingBean(type = "com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle")
-    public DBFoundExceptionHandleImpl dbFoundExceptionHandleImpl() {
+    @ConditionalOnMissingBean(DBFoundExceptionHandle.class)
+    public DBFoundExceptionHandleImpl dbfoundExceptionHandleImpl() {
         return new DBFoundExceptionHandleImpl();
     }
 }
