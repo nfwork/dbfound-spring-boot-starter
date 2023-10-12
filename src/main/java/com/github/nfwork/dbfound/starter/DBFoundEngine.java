@@ -16,6 +16,13 @@ import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
 import com.nfwork.dbfound.web.i18n.MultiLangUtil;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionBuilder;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+
+import javax.sql.DataSource;
 
 /**
  * DBFoundEngine
@@ -67,9 +74,10 @@ public class DBFoundEngine {
 	 * init dbitem config
 	 *
 	 */
-	public void initDBItem(DBItemConfig config){
+	public void initDBItem(DBItemConfig config, ApplicationContext applicationContext){
 		if (DataUtil.isNotNull(config.getUrl())) {
 			HikariConfig hikari = new HikariConfig();
+			hikari.setPoolName(getDataSourceName(config.getProvideName()));
 			hikari.setJdbcUrl(config.getUrl());
 			hikari.setDriverClassName(config.getDriverClassName());
 			hikari.setPassword(config.getPassword());
@@ -80,10 +88,26 @@ public class DBFoundEngine {
 			hikari.setMinimumIdle(config.getMinimumIdle());
 
 			HikariDataSource ds = new HikariDataSource(hikari);
+			addToContext(applicationContext, ds.getPoolName(), ds);
 			SpringDataSourceProvide provide = new SpringDataSourceProvide(config.getProvideName(), ds, config.getDialect());
 			provide.regist();
 			LogUtil.info("dbfound engine init datasource success, provideName:" +config.getProvideName() +", url:"+config.getUrl());
 		}
+	}
+
+	public static String getDataSourceName(String provideName){
+		return "dataSource_" + (provideName.startsWith("_")?provideName.substring(1):provideName);
+	}
+
+	private boolean isPrimary = true;
+	private void addToContext(ApplicationContext applicationContext, String name ,HikariDataSource dataSource){
+		BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(DataSource.class, () -> dataSource);
+		BeanDefinition beanDefinition = builder.getRawBeanDefinition();
+		beanDefinition.setPrimary(isPrimary);
+		isPrimary = false;
+		ConfigurableApplicationContext configurableApplicationContext = (ConfigurableApplicationContext) applicationContext;
+		DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) configurableApplicationContext.getBeanFactory();
+		defaultListableBeanFactory.registerBeanDefinition(name, beanDefinition);
 	}
 	
 	/**
