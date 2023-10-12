@@ -26,7 +26,7 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 	private DBFoundConfigProperties config;
 
 	@Bean(destroyMethod = "destroy")
-	public DBFoundEngine dbFoundEngine() {
+	public DBFoundEngine dbfoundEngine() {
 
 		DBFoundEngine dbFoundEngine = new DBFoundEngine();
 		
@@ -62,7 +62,7 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 	}
 
 	@Bean
-	@DependsOn("dbFoundEngine")
+	@DependsOn("dbfoundEngine")
 	public ModelExecutor modelExecutor() {
 		return new ModelExecutor();
 	}
