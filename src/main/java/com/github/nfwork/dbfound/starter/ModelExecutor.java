@@ -84,7 +84,7 @@ public class ModelExecutor {
 	 * @param dataList  a list param
 	 * @return ResponseObject
 	 */
-	public ResponseObject batchExecute(String modelName, String executeName, List dataList) {
+	public ResponseObject batchExecute(String modelName, String executeName, List<?> dataList) {
 		Context context = new Context();
 		context.setParamData("dataList",dataList);
 		return batchExecute(context, modelName, executeName,"param.dataList");
@@ -127,11 +127,11 @@ public class ModelExecutor {
 	 * @param param param object
 	 * @return List data
 	 */
-	@SuppressWarnings("rawtypes")
-	public List queryList(String modelName, String queryName, Object param) {
+	public List<Map<String,Object>> queryList(String modelName, String queryName, Object param) {
 		Context context = new Context();
 		context.setParamData("data",param);
-		return query(context, modelName, queryName, "param.data",false).getDatas();
+		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, "param.data",false);
+		return object.getDatas();
 	}
 
 	/**
@@ -156,9 +156,9 @@ public class ModelExecutor {
 	 * @param queryName query name
 	 * @return List
 	 */
-	@SuppressWarnings("rawtypes")
-	public List queryList(Context context, String modelName, String queryName) {
-		return query(context, modelName, queryName, ModelEngine.defaultPath,false).getDatas();
+	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
+		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, ModelEngine.defaultPath,false);
+		return object.getDatas();
 	}
 
 	/**
@@ -180,10 +180,10 @@ public class ModelExecutor {
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param param param object
-	 * @return Object
+	 * @return Map<String,Object>
 	 */
-	public Object queryOne(String modelName, String queryName, Object param) {
-		List dataList = queryList(modelName, queryName,param);
+	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
+		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
 		if (dataList != null && dataList.size() > 0) {
 			return dataList.get(0);
 		} else {
@@ -196,11 +196,10 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
-	 * @return Object
+	 * @return Map<String,Object>
 	 */
-	@SuppressWarnings("rawtypes")
-	public Object queryOne(Context context, String modelName, String queryName) {
-		List dataList = queryList(context, modelName, queryName);
+	public Map<String,Object> queryOne(Context context, String modelName, String queryName) {
+		List<Map<String,Object>> dataList = queryList(context, modelName, queryName);
 		if (dataList != null && dataList.size() > 0) {
 			return dataList.get(0);
 		} else {
@@ -254,8 +253,7 @@ public class ModelExecutor {
 	 * @param limit limit pager size
 	 * @return QueryResponseObject
 	 */
-	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(String modelName, String queryName, Object param, int start,int limit) {
+	public QueryResponseObject<Map<String,Object>> query(String modelName, String queryName, Object param, int start,int limit) {
 		Context context = new Context();
 		context.setParamData("data",param);
 		context.setParamData("start",start);
@@ -270,8 +268,7 @@ public class ModelExecutor {
 	 * @param param param object
 	 * @return QueryResponseObject
 	 */
-	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(String modelName, String queryName, Object param) {
+	public QueryResponseObject<Map<String,Object>> query(String modelName, String queryName, Object param) {
 		Context context = new Context();
 		context.setParamData("data",param);
 		return query(context, modelName, queryName, "param.data",false);
@@ -318,8 +315,7 @@ public class ModelExecutor {
 	 * @param queryName query name
 	 * @return QueryResponseObject
 	 */
-	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(Context context, String modelName, String queryName) {
+	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName) {
 		return query(context, modelName, queryName, true, null);
 	}
 
@@ -344,8 +340,7 @@ public class ModelExecutor {
 	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
-	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(Context context, String modelName, String queryName, boolean autoPaging) {
+	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, boolean autoPaging) {
 		return query(context, modelName, queryName, ModelEngine.defaultPath, autoPaging, null);
 	}
 
@@ -372,8 +367,7 @@ public class ModelExecutor {
 	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
-	@SuppressWarnings("rawtypes")
-	public QueryResponseObject query(Context context, String modelName, String queryName, String currentPath,boolean autoPaging) {
+	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String currentPath, boolean autoPaging) {
 		return query(context, modelName, queryName, currentPath, autoPaging, null);
 	}
 
