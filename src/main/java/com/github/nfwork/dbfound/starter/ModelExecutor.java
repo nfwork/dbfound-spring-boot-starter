@@ -180,7 +180,7 @@ public class ModelExecutor {
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param param param object
-	 * @return Map<String,Object>
+	 * @return Map
 	 */
 	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
 		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
@@ -196,7 +196,7 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
-	 * @return Map<String,Object>
+	 * @return Map
 	 */
 	public Map<String,Object> queryOne(Context context, String modelName, String queryName) {
 		List<Map<String,Object>> dataList = queryList(context, modelName, queryName);
