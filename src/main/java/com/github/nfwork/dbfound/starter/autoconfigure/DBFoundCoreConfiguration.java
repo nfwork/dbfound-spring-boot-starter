@@ -82,6 +82,7 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 	 * @return null
 	 */
 	@Bean
+	@DependsOn("dbfoundEngine")
 	public DBFoundRoutingDataSource dbfoundRoutingDataSource(){
 		return new DBFoundRoutingDataSource();
 	}
