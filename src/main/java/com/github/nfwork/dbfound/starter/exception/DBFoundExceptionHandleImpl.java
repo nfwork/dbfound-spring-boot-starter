@@ -31,10 +31,10 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 			String code = null;
 			if (exception instanceof CollisionException) {
 				code = ((CollisionException) exception).getCode();
-				LogUtil.info(exception.getClass().getName() + ":" + em);
+				LogUtil.info(exception.getClass().getName() + ": " + em);
 			}else {
 				LogUtil.error(em, exception);
-				em = exception.getClass().getName() + ":" + em;
+				em = exception.getClass().getName() + ": " + em;
 			}
 
 			ro.setMessage(em);
