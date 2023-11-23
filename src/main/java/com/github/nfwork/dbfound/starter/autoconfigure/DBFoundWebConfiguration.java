@@ -16,6 +16,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.handler.DBFoundRequestHandlerMapping;
+import org.springframework.web.servlet.handler.DBFoundMappingUtil;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 import java.util.List;
 
@@ -39,8 +41,11 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_request_handler" )
-    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
-        return new DBFoundRequestHandlerMapping(service, exceptionHandle, objectMapper);
+    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(RequestMappingHandlerMapping requestMapping, DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
+        DBFoundRequestHandlerMapping dbfoundMapping = new DBFoundRequestHandlerMapping(service, exceptionHandle, objectMapper);
+        DBFoundMappingUtil.addInterceptors(dbfoundMapping,requestMapping);
+        DBFoundMappingUtil.addCorsConfigurationSource(dbfoundMapping,requestMapping);
+        return dbfoundMapping;
     }
 
     @Bean
