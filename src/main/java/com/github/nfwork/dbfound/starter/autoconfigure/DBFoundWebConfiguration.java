@@ -1,4 +1,5 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandleImpl;
@@ -14,6 +15,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
+import com.github.nfwork.dbfound.starter.handler.DBFoundRequestHandlerMapping;
 
 import java.util.List;
 
@@ -23,16 +25,22 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
 	@Autowired
 	DBFoundEngine dbfoundEngine;
-	
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new ContextArgumentResolver(dbfoundEngine));
     }
 
     @Bean
-    @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.open-default-controller", havingValue = "true" )
+    @ConditionalOnProperty(name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_default_controller" )
     public DBFoundDefaultController dbfoundDefaultController() {
         return new DBFoundDefaultController();
+    }
+
+    @Bean
+    @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_request_handler" )
+    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
+        return new DBFoundRequestHandlerMapping(service, exceptionHandle, objectMapper);
     }
 
     @Bean

@@ -222,7 +222,7 @@ public class DBFoundConfigProperties {
 		private String i18nProvide;
 		private String encoding = "UTF-8";
 		private boolean openSession = true;
-		private boolean openDefaultController = true;
+		private ApiExposeStrategy apiExposeStrategy = ApiExposeStrategy.dbfound_request_handler;
 		private String basePath="";
 		private boolean jsonStringAutoCover = true;
 
@@ -266,12 +266,12 @@ public class DBFoundConfigProperties {
 			this.jsonStringAutoCover = jsonStringAutoCover;
 		}
 
-		public boolean isOpenDefaultController() {
-			return openDefaultController;
+		public ApiExposeStrategy getApiExposeStrategy() {
+			return apiExposeStrategy;
 		}
 
-		public void setOpenDefaultController(boolean openDefaultController) {
-			this.openDefaultController = openDefaultController;
+		public void setApiExposeStrategy(ApiExposeStrategy apiExposeStrategy) {
+			this.apiExposeStrategy = apiExposeStrategy;
 		}
 	}
 
@@ -366,6 +366,10 @@ public class DBFoundConfigProperties {
 		public void setCamelCaseToUnderscore(boolean camelCaseToUnderscore) {
 			this.camelCaseToUnderscore = camelCaseToUnderscore;
 		}
+	}
+
+	public enum ApiExposeStrategy{
+		dbfound_request_handler, dbfound_default_controller, none
 	}
 
 }
