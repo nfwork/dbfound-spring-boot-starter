@@ -39,8 +39,17 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_request_handler" )
-    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
-        return new DBFoundRequestHandlerMapping(service, exceptionHandle, objectMapper);
+    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(List<WebMvcConfigurer> webMvcConfigurers, DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
+        DBFoundInterceptorRegistry interceptorRegistry = new DBFoundInterceptorRegistry();
+        DBFoundCorsRegistry corsRegistry = new DBFoundCorsRegistry();
+        for(WebMvcConfigurer configurer : webMvcConfigurers){
+            configurer.addInterceptors(interceptorRegistry);
+            configurer.addCorsMappings(corsRegistry);
+        }
+        DBFoundRequestHandlerMapping mapping = new DBFoundRequestHandlerMapping(service, exceptionHandle, objectMapper);
+        mapping.setInterceptors(interceptorRegistry.getInterceptors().toArray());
+        mapping.setCorsConfigurations(corsRegistry.getCorsConfigurations());
+        return mapping;
     }
 
     @Bean
