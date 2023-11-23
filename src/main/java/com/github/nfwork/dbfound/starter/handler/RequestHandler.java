@@ -18,6 +18,7 @@ public abstract class RequestHandler extends AbstractController {
         this.service = service;
         this.exceptionHandle = exceptionHandle;
         this.objectMapper = objectMapper;
+        this.setSupportedMethods("GET","POST","DELETE","PUT","HEAD","PATCH","COPY");
     }
 
     protected void initFilePart(Context context){
