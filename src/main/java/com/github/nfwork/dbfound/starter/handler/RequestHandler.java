@@ -5,8 +5,14 @@ import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
+import com.nfwork.dbfound.dto.ResponseObject;
+import com.nfwork.dbfound.web.WebWriter;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public abstract class RequestHandler extends AbstractController {
 
@@ -21,12 +27,33 @@ public abstract class RequestHandler extends AbstractController {
         this.setSupportedMethods("GET","POST","DELETE","PUT","HEAD","PATCH","COPY");
     }
 
-    protected void initFilePart(Context context){
+    private void initFilePart(Context context){
         if (context.request instanceof MultipartHttpServletRequest) {
             FileUploadManager.initUpload(context, (MultipartHttpServletRequest) context.request);
         }
     }
 
-    public abstract boolean isSupport(String requestPath);
+    @Override
+    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        ResponseObject object;
+        boolean outMessage = true;
+        try{
+            Context context = Context.getCurrentContext(request,response);
+            initFilePart(context);
+            String requestPath = context.request.getServletPath();
+            object = doHandle(context, requestPath);
+            outMessage = context.isOutMessage();
+        }catch (Exception exception){
+            object = exceptionHandle.handle(exception, request, response);
+        }
+        if(object != null && outMessage){
+            WebWriter.jsonWriter(response, objectMapper.writeValueAsString(object));
+        }
+        return null;
+    }
+
+    protected abstract boolean isSupport(String requestPath);
+
+    protected abstract ResponseObject doHandle(Context context, String requestPath) throws Exception;
 
 }
