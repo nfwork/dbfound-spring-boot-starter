@@ -1,6 +1,5 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
@@ -8,11 +7,6 @@ import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.LogUtil;
-import com.nfwork.dbfound.web.WebWriter;
-import org.springframework.web.servlet.ModelAndView;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public class ExecuteRequestHandler extends RequestHandler {
@@ -23,36 +17,26 @@ public class ExecuteRequestHandler extends RequestHandler {
     }
 
     @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws JsonProcessingException {
-        Context context = Context.getCurrentContext(request,response);
-        initFilePart(context);
-        String uri = context.request.getServletPath();
-        int modelIndex = uri.indexOf(".execute!");
-
+    protected ResponseObject doHandle(Context context, String requestPath) {
+        int modelIndex = requestPath.indexOf(".execute!");
         String modelName;
         String executeName;
         if(modelIndex > -1) {
-            modelName = uri.substring(1, modelIndex);
-            executeName = uri.substring(modelIndex + 9);
+            modelName = requestPath.substring(1, modelIndex);
+            executeName = requestPath.substring(modelIndex + 9);
         }else{
-            modelName = uri.substring(1,uri.length() - 8);
+            modelName = requestPath.substring(1,requestPath.length() - 8);
             executeName = null;
         }
+
         ResponseObject object;
-        try {
-            Object gridData = context.getData(ModelEngine.defaultBatchPath);
-            if (gridData instanceof List) {
-                object = service.batchExecute(context, modelName, executeName);
-            }else {
-                object = service.execute(context, modelName, executeName);
-            }
-        }catch (Exception exception){
-            object = exceptionHandle.handle(exception,request,response);
+        Object gridData = context.getData(ModelEngine.defaultBatchPath);
+        if (gridData instanceof List) {
+            object = service.batchExecute(context, modelName, executeName);
+        }else {
+            object = service.execute(context, modelName, executeName);
         }
-        if(context.isOutMessage()){
-            WebWriter.jsonWriter(response, objectMapper.writeValueAsString(object));
-        }
-        return null;
+        return object;
     }
 
     @Override
