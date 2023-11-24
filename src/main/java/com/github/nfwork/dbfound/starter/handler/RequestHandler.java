@@ -7,12 +7,11 @@ import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.web.WebWriter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 public abstract class RequestHandler extends AbstractController {
 
