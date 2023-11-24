@@ -17,7 +17,7 @@ public class DBFoundRequestHandlerMapping extends AbstractHandlerMapping {
         this.handControllerList.add(new QueryRequestHandler(service,exceptionHandle,objectMapper));
         this.handControllerList.add(new ExecuteRequestHandler(service,exceptionHandle,objectMapper));
         this.handControllerList.add(new ExportRequestHandler(service,exceptionHandle,objectMapper));
-        setOrder(-100);
+        setOrder(-1000);
     }
 
     @Override
