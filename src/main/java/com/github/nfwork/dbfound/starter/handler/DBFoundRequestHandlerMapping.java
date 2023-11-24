@@ -11,19 +11,19 @@ import java.util.List;
 
 public class DBFoundRequestHandlerMapping extends AbstractHandlerMapping {
 
-    private final List<RequestHandler> handControllerList = new ArrayList<>();
+    private final List<RequestHandler> handlerList = new ArrayList<>();
 
     public DBFoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
-        this.handControllerList.add(new QueryRequestHandler(service,exceptionHandle,objectMapper));
-        this.handControllerList.add(new ExecuteRequestHandler(service,exceptionHandle,objectMapper));
-        this.handControllerList.add(new ExportRequestHandler(service,exceptionHandle,objectMapper));
+        this.handlerList.add(new QueryRequestHandler(service,exceptionHandle,objectMapper));
+        this.handlerList.add(new ExecuteRequestHandler(service,exceptionHandle,objectMapper));
+        this.handlerList.add(new ExportRequestHandler(service,exceptionHandle,objectMapper));
         setOrder(-1000);
     }
 
     @Override
     protected Object getHandlerInternal(HttpServletRequest request) {
         String lookupPath = request.getServletPath();
-        for(RequestHandler handle : handControllerList){
+        for(RequestHandler handle : handlerList){
             if(handle.isSupport(lookupPath)){
                 return handle;
             }
