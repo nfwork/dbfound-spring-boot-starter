@@ -6,6 +6,7 @@ import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
+import com.nfwork.dbfound.exception.DBFoundErrorException;
 import com.nfwork.dbfound.web.WebWriter;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -43,7 +44,10 @@ public abstract class RequestHandler extends AbstractController {
             String requestPath = context.request.getServletPath();
             object = doHandle(context, requestPath);
             outMessage = context.isOutMessage();
-        }catch (Exception exception){
+        } catch (Exception exception){
+            object = exceptionHandle.handle(exception, request, response);
+        } catch (Throwable throwable){
+            Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
             object = exceptionHandle.handle(exception, request, response);
         }
         if(object != null && outMessage){
