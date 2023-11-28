@@ -1,6 +1,8 @@
 package com.github.nfwork.dbfound.starter.controller;
 
 import java.util.List;
+
+import com.nfwork.dbfound.exception.DBFoundErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,6 +42,9 @@ public class DBFoundDefaultController {
 			}
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Throwable throwable){
+			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
+			return exceptionHandle.handle(exception, context.request, context.response);
 		}
 	}
 
@@ -69,6 +74,9 @@ public class DBFoundDefaultController {
 			}
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Throwable throwable){
+			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
+			return exceptionHandle.handle(exception, context.request, context.response);
 		}
 	}
 
@@ -86,6 +94,9 @@ public class DBFoundDefaultController {
 			return null;
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Throwable throwable){
+			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
+			return exceptionHandle.handle(exception, context.request, context.response);
 		}
 	}
 }
