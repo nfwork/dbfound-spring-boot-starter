@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.github.nfwork</groupId>
 			<artifactId>dbfound</artifactId>
-			<version>3.4.0</version>
+			<version>3.4.4</version>
 		</dependency>
 	</dependencies>
 
