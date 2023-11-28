@@ -24,7 +24,7 @@ public class DBFoundRequestHandlerMapping extends AbstractHandlerMapping {
         String lookupPath = request.getServletPath();
         for(RequestHandler handle : handlerList){
             if(handle.isSupport(lookupPath)){
-                return handle.getHandleMethod();
+                return handle.getHandleMethod().createWithResolvedBean();
             }
         }
         return null;

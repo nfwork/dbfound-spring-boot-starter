@@ -1,5 +1,4 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandleImpl;
