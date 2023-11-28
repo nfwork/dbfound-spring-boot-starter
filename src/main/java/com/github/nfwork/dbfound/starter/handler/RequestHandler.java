@@ -1,31 +1,31 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.DBFoundErrorException;
-import com.nfwork.dbfound.web.WebWriter;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.AbstractController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Method;
 
-public abstract class RequestHandler extends AbstractController {
+@RestController
+public abstract class RequestHandler {
 
     DBFoundDefaultService service;
     DBFoundExceptionHandle exceptionHandle;
-    ObjectMapper objectMapper;
+    HandlerMethod handlerMethod;
 
-    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper){
+    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
         this.service = service;
         this.exceptionHandle = exceptionHandle;
-        this.objectMapper = objectMapper;
-        this.setSupportedMethods("GET","POST","DELETE","PUT","HEAD","PATCH","COPY");
+        Method method = getClass().getMethod("handleRequest", HttpServletRequest.class, HttpServletResponse.class);
+        this.handlerMethod = new HandlerMethod(this, method);
     }
 
     private void initFilePart(Context context){
@@ -34,8 +34,7 @@ public abstract class RequestHandler extends AbstractController {
         }
     }
 
-    @Override
-    protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseObject handleRequest(HttpServletRequest request, HttpServletResponse response) {
         ResponseObject object;
         boolean outMessage = true;
         try{
@@ -50,10 +49,14 @@ public abstract class RequestHandler extends AbstractController {
             Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
             object = exceptionHandle.handle(exception, request, response);
         }
-        if(object != null && outMessage){
-            WebWriter.jsonWriter(response, objectMapper.writeValueAsString(object));
+        if(outMessage){
+            return object;
         }
         return null;
+    }
+
+    protected HandlerMethod getHandleMethod() {
+        return handlerMethod;
     }
 
     protected abstract boolean isSupport(String requestPath);

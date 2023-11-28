@@ -1,6 +1,5 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
@@ -11,8 +10,8 @@ import java.util.List;
 
 public class ExecuteRequestHandler extends RequestHandler {
 
-    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle, ObjectMapper objectMapper) {
-        super(service, exceptionHandle, objectMapper);
+    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+        super(service, exceptionHandle);
         LogUtil.info("mappings [ /**/*.execute, /**/*.execute!{executeName} ], class: " + this.getClass().getName());
     }
 
