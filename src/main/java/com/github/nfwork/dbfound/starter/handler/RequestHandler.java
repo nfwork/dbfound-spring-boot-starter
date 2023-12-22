@@ -35,6 +35,9 @@ public abstract class RequestHandler {
     }
 
     public ResponseObject handleRequest(HttpServletRequest request, HttpServletResponse response) {
+        if("OPTIONS".equals(request.getMethod())){
+            return null;
+        }
         ResponseObject object;
         boolean outMessage = true;
         try{
