@@ -3,7 +3,6 @@ package com.github.nfwork.dbfound.starter.exception;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.CollisionException;
 import com.nfwork.dbfound.exception.DBFoundPackageException;
-import com.nfwork.dbfound.exception.FileDownLoadInterrupt;
 import com.nfwork.dbfound.util.LogUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +20,6 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 				response.setStatus(500);
 			}
 			exception = getException(exception);
-
-			if (exception instanceof FileDownLoadInterrupt) {
-				LogUtil.warn(exception.getMessage());
-				return null;
-			}
 
 			String em = exception.getMessage();
 			String code = null;
