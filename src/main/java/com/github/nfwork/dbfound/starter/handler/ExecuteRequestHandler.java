@@ -40,8 +40,10 @@ public class ExecuteRequestHandler extends RequestHandler {
         }
 
         if(object instanceof FileDownloadResponseObject){
-            FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
-            FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
+            if(context.isOutMessage()) {
+                FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
+                FileDownloadUtil.download(fd.getFile(), fd.getParams(), context.response);
+            }
             return null;
         }else {
             return object;
