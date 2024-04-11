@@ -38,12 +38,7 @@ public class DBFoundDefaultController {
 			String modelName = uri.substring(1, uri.indexOf(".query"));
 			ResponseObject object = service.query(context, modelName, queryName);
 			if(context.isOutMessage()){
-				if(object instanceof FileDownloadResponseObject){
-					FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
-					FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
-				}else {
-					return object;
-				}
+				return object;
 			}
 			return null;
 		} catch (Exception e) {

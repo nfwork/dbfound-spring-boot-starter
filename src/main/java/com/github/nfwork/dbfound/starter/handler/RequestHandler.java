@@ -4,10 +4,8 @@ import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
-import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.DBFoundErrorException;
-import com.nfwork.dbfound.web.file.FileDownloadUtil;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -55,12 +53,7 @@ public abstract class RequestHandler {
             object = exceptionHandle.handle(exception, request, response);
         }
         if(outMessage){
-            if(object instanceof FileDownloadResponseObject){
-                FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
-                FileDownloadUtil.download(fd.getFile(),fd.getParams(),response);
-            }else {
-                return object;
-            }
+            return object;
         }
         return null;
     }

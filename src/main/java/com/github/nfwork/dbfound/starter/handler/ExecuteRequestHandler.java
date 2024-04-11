@@ -2,10 +2,13 @@ package com.github.nfwork.dbfound.starter.handler;
 
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
+import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.LogUtil;
+import com.nfwork.dbfound.web.file.FileDownloadUtil;
+
 import java.util.List;
 
 public class ExecuteRequestHandler extends RequestHandler {
@@ -35,7 +38,14 @@ public class ExecuteRequestHandler extends RequestHandler {
         }else {
             object = service.execute(context, modelName, executeName);
         }
-        return object;
+
+        if(object instanceof FileDownloadResponseObject){
+            FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
+            FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
+            return null;
+        }else {
+            return object;
+        }
     }
 
     @Override
