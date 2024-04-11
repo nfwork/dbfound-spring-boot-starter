@@ -2,7 +2,9 @@ package com.github.nfwork.dbfound.starter.controller;
 
 import java.util.List;
 
+import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.exception.DBFoundErrorException;
+import com.nfwork.dbfound.web.file.FileDownloadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,10 +38,14 @@ public class DBFoundDefaultController {
 			String modelName = uri.substring(1, uri.indexOf(".query"));
 			ResponseObject object = service.query(context, modelName, queryName);
 			if(context.isOutMessage()){
-				return object;
-			}else{
-				return null;
+				if(object instanceof FileDownloadResponseObject){
+					FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
+					FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
+				}else {
+					return object;
+				}
 			}
+			return null;
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
 		} catch (Throwable throwable){
@@ -68,10 +74,14 @@ public class DBFoundDefaultController {
 				object = service.execute(context, modelName, executeName);
 			}
 			if(context.isOutMessage()){
-				return object;
-			}else{
-				return null;
+				if(object instanceof FileDownloadResponseObject){
+					FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
+					FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
+				}else {
+					return object;
+				}
 			}
+			return null;
 		} catch (Exception e) {
 			return exceptionHandle.handle(e, context.request, context.response);
 		} catch (Throwable throwable){
