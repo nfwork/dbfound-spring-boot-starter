@@ -42,7 +42,7 @@ public class ExecuteRequestHandler extends RequestHandler {
         if(object instanceof FileDownloadResponseObject){
             if(context.isOutMessage()) {
                 FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
-                FileDownloadUtil.download(fd.getFile(), fd.getParams(), context.response);
+                FileDownloadUtil.download(fd.getFileParam(), fd.getParams(), context.response);
             }
             return null;
         }else {
