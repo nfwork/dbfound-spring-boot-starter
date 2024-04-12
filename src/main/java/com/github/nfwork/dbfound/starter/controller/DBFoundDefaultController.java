@@ -71,7 +71,7 @@ public class DBFoundDefaultController {
 			if(context.isOutMessage()){
 				if(object instanceof FileDownloadResponseObject){
 					FileDownloadResponseObject fd = (FileDownloadResponseObject) object;
-					FileDownloadUtil.download(fd.getFile(),fd.getParams(),context.response);
+					FileDownloadUtil.download(fd.getFileParam(),fd.getParams(),context.response);
 				}else {
 					return object;
 				}
