@@ -41,8 +41,8 @@ public class DBFoundDefaultController {
 				return object;
 			}
 			return null;
-		} catch (Exception e) {
-			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Exception exception) {
+			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
 			return exceptionHandle.handle(exception, context.request, context.response);
@@ -77,8 +77,8 @@ public class DBFoundDefaultController {
 				}
 			}
 			return null;
-		} catch (Exception e) {
-			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Exception exception) {
+			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
 			return exceptionHandle.handle(exception, context.request, context.response);
@@ -97,8 +97,8 @@ public class DBFoundDefaultController {
 			String modelName = uri.substring(1, uri.indexOf(".export"));
 			service.export(context,modelName,queryName);
 			return null;
-		} catch (Exception e) {
-			return exceptionHandle.handle(e, context.request, context.response);
+		} catch (Exception exception) {
+			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
 			return exceptionHandle.handle(exception, context.request, context.response);
