@@ -47,7 +47,7 @@ public abstract class RequestHandler {
             object = doHandle(context, requestPath);
             outMessage = context.isOutMessage();
         } catch (Exception exception){
-            object = exceptionHandle.handle(exception, request, response);
+            object = exceptionHandle.handle(exceptionHandle.getException(exception), request, response);
         } catch (Throwable throwable){
             Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
             object = exceptionHandle.handle(exception, request, response);
