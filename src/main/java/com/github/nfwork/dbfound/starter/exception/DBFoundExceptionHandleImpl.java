@@ -2,7 +2,6 @@ package com.github.nfwork.dbfound.starter.exception;
 
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.CollisionException;
-import com.nfwork.dbfound.exception.DBFoundPackageException;
 import com.nfwork.dbfound.util.LogUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,8 +18,6 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 			}else{
 				response.setStatus(500);
 			}
-			exception = getException(exception);
-
 			String em = exception.getMessage();
 			String code = null;
 			if (exception instanceof CollisionException) {
@@ -39,16 +36,6 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 		}
 
 		return ro;
-	}
-
-	protected static Exception getException(Exception exception) {
-		if (exception instanceof DBFoundPackageException) {
-			Throwable throwable = exception.getCause();
-			if (throwable instanceof Exception) {
-				return (Exception) throwable;
-			}
-		}
-		return exception;
 	}
 }
 
