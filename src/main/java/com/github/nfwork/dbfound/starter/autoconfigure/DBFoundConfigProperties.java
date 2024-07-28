@@ -277,6 +277,7 @@ public class DBFoundConfigProperties {
 
 	public static class SystemConfig {
 		private boolean openLog = true;
+		private boolean logWithParamSql = false;
 		private boolean underscoreToCamelCase = false;
 		private boolean camelCaseToUnderscore = false;
 		private String modelRootPath = DBFoundConfig.CLASSPATH + "/model";
@@ -357,6 +358,14 @@ public class DBFoundConfigProperties {
 
 		public void setTransactionIsolation(Isolation transactionIsolation) {
 			this.transactionIsolation = transactionIsolation;
+		}
+
+		public boolean isLogWithParamSql() {
+			return logWithParamSql;
+		}
+
+		public void setLogWithParamSql(boolean logWithParamSql) {
+			this.logWithParamSql = logWithParamSql;
 		}
 
 		public boolean isCamelCaseToUnderscore() {
