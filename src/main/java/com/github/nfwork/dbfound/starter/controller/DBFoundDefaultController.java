@@ -24,7 +24,7 @@ public class DBFoundDefaultController {
 	DBFoundDefaultService service;
 
 	@Autowired
-    DBFoundExceptionHandler exceptionHandle;
+    DBFoundExceptionHandler exceptionHandler;
 
 	@RequestMapping("/**/*.query")
 	public ResponseObject query(@ContextAware Context context) {
@@ -42,10 +42,10 @@ public class DBFoundDefaultController {
 			}
 			return null;
 		} catch (Exception exception) {
-			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
+			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandle.handle(exception, context.request, context.response);
+			return exceptionHandler.handle(exception, context.request, context.response);
 		}
 	}
 
@@ -78,10 +78,10 @@ public class DBFoundDefaultController {
 			}
 			return null;
 		} catch (Exception exception) {
-			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
+			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandle.handle(exception, context.request, context.response);
+			return exceptionHandler.handle(exception, context.request, context.response);
 		}
 	}
 
@@ -98,10 +98,10 @@ public class DBFoundDefaultController {
 			service.export(context,modelName,queryName);
 			return null;
 		} catch (Exception exception) {
-			return exceptionHandle.handle(exceptionHandle.getException(exception), context.request, context.response);
+			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
 		} catch (Throwable throwable){
 			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandle.handle(exception, context.request, context.response);
+			return exceptionHandler.handle(exception, context.request, context.response);
 		}
 	}
 }

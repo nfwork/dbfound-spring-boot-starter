@@ -56,7 +56,7 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnMissingBean(DBFoundExceptionHandler.class)
-    public DBFoundExceptionHandlerImpl dbfoundExceptionHandleImpl() {
+    public DBFoundExceptionHandlerImpl dbfoundExceptionHandlerImpl() {
         return new DBFoundExceptionHandlerImpl();
     }
 }

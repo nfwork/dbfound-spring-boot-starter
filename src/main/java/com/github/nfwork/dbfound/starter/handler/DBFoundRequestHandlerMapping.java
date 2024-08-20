@@ -12,10 +12,10 @@ public class DBFoundRequestHandlerMapping extends AbstractHandlerMapping {
 
     private final List<RequestHandler> handlerList = new ArrayList<>();
 
-    public DBFoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
-        this.handlerList.add(new QueryRequestHandler(service,exceptionHandle));
-        this.handlerList.add(new ExecuteRequestHandler(service,exceptionHandle));
-        this.handlerList.add(new ExportRequestHandler(service,exceptionHandle));
+    public DBFoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
+        this.handlerList.add(new QueryRequestHandler(service,exceptionHandler));
+        this.handlerList.add(new ExecuteRequestHandler(service,exceptionHandler));
+        this.handlerList.add(new ExportRequestHandler(service,exceptionHandler));
         setOrder(-1000);
     }
 
