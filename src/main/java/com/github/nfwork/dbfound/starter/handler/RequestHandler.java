@@ -1,6 +1,6 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
@@ -18,10 +18,10 @@ import java.lang.reflect.Method;
 public abstract class RequestHandler {
 
     DBFoundDefaultService service;
-    DBFoundExceptionHandle exceptionHandle;
+    DBFoundExceptionHandler exceptionHandle;
     HandlerMethod handlerMethod;
 
-    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
         this.service = service;
         this.exceptionHandle = exceptionHandle;
         Method method = getClass().getMethod("handleRequest", HttpServletRequest.class, HttpServletResponse.class);

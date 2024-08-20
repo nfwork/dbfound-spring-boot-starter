@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
+public class DBFoundExceptionHandlerImpl implements DBFoundExceptionHandler {
 
 	@Override
 	public ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response) {

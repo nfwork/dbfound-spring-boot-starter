@@ -1,6 +1,6 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
@@ -8,7 +8,7 @@ import com.nfwork.dbfound.util.LogUtil;
 
 public class ExportRequestHandler extends RequestHandler {
 
-    public ExportRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+    public ExportRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
         super(service, exceptionHandle);
         LogUtil.info("mappings [ /**/*.export, /**/*.export!{queryName} ], class: " + this.getClass().getName());
     }
