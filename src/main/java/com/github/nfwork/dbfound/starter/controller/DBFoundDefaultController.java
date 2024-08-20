@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.nfwork.dbfound.starter.annotation.ContextAware;
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
@@ -24,7 +24,7 @@ public class DBFoundDefaultController {
 	DBFoundDefaultService service;
 
 	@Autowired
-	DBFoundExceptionHandle exceptionHandle;
+    DBFoundExceptionHandler exceptionHandle;
 
 	@RequestMapping("/**/*.query")
 	public ResponseObject query(@ContextAware Context context) {

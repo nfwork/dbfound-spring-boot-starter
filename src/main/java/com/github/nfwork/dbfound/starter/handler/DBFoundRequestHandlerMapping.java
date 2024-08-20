@@ -1,6 +1,6 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import org.springframework.web.servlet.handler.AbstractHandlerMapping;
 
@@ -12,7 +12,7 @@ public class DBFoundRequestHandlerMapping extends AbstractHandlerMapping {
 
     private final List<RequestHandler> handlerList = new ArrayList<>();
 
-    public DBFoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+    public DBFoundRequestHandlerMapping(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
         this.handlerList.add(new QueryRequestHandler(service,exceptionHandle));
         this.handlerList.add(new ExecuteRequestHandler(service,exceptionHandle));
         this.handlerList.add(new ExportRequestHandler(service,exceptionHandle));
