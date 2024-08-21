@@ -2,14 +2,13 @@ package com.github.nfwork.dbfound.starter.exception;
 
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.CollisionException;
-import com.nfwork.dbfound.util.DataUtil;
 import com.nfwork.dbfound.util.LogUtil;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.sql.SQLException;
 
-public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
+public class DBFoundExceptionHandlerImpl implements DBFoundExceptionHandler {
 
 	@Override
 	public ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response) {
@@ -30,9 +29,7 @@ public class DBFoundExceptionHandleImpl implements DBFoundExceptionHandle {
 			if(exception.getCause() instanceof SQLException){
 				em = exception.getCause().getMessage();
 			}
-		}
-		if(DataUtil.isNull(em)){
-			em = exception.getClass().getName();
+			em =  exception.getClass().getName() +": " + em;
 		}
 		ro.setMessage(em);
 		ro.setSuccess(false);

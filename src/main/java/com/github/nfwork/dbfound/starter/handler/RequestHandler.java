@@ -1,6 +1,6 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.fileupload.FileUploadManager;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.core.Context;
@@ -18,12 +18,12 @@ import java.lang.reflect.Method;
 public abstract class RequestHandler {
 
     DBFoundDefaultService service;
-    DBFoundExceptionHandle exceptionHandle;
+    DBFoundExceptionHandler exceptionHandler;
     HandlerMethod handlerMethod;
 
-    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
         this.service = service;
-        this.exceptionHandle = exceptionHandle;
+        this.exceptionHandler = exceptionHandler;
         Method method = getClass().getMethod("handleRequest", HttpServletRequest.class, HttpServletResponse.class);
         this.handlerMethod = new HandlerMethod(this, method);
     }
@@ -47,10 +47,10 @@ public abstract class RequestHandler {
             object = doHandle(context, requestPath);
             outMessage = context.isOutMessage();
         } catch (Exception exception){
-            object = exceptionHandle.handle(exceptionHandle.getException(exception), request, response);
+            object = exceptionHandler.handle(exceptionHandler.getException(exception), request, response);
         } catch (Throwable throwable){
             Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-            object = exceptionHandle.handle(exception, request, response);
+            object = exceptionHandler.handle(exception, request, response);
         }
         if(outMessage){
             return object;

@@ -4,7 +4,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.DBFoundPackageException;
 
-public interface DBFoundExceptionHandle {
+public interface DBFoundExceptionHandler {
 
 	ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response);
 

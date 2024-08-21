@@ -1,7 +1,7 @@
 package com.github.nfwork.dbfound.starter.autoconfigure;
 import com.github.nfwork.dbfound.starter.controller.DBFoundDefaultController;
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandleImpl;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandlerImpl;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_request_handler" )
-    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(@Qualifier("requestMappingHandlerMapping")RequestMappingHandlerMapping requestMapping, DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
+    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(@Qualifier("requestMappingHandlerMapping")RequestMappingHandlerMapping requestMapping, DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
         DBFoundRequestHandlerMapping dbfoundMapping = new DBFoundRequestHandlerMapping(service, exceptionHandle);
         DBFoundMappingUtil.addInterceptors(dbfoundMapping,requestMapping);
         DBFoundMappingUtil.addCorsConfigurationSource(dbfoundMapping,requestMapping);
@@ -55,8 +55,8 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    @ConditionalOnMissingBean(DBFoundExceptionHandle.class)
-    public DBFoundExceptionHandleImpl dbfoundExceptionHandleImpl() {
-        return new DBFoundExceptionHandleImpl();
+    @ConditionalOnMissingBean(DBFoundExceptionHandler.class)
+    public DBFoundExceptionHandlerImpl dbfoundExceptionHandlerImpl() {
+        return new DBFoundExceptionHandlerImpl();
     }
 }

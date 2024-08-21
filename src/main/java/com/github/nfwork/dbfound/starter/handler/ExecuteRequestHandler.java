@@ -1,6 +1,6 @@
 package com.github.nfwork.dbfound.starter.handler;
 
-import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandle;
+import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.core.Context;
@@ -13,8 +13,8 @@ import java.util.List;
 
 public class ExecuteRequestHandler extends RequestHandler {
 
-    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandle exceptionHandle) throws NoSuchMethodException {
-        super(service, exceptionHandle);
+    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
+        super(service, exceptionHandler);
         LogUtil.info("mappings [ /**/*.execute, /**/*.execute!{executeName} ], class: " + this.getClass().getName());
     }
 
