@@ -91,7 +91,7 @@ public class DBFoundEngine {
 			HikariDataSource ds = new HikariDataSource(hikari);
 			addToContext(applicationContext, ds.getPoolName(), ds);
 			SpringDataSourceProvide provide = new SpringDataSourceProvide(config.getProvideName(), ds, config.getDialect());
-			provide.regist();
+			provide.register();
 			LogUtil.info("dbfound engine init datasource success, provideName:" +config.getProvideName() +", url:"+config.getUrl());
 		}
 	}
