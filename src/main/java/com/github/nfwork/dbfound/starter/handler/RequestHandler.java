@@ -28,9 +28,9 @@ public abstract class RequestHandler {
         this.handlerMethod = new HandlerMethod(this, method);
     }
 
-    private void initFilePart(Context context){
-        if (context.request instanceof MultipartHttpServletRequest) {
-            FileUploadManager.initUpload(context, (MultipartHttpServletRequest) context.request);
+    private void initFilePart(Context context, HttpServletRequest request){
+        if (request instanceof MultipartHttpServletRequest) {
+            FileUploadManager.initUpload(context, (MultipartHttpServletRequest) request);
         }
     }
 
@@ -42,7 +42,7 @@ public abstract class RequestHandler {
         boolean outMessage = true;
         try{
             Context context = Context.getCurrentContext(request,response);
-            initFilePart(context);
+            initFilePart(context, request);
             String requestPath = context.request.getServletPath();
             object = doHandle(context, requestPath);
             outMessage = context.isOutMessage();
