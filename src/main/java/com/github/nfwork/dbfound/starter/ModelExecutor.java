@@ -13,7 +13,7 @@ import com.nfwork.dbfound.db.ConnectionProvideManager;
 import com.nfwork.dbfound.dto.QueryResponseObject;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.SqlExecuteException;
-import com.nfwork.dbfound.model.ModelOperator;
+import com.nfwork.dbfound.model.ModelEngine;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
@@ -28,7 +28,7 @@ import javax.sql.DataSource;
  * @author John
  *
  */
-public class ModelExecutor extends ModelOperator {
+public class ModelExecutor{
 
 	private DBFoundTransactionManager dbFoundTransactionManager;
 
@@ -71,7 +71,7 @@ public class ModelExecutor extends ModelOperator {
 			if(dbFoundTransactionManager != null){
 				dbFoundTransactionManager.registContext(context);
 			}
-			return super.execute(context, modelName, executeName, sourcePath);
+			return ModelEngine.getModelOperator().execute(context, modelName, executeName, sourcePath);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
@@ -114,7 +114,7 @@ public class ModelExecutor extends ModelOperator {
 			if(dbFoundTransactionManager != null){
 				dbFoundTransactionManager.registContext(context);
 			}
-			return super.batchExecute(context, modelName, executeName, sourcePath);
+			return ModelEngine.getModelOperator().batchExecute(context, modelName, executeName, sourcePath);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
@@ -387,7 +387,7 @@ public class ModelExecutor extends ModelOperator {
 			if (dbFoundTransactionManager != null) {
 				dbFoundTransactionManager.registContext(context);
 			}
-			return super.query(context, modelName, queryName, sourcePath, autoPaging, class1);
+			return ModelEngine.getModelOperator().query(context, modelName, queryName, sourcePath, autoPaging, class1);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
