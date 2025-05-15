@@ -13,7 +13,7 @@ import com.nfwork.dbfound.db.ConnectionProvideManager;
 import com.nfwork.dbfound.dto.QueryResponseObject;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.exception.SqlExecuteException;
-import com.nfwork.dbfound.model.ModelEngine;
+import com.nfwork.dbfound.model.ModelOperator;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
@@ -28,7 +28,7 @@ import javax.sql.DataSource;
  * @author John
  *
  */
-public class ModelExecutor {
+public class ModelExecutor extends ModelOperator {
 
 	private DBFoundTransactionManager dbFoundTransactionManager;
 
@@ -48,14 +48,14 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * execute xml sql, include insert update delete; currentPaht is default
+	 * execute xml sql, include insert update delete; source Path is default
 	 * @param context context
 	 * @param modelName model name
 	 * @param executeName execute name
 	 * @return ResponseObject
 	 */
 	public ResponseObject execute(Context context, String modelName, String executeName) {
-		return execute(context, modelName, executeName, ModelEngine.defaultPath);
+		return execute(context, modelName, executeName, null);
 	}
 
 	/**
@@ -63,15 +63,15 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param executeName execute name
-	 * @param currentPath currentPath
+	 * @param sourcePath sourcePath
 	 * @return ResponseObject
 	 */
-	public ResponseObject execute(Context context, String modelName, String executeName, String currentPath) {
+	public ResponseObject execute(Context context, String modelName, String executeName, String sourcePath) {
 		try {
 			if(dbFoundTransactionManager != null){
 				dbFoundTransactionManager.registContext(context);
 			}
-			return ModelEngine.execute(context, modelName, executeName, currentPath);
+			return super.execute(context, modelName, executeName, sourcePath);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
@@ -91,14 +91,14 @@ public class ModelExecutor {
 	}
 
 	/**
-	 * batch execute xml sql, include insert update delete; currentPaht is default param.GridData;
+	 * batch execute xml sql, include insert update delete; source Path is default param.GridData;
 	 * @param context context
 	 * @param modelName model name
 	 * @param executeName execute name
 	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
-		return batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
+		return batchExecute(context, modelName, executeName, null);
 	}
 
 	/**
@@ -106,15 +106,15 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param executeName execute name
-	 * @param currentPath current path
+	 * @param sourcePath souce path
 	 * @return ResponseObject
 	 */
-	public ResponseObject batchExecute(Context context, String modelName, String executeName, String currentPath) {
+	public ResponseObject batchExecute(Context context, String modelName, String executeName, String sourcePath) {
 		try {
 			if(dbFoundTransactionManager != null){
 				dbFoundTransactionManager.registContext(context);
 			}
-			return ModelEngine.batchExecute(context, modelName, executeName, currentPath);
+			return super.batchExecute(context, modelName, executeName, sourcePath);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
@@ -157,7 +157,7 @@ public class ModelExecutor {
 	 * @return List
 	 */
 	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
-		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, ModelEngine.defaultPath,false);
+		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, null,false);
 		return object.getDatas();
 	}
 
@@ -171,7 +171,7 @@ public class ModelExecutor {
 	 * @return list of T
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
-		return query(context, modelName, queryName, ModelEngine.defaultPath, false, class1).getDatas();
+		return query(context, modelName, queryName, null, false, class1).getDatas();
 	}
 
 
@@ -184,7 +184,7 @@ public class ModelExecutor {
 	 */
 	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
 		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
-		if (dataList != null && dataList.size() > 0) {
+		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
 			return null;
@@ -200,7 +200,7 @@ public class ModelExecutor {
 	 */
 	public Map<String,Object> queryOne(Context context, String modelName, String queryName) {
 		List<Map<String,Object>> dataList = queryList(context, modelName, queryName);
-		if (dataList != null && dataList.size() > 0) {
+		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
 			return null;
@@ -218,7 +218,7 @@ public class ModelExecutor {
 	 */
 	public <T> T queryOne( String modelName, String queryName, Object param,Class<T> class1) {
 		List<T> dataList = queryList( modelName, queryName, param, class1);
-		if (dataList != null && dataList.size() > 0) {
+		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
 			return null;
@@ -236,7 +236,7 @@ public class ModelExecutor {
 	 */
 	public <T> T queryOne(Context context, String modelName, String queryName, Class<T> class1) {
 		List<T> dataList = queryList(context, modelName, queryName, class1);
-		if (dataList != null && dataList.size() > 0) {
+		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
 			return null;
@@ -329,7 +329,7 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
-		return query(context, modelName, queryName, ModelEngine.defaultPath, true, class1);
+		return query(context, modelName, queryName, null, true, class1);
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class ModelExecutor {
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, boolean autoPaging) {
-		return query(context, modelName, queryName, ModelEngine.defaultPath, autoPaging, null);
+		return query(context, modelName, queryName, null, autoPaging, null);
 	}
 
 	/**
@@ -355,7 +355,7 @@ public class ModelExecutor {
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, boolean autoPaging, Class<T> class1) {
-		return query(context, modelName, queryName, ModelEngine.defaultPath, autoPaging, class1);
+		return query(context, modelName, queryName, null, autoPaging, class1);
 	}
 
 	/**
@@ -363,12 +363,12 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
-	 * @param currentPath current path
+	 * @param sourcePath source path
 	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
-	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String currentPath, boolean autoPaging) {
-		return query(context, modelName, queryName, currentPath, autoPaging, null);
+	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging) {
+		return query(context, modelName, queryName, sourcePath, autoPaging, null);
 	}
 
 	/**
@@ -376,18 +376,18 @@ public class ModelExecutor {
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
-	 * @param currentPath current path
+	 * @param sourcePath source path
 	 * @param autoPaging auto paging
 	 * @param class1 entity class
 	 * @param <T> T
 	 * @return QueryResponseObject T
 	 */
-	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String currentPath, boolean autoPaging, Class<T> class1) {
+	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
 		try {
 			if (dbFoundTransactionManager != null) {
 				dbFoundTransactionManager.registContext(context);
 			}
-			return ModelEngine.query(context, modelName, queryName, currentPath, autoPaging, class1);
+			return super.query(context, modelName, queryName, sourcePath, autoPaging, class1);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}

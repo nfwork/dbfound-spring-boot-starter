@@ -5,7 +5,7 @@ import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
-import com.nfwork.dbfound.model.ModelEngine;
+import com.nfwork.dbfound.model.ModelOperator;
 import com.nfwork.dbfound.util.LogUtil;
 import com.nfwork.dbfound.web.file.FileDownloadUtil;
 
@@ -32,7 +32,7 @@ public class ExecuteRequestHandler extends RequestHandler {
         }
 
         ResponseObject object;
-        Object gridData = context.getData(ModelEngine.defaultBatchPath);
+        Object gridData = context.getData(ModelOperator.defaultBatchPath);
         if (gridData instanceof List) {
             object = service.batchExecute(context, modelName, executeName);
         }else {
