@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.exception.DBFoundErrorException;
-import com.nfwork.dbfound.model.ModelOperator;
+import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.web.file.FileDownloadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,7 +60,7 @@ public class DBFoundDefaultController {
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 			
-			Object gridData = context.getData(ModelOperator.defaultBatchPath);
+			Object gridData = context.getData(ModelEngine.defaultBatchPath);
 
 			ResponseObject object;
 			if (gridData instanceof List) {
