@@ -106,7 +106,7 @@ public class ModelExecutor{
 	 * @param context context
 	 * @param modelName model name
 	 * @param executeName execute name
-	 * @param sourcePath souce path
+	 * @param sourcePath source path
 	 * @return ResponseObject
 	 */
 	public ResponseObject batchExecute(Context context, String modelName, String executeName, String sourcePath) {
