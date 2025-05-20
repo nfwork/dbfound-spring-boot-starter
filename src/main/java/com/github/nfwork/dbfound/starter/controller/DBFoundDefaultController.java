@@ -59,11 +59,9 @@ public class DBFoundDefaultController {
 		try {
 			String uri = context.request.getServletPath();
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
-			
-			Object gridData = context.getData(ModelEngine.defaultBatchPath);
 
 			ResponseObject object;
-			if (gridData instanceof List) {
+			if (ModelEngine.isBatchExecuteRequest(context)) {
 				object = service.batchExecute(context, modelName, executeName);
 			}else {
 				object = service.execute(context, modelName, executeName);

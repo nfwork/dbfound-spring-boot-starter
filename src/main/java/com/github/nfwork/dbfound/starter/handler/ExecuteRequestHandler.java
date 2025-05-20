@@ -32,8 +32,7 @@ public class ExecuteRequestHandler extends RequestHandler {
         }
 
         ResponseObject object;
-        Object gridData = context.getData(ModelEngine.defaultBatchPath);
-        if (gridData instanceof List) {
+        if (ModelEngine.isBatchExecuteRequest(context)) {
             object = service.batchExecute(context, modelName, executeName);
         }else {
             object = service.execute(context, modelName, executeName);
