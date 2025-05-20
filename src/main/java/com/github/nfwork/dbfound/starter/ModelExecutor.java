@@ -333,7 +333,7 @@ public class ModelExecutor{
 	}
 
 	/**
-	 * query xml sql, include select , reuturn QueryResponseObject  Map
+	 * query xml sql, include select , return QueryResponseObject  Map
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
@@ -359,7 +359,7 @@ public class ModelExecutor{
 	}
 
 	/**
-	 * query xml sql, include select , reuturn QueryResponseObject  Map
+	 * query xml sql, include select , return QueryResponseObject  Map
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
