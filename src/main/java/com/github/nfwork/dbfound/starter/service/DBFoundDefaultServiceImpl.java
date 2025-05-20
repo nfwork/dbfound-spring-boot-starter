@@ -4,7 +4,6 @@ import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.nfwork.dbfound.core.Context;
 import com.nfwork.dbfound.dto.ResponseObject;
 import com.nfwork.dbfound.excel.ExcelWriter;
-import com.nfwork.dbfound.model.ModelEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +29,6 @@ public class DBFoundDefaultServiceImpl implements DBFoundDefaultService{
 
 	@Transactional("dbfoundTransactionManager")
 	public ResponseObject batchExecute(Context context, String modelName, String executeName) {
-		return modelExecutor.batchExecute(context, modelName, executeName, ModelEngine.defaultBatchPath);
+		return modelExecutor.batchExecute(context, modelName, executeName, null);
 	}
 }
