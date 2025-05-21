@@ -121,35 +121,6 @@ public class ModelExecutor{
 	}
 
 	/**
-	 * query list , user param
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @return List data
-	 */
-	public List<Map<String,Object>> queryList(String modelName, String queryName, Object param) {
-		Context context = new Context();
-		context.setParamData("data",param);
-		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, "param.data",false);
-		return object.getDatas();
-	}
-
-	/**
-	 * query list , user param
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return list T
-	 */
-	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
-		Context context = new Context();
-		context.setParamData("data",param);
-		return query(context, modelName, queryName, "param.data",false,class1).getDatas();
-	}
-
-	/**
 	 * query list
 	 * @param context context
 	 * @param modelName model name
@@ -157,7 +128,7 @@ public class ModelExecutor{
 	 * @return List
 	 */
 	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
-		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, null,false);
+		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, null, false,null);
 		return object.getDatas();
 	}
 
@@ -174,21 +145,58 @@ public class ModelExecutor{
 		return query(context, modelName, queryName, null, false, class1).getDatas();
 	}
 
+	/**
+	 * query list
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @return List
+	 */
+	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName, String sourcePath) {
+		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, sourcePath, false,null);
+		return object.getDatas();
+	}
 
 	/**
-	 * query one line data, return a map
+	 * query list data, return list object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list of T
+	 */
+	public <T> List<T> queryList(Context context, String modelName, String queryName, String sourcePath,Class<T> class1) {
+		return query(context, modelName, queryName, sourcePath, false, class1).getDatas();
+	}
+
+	/**
+	 * query list , user param
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param param param object
-	 * @return Map
+	 * @return List data
 	 */
-	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
-		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
-		if (dataList != null && !dataList.isEmpty()) {
-			return dataList.get(0);
-		} else {
-			return null;
-		}
+	public List<Map<String,Object>> queryList(String modelName, String queryName, Object param) {
+		Context context = new Context().withParam("data",param);
+		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, "param.data",false,null);
+		return object.getDatas();
+	}
+
+	/**
+	 * query list , user param
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list T
+	 */
+	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
+		Context context = new Context().withParam("data",param);
+		return query(context, modelName, queryName, "param.data",false, class1).getDatas();
 	}
 
 	/**
@@ -200,24 +208,6 @@ public class ModelExecutor{
 	 */
 	public Map<String,Object> queryOne(Context context, String modelName, String queryName) {
 		List<Map<String,Object>> dataList = queryList(context, modelName, queryName);
-		if (dataList != null && !dataList.isEmpty()) {
-			return dataList.get(0);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * query one line data, return a Object T
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return T
-	 */
-	public <T> T queryOne( String modelName, String queryName, Object param,Class<T> class1) {
-		List<T> dataList = queryList( modelName, queryName, param, class1);
 		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
@@ -243,22 +233,74 @@ public class ModelExecutor{
 		}
 	}
 
+	/**
+	 * query one line data, return a object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @return Map
+	 */
+	public Map<String,Object> queryOne(Context context, String modelName, String queryName, String sourcePath) {
+		List<Map<String,Object>> dataList = queryList(context, modelName, queryName, sourcePath);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
 
 	/**
-	 * query page list , user param
+	 * query one line data, return a Object T
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
+	 */
+	public <T> T queryOne(Context context, String modelName, String queryName, String sourcePath ,Class<T> class1) {
+		List<T> dataList = queryList(context, modelName, queryName, sourcePath,class1);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a map
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param param param object
-	 * @param start start with
-	 * @param limit limit pager size
-	 * @return QueryResponseObject
+	 * @return Map
 	 */
-	public QueryResponseObject<Map<String,Object>> query(String modelName, String queryName, Object param, int start,int limit) {
-		Context context = new Context();
-		context.setParamData("data",param);
-		context.setParamData("start",start);
-		context.setParamData("limit",limit);
-		return query(context, modelName, queryName, "param.data",true);
+	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
+		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a Object T
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
+	 */
+	public <T> T queryOne(String modelName, String queryName, Object param,Class<T> class1) {
+		List<T> dataList = queryList( modelName, queryName, param, class1);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
 	}
 
 	/**
@@ -269,28 +311,8 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(String modelName, String queryName, Object param) {
-		Context context = new Context();
-		context.setParamData("data",param);
-		return query(context, modelName, queryName, "param.data",false);
-	}
-
-	/**
-	 * query page list , user param
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @param start start with
-	 * @param limit limit pager size
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return QueryResponseObject T
-	 */
-	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, int start,int limit,Class<T> class1) {
-		Context context = new Context();
-		context.setParamData("data",param);
-		context.setParamData("start",start);
-		context.setParamData("limit",limit);
-		return query(context, modelName, queryName, "param.data",true, class1);
+		Context context = new Context().withParam("data",param);
+		return query(context, modelName, queryName, "param.data",false,null);
 	}
 
 	/**
@@ -302,9 +324,8 @@ public class ModelExecutor{
 	 * @param <T> T
 	 * @return QueryResponseObject T
 	 */
-	public <T> QueryResponseObject<T> query( String modelName, String queryName, Object param, Class<T> class1) {
-		Context context = new Context();
-		context.setParamData("data",param);
+	public <T> QueryResponseObject<T> query(String modelName, String queryName, Object param, Class<T> class1) {
+		Context context = new Context().withParam("data",param);
 		return query(context, modelName, queryName, "param.data",false, class1);
 	}
 
@@ -316,7 +337,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName) {
-		return query(context, modelName, queryName, true, null);
+		return query(context, modelName, queryName,null, true, null);
 	}
 
 	/**
@@ -332,43 +353,17 @@ public class ModelExecutor{
 		return query(context, modelName, queryName, null, true, class1);
 	}
 
-	/**
-	 * query xml sql, include select , reuturn QueryResponseObject  Map
-	 * @param context context
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param autoPaging auto paging
-	 * @return QueryResponseObject
-	 */
-	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, boolean autoPaging) {
-		return query(context, modelName, queryName, null, autoPaging, null);
-	}
 
 	/**
-	 * query xml sql, include select , return QueryResponseObject T
-	 * @param context context
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param autoPaging auto paging
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return QueryResponseObject T
-	 */
-	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, boolean autoPaging, Class<T> class1) {
-		return query(context, modelName, queryName, null, autoPaging, class1);
-	}
-
-	/**
-	 * query xml sql, include select , reuturn QueryResponseObject  Map
+	 * query xml sql, include select , return QueryResponseObject  Map
 	 * @param context context
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param sourcePath source path
-	 * @param autoPaging auto paging
 	 * @return QueryResponseObject
 	 */
-	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging) {
-		return query(context, modelName, queryName, sourcePath, autoPaging, null);
+	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String sourcePath) {
+		return query(context, modelName, queryName, sourcePath, true, null);
 	}
 
 	/**
@@ -377,12 +372,15 @@ public class ModelExecutor{
 	 * @param modelName model name
 	 * @param queryName query name
 	 * @param sourcePath source path
-	 * @param autoPaging auto paging
 	 * @param class1 entity class
 	 * @param <T> T
 	 * @return QueryResponseObject T
 	 */
-	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
+	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, Class<T> class1) {
+		return query(context, modelName, queryName, sourcePath, true, class1);
+	}
+
+	private <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
 		try {
 			if (dbFoundTransactionManager != null) {
 				dbFoundTransactionManager.registContext(context);
