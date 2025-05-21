@@ -380,7 +380,7 @@ public class ModelExecutor{
 		return query(context, modelName, queryName, sourcePath, true, class1);
 	}
 
-	private <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
+	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
 		try {
 			if (dbFoundTransactionManager != null) {
 				dbFoundTransactionManager.registContext(context);
