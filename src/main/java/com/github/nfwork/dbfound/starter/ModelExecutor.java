@@ -276,7 +276,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName) {
-		return query(context, modelName, queryName,null, context.isAutoPaging(), null);
+		return query(context, modelName, queryName,null, true, null);
 	}
 
 	/**
@@ -289,7 +289,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
-		return query(context, modelName, queryName, null, context.isAutoPaging(), class1);
+		return query(context, modelName, queryName, null, true, class1);
 	}
 
 
@@ -302,7 +302,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String sourcePath) {
-		return query(context, modelName, queryName, sourcePath, context.isAutoPaging(), null);
+		return query(context, modelName, queryName, sourcePath, true, null);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, Class<T> class1) {
-		return query(context, modelName, queryName, sourcePath, context.isAutoPaging(), class1);
+		return query(context, modelName, queryName, sourcePath, true, class1);
 	}
 
 	private <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
