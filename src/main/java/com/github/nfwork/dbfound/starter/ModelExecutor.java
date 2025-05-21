@@ -128,10 +128,8 @@ public class ModelExecutor{
 	 * @return List data
 	 */
 	public List<Map<String,Object>> queryList(String modelName, String queryName, Object param) {
-		Context context = new Context()
-				.withParam("data",param)
-				.withAutoPaging(false);
-		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, "param.data",null);
+		Context context = new Context().withParam("data",param);
+		QueryResponseObject<Map<String,Object>> object = query(context, modelName, queryName, "param.data",false,null);
 		return object.getDatas();
 	}
 
@@ -145,10 +143,8 @@ public class ModelExecutor{
 	 * @return list T
 	 */
 	public <T> List<T> queryList(String modelName, String queryName, Object param, Class<T> class1) {
-		Context context = new Context()
-				.withParam("data",param)
-				.withAutoPaging(false);
-		return query(context, modelName, queryName, "param.data",class1).getDatas();
+		Context context = new Context().withParam("data",param);
+		return query(context, modelName, queryName, "param.data",false, class1).getDatas();
 	}
 
 	/**
@@ -159,14 +155,8 @@ public class ModelExecutor{
 	 * @return List
 	 */
 	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
-		boolean autoPaging = context.isAutoPaging();
-		try {
-			context.setAutoPaging(false);
-			QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, null, null);
-			return object.getDatas();
-		}finally {
-			context.setAutoPaging(autoPaging);
-		}
+		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, null, false,null);
+		return object.getDatas();
 	}
 
 	/**
@@ -179,13 +169,7 @@ public class ModelExecutor{
 	 * @return list of T
 	 */
 	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
-		boolean autoPaging = context.isAutoPaging();
-		try {
-			context.setAutoPaging(false);
-			return query(context, modelName, queryName, null, class1).getDatas();
-		}finally {
-			context.setAutoPaging(autoPaging);
-		}
+		return query(context, modelName, queryName, null, false, class1).getDatas();
 	}
 
 
@@ -266,10 +250,8 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(String modelName, String queryName, Object param) {
-		Context context = new Context()
-				.withParam("data",param)
-				.withAutoPaging(false);
-		return query(context, modelName, queryName, "param.data",null);
+		Context context = new Context().withParam("data",param);
+		return query(context, modelName, queryName, "param.data",false,null);
 	}
 
 	/**
@@ -282,10 +264,8 @@ public class ModelExecutor{
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(String modelName, String queryName, Object param, Class<T> class1) {
-		Context context = new Context()
-				.withParam("data",param)
-				.withAutoPaging(false);
-		return query(context, modelName, queryName, "param.data", class1);
+		Context context = new Context().withParam("data",param);
+		return query(context, modelName, queryName, "param.data",false, class1);
 	}
 
 	/**
@@ -296,7 +276,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName) {
-		return query(context, modelName, queryName,null,null);
+		return query(context, modelName, queryName,null, context.isAutoPaging(), null);
 	}
 
 	/**
@@ -309,7 +289,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, Class<T> class1) {
-		return query(context, modelName, queryName, null, class1);
+		return query(context, modelName, queryName, null, context.isAutoPaging(), class1);
 	}
 
 
@@ -322,7 +302,7 @@ public class ModelExecutor{
 	 * @return QueryResponseObject
 	 */
 	public QueryResponseObject<Map<String,Object>> query(Context context, String modelName, String queryName, String sourcePath) {
-		return query(context, modelName, queryName, sourcePath, null);
+		return query(context, modelName, queryName, sourcePath, context.isAutoPaging(), null);
 	}
 
 	/**
@@ -336,11 +316,15 @@ public class ModelExecutor{
 	 * @return QueryResponseObject T
 	 */
 	public <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, Class<T> class1) {
+		return query(context, modelName, queryName, sourcePath, context.isAutoPaging(), class1);
+	}
+
+	private <T> QueryResponseObject<T> query(Context context, String modelName, String queryName, String sourcePath, boolean autoPaging, Class<T> class1) {
 		try {
 			if (dbFoundTransactionManager != null) {
 				dbFoundTransactionManager.registContext(context);
 			}
-			return ModelEngine.getModelOperator().query(context, modelName, queryName, sourcePath, context.isAutoPaging(), class1);
+			return ModelEngine.getModelOperator().query(context, modelName, queryName, sourcePath, autoPaging, class1);
 		}catch (SqlExecuteException exception){
 			throw translateException(exception);
 		}
