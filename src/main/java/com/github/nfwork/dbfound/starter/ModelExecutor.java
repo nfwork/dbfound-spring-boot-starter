@@ -121,6 +121,58 @@ public class ModelExecutor{
 	}
 
 	/**
+	 * query list
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @return List
+	 */
+	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
+		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, null, false,null);
+		return object.getDatas();
+	}
+
+	/**
+	 * query list data, return list object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list of T
+	 */
+	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
+		return query(context, modelName, queryName, null, false, class1).getDatas();
+	}
+
+	/**
+	 * query list
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @return List
+	 */
+	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName, String sourcePath) {
+		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, sourcePath, false,null);
+		return object.getDatas();
+	}
+
+	/**
+	 * query list data, return list object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return list of T
+	 */
+	public <T> List<T> queryList(Context context, String modelName, String queryName, String sourcePath,Class<T> class1) {
+		return query(context, modelName, queryName, sourcePath, false, class1).getDatas();
+	}
+
+	/**
 	 * query list , user param
 	 * @param modelName model name
 	 * @param queryName query name
@@ -148,48 +200,6 @@ public class ModelExecutor{
 	}
 
 	/**
-	 * query list
-	 * @param context context
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @return List
-	 */
-	public List<Map<String,Object>> queryList(Context context, String modelName, String queryName) {
-		QueryResponseObject<Map<String, Object>> object = query(context, modelName, queryName, null, false,null);
-		return object.getDatas();
-	}
-
-	/**
-	 * query list data, return list object
-	 * @param context context
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return list of T
-	 */
-	public <T> List<T> queryList(Context context, String modelName, String queryName, Class<T> class1) {
-		return query(context, modelName, queryName, null, false, class1).getDatas();
-	}
-
-
-	/**
-	 * query one line data, return a map
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @return Map
-	 */
-	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
-		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
-		if (dataList != null && !dataList.isEmpty()) {
-			return dataList.get(0);
-		} else {
-			return null;
-		}
-	}
-
-	/**
 	 * query one line data, return a object
 	 * @param context context
 	 * @param modelName model name
@@ -198,24 +208,6 @@ public class ModelExecutor{
 	 */
 	public Map<String,Object> queryOne(Context context, String modelName, String queryName) {
 		List<Map<String,Object>> dataList = queryList(context, modelName, queryName);
-		if (dataList != null && !dataList.isEmpty()) {
-			return dataList.get(0);
-		} else {
-			return null;
-		}
-	}
-
-	/**
-	 * query one line data, return a Object T
-	 * @param modelName model name
-	 * @param queryName query name
-	 * @param param param object
-	 * @param class1 entity class
-	 * @param <T> T
-	 * @return T
-	 */
-	public <T> T queryOne(String modelName, String queryName, Object param,Class<T> class1) {
-		List<T> dataList = queryList( modelName, queryName, param, class1);
 		if (dataList != null && !dataList.isEmpty()) {
 			return dataList.get(0);
 		} else {
@@ -241,6 +233,75 @@ public class ModelExecutor{
 		}
 	}
 
+	/**
+	 * query one line data, return a object
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @return Map
+	 */
+	public Map<String,Object> queryOne(Context context, String modelName, String queryName, String sourcePath) {
+		List<Map<String,Object>> dataList = queryList(context, modelName, queryName, sourcePath);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a Object T
+	 * @param context context
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param sourcePath source path
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
+	 */
+	public <T> T queryOne(Context context, String modelName, String queryName, String sourcePath ,Class<T> class1) {
+		List<T> dataList = queryList(context, modelName, queryName, sourcePath,class1);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a map
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @return Map
+	 */
+	public Map<String,Object> queryOne(String modelName, String queryName, Object param) {
+		List<Map<String,Object>> dataList = queryList(modelName, queryName,param);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * query one line data, return a Object T
+	 * @param modelName model name
+	 * @param queryName query name
+	 * @param param param object
+	 * @param class1 entity class
+	 * @param <T> T
+	 * @return T
+	 */
+	public <T> T queryOne(String modelName, String queryName, Object param,Class<T> class1) {
+		List<T> dataList = queryList( modelName, queryName, param, class1);
+		if (dataList != null && !dataList.isEmpty()) {
+			return dataList.get(0);
+		} else {
+			return null;
+		}
+	}
 
 	/**
 	 * query page list , user param
