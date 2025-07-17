@@ -4,7 +4,7 @@
 
 	<groupId>com.github.nfwork</groupId>
 	<artifactId>dbfound-spring-boot-starter</artifactId>
-	<version>3.6.2</version>
+	<version>3.6.4</version>
 	<packaging>jar</packaging>
 
 	<parent>
@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.github.nfwork</groupId>
 			<artifactId>dbfound</artifactId>
-			<version>3.6.2</version>
+			<version>3.6.4</version>
 		</dependency>
 	</dependencies>
 
@@ -139,14 +139,12 @@
 			-->
 
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.3</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.8.0</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<publishingServerId>central</publishingServerId>
 				</configuration>
 			</plugin>
 		</plugins>
