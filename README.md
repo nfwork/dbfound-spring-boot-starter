@@ -90,8 +90,7 @@ dbfound:
             #WHERE_CLAUSE#
             order by user_id desc
         </sql>
-        <filter name="username" dataType="varchar"
-                express="username like concat('%', ${@username}, '%')"/>
+        <filter name="username" dataType="varchar" express="username like concat('%', ${@username}, '%')"/>
     </query>
 
 </model>
@@ -121,8 +120,7 @@ public class UserService {
     }
 
     public List<Map<String, Object>> listUsers(String username) {
-        Context context = new Context();
-        context.setParamData("username", username);
+        Context context = new Context().withParam("username", username);
         return modelExecutor.queryList(context, "sys/user", null);
     }
 }
