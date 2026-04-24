@@ -1,253 +1,299 @@
-## **初识DBFound+Springboot**
+# dbfound-spring-boot-starter
 
-    Springboot+mybatis的组合，相信很多搞Java研发的工程师来说都非常熟悉，在实际项目中也是运用的非常广泛；但它不是今天的主角，今天我们来看看Springboot+dbfound的组合，会给我们带来哪些不一样的感受；dbfound是笔者2011年起草的一个持久层框架，1.0版本发布于2012年，目前最新版本2.4.1；
+`dbfound-spring-boot-starter` 是 `dbfound` 在 Spring Boot 项目中的官方集成方式，用于在 Spring Boot 应用里快速启用：
 
-    通常我们写一个业务功能，比如写一个查询用户表（sys_user）的接口功能；在Springboot+mybatis的组合中，我们通常要写 UserController.java、UserService.java、UserDao.java、User.java 和 UserMapper.xml这五个文件，来实现这个功能；代码层次分明、结构清晰，但略显繁琐，代码如下：
+- XML model 数据接口开发
+- `ModelExecutor` Java 调用
+- HTTP 方式访问 query / execute
+- 多数据源与上下文能力
 
-     ![](https://oscimg.oschina.net/oscnet/c6a1ffb41eb25d07f434cef1d649585dcb2.jpg)
+如果你正在使用 Spring Boot，希望以更少的样板代码开发后台数据接口，这个 starter 就是推荐入口。
 
-    我们仅仅就是想实现一个查询功能而已，就需要些4个java + 1个xml文件才能实现；那有没有更简单快捷一点的方式呢？DBFound为快捷而生。下面我们看看用Springboot+dbfound组合，我们怎么去实现；我们只需要写一个xml文件（user.xml） 功能就已经完成了。如下图，我们只需要已xml为载体，把sql配置下，然后把xml放到springboot的容器中即可；
+## 它解决什么问题
 
-        ![](https://oscimg.oschina.net/oscnet/08579328790adba8ebb1828c4ce64d1709a.jpg)
+在很多 Spring Boot 项目中，一个普通数据接口通常要写：
 
-   我们通过浏览器打开[http://localhost:8080/user.query](http://localhost:8080/user.query)；就可以请求到model目录下的user.xml文件了；效果如下图，返回结果为一个json字符串；
+- Controller
+- Service
+- Repository / Mapper
+- SQL 映射
+- 参数对象 / 返回对象
 
-       ![](https://oscimg.oschina.net/oscnet/1b57b111fe206df24677a010aab7e8e926f.jpg)
+而使用 `dbfound-spring-boot-starter` 后，你可以把大量数据访问逻辑直接放进 model XML 中，再通过统一的 `ModelExecutor` 或 HTTP 接口进行调用。
 
-    我们还可以通过start和limit参数，来进行分页查询，如查询第10条到第20条 [http://localhost:8080/user.query?limit=10&start=10](http://localhost:8080/user.query?limit=10&start=10) ； 我们的query对象中有两个<filter>标签，我们还可以传入user\_name、user\_code进行匹配查询 [http://localhost:8080/user.query?limit=10&start=10&user_name=john](http://localhost:8080/user.query?limit=10&start=10&user_name=john) ;
+这特别适合：
 
-## DBFound+Springboot环境搭建
+- 管理后台
+- 运营平台
+- 数据报表
+- 导入导出
+- 内部业务系统
 
-    搭建dbfound+springboot环境，也非常简单；
+## 适用版本
 
-    在创建一个springboot2.x的maven项目后，我们在pom.xml中加入dbfound-spring-boot-starter，如下：
+请根据你的 Spring Boot 技术栈选择对应版本。
 
-```xml
-<dependencies>
-    <dependency>
-        <groupId>com.github.nfwork</groupId>
-        <artifactId>dbfound-spring-boot-starter</artifactId>
-        <version>2.1.0</version>
-    </dependency>
+一般来说：
 
-    <dependency>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-web</artifactId>
-    </dependency>
-</dependencies>
+- Spring Boot 2.x 项目，通常使用基于 `javax.servlet` 的版本线
+- Spring Boot 3.x 项目，通常使用基于 `jakarta.servlet` 的版本线
 
+具体版本请以 Maven Central、仓库 release 或项目说明为准。
 
-```
+## 快速开始
 
-    其次在springboot的配置文件application.properties中，加入dbfound的配置，如下：
+## 1. 引入依赖
 
-```java
-dbfound.datasource.db0.url=jdbc:mysql://127.0.0.1:3306/dbfound
-dbfound.datasource.db0.username=root
-dbfound.datasource.db0.password=root
-dbfound.datasource.db0.dialect=MySqlDialect
-```
-
-    最后就是编写model文件了，user.xml；默认情况下放在classpath下面的model文件夹下，如下：
+在 `pom.xml` 中加入：
 
 ```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<model xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
-	<query>
-		<sql>
-		  <![CDATA[
-			SELECT
-				user_name,
-				user_code,
-				password
-			FROM SYS_USER u
-			#WHERE_CLAUSE#
-		  ]]>
-		</sql>
-		<filter name="user_code" express="user_code like ${@user_code}" />
-		<filter name="user_name" express="user_name like ${@user_name}" />
-	</query>
-</model>
+<dependency>
+    <groupId>com.github.nfwork</groupId>
+    <artifactId>dbfound-spring-boot-starter</artifactId>
+    <version>最新版本</version>
+</dependency>
 ```
 
-    model文件由<query>和<execute>两大组建构成，query对于select语句，execute对于insert、update、delete语句；这里就不多讲了，详情请参考之前写的《[DBFound API开发文档](https://my.oschina.net/nfwork/blog/322892)》文章中的介绍；
+建议将版本替换为当前可用的正式版本。
 
-## 多数据源配置与事务管理
+## 2. 配置数据源
 
-    在实际的业务系统中，我们常常用到的不止一个数据源；在Springboot+mybatis组合中，原生配置是没办法做到多数据源的，必须要写代码实现；事务管理也是需要开发者去写大量的代码实现；但Springboot+dbfound中，这些麻烦事框架都给我们解决了。
+最简单的配置示例：
 
-    首先我们在springboot配置文件application.properties中，加入多数据源配置; 注意这次我们多加了一个 provideName的属性，来区分不同的数据源；
-
-```java
-dbfound.datasource.db0.provideName=database01
-dbfound.datasource.db0.url=jdbc:mysql://192.168.1.111:3306/dbfound
-dbfound.datasource.db0.username=
-dbfound.datasource.db0.password=
-dbfound.datasource.db0.dialect=MySqlDialect
-
-dbfound.datasource.db1.provideName=database02
-dbfound.datasource.db1.url=jdbc:mysql://192.168.1.112:3306/dbfound02
-dbfound.datasource.db1.username=
-dbfound.datasource.db1.password=
-dbfound.datasource.db1.dialect=MySqlDialect
+```yaml
+dbfound:
+  datasource:
+    db0:
+      url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&serverTimezone=GMT%2B8
+      username: root
+      password: 123456
 ```
 
-    然后我们的model文件也需要做一点小的调整，需要在model标签中，多加了一个connetionProvide属性，与provideName一致即可：
+如果需要多个数据源，可以继续配置多个 `dbfound.datasource.db*` 节点，并通过 `provide-name` 或 `connectionProvide` 进行匹配。
+
+## 3. 创建 model 文件
+
+在 `classpath:model/` 目录下创建 XML 文件，例如：
+
+`src/main/resources/model/sys/user.xml`
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
-<model connectionProvide="database01" xmlns="http://dbfound.googlecode.com/model" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
-	<query>
-		<sql>
-		  <![CDATA[
-			SELECT
-				user_name,
-				user_code,
-				password
-			FROM SYS_USER u
-			#WHERE_CLAUSE#
-		 ]]>
-		</sql>
-		<filter name="user_code" express="user_code like ${@user_code}" />
-		<filter name="user_name" express="user_name like ${@user_name}" />
-	</query>
+<model xmlns="http://dbfound.googlecode.com/model"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://dbfound.googlecode.com/model https://raw.githubusercontent.com/nfwork/dbfound/master/tags/model.xsd">
+
+    <query>
+        <sql>
+            select user_id, username, nick_name
+            from sys_user
+            #WHERE_CLAUSE#
+            order by user_id desc
+        </sql>
+        <filter name="username" dataType="varchar" express="username like concat('%', ${@username}, '%')"/>
+    </query>
+
 </model>
 ```
 
-    在数据源的配置中，我们允许一个没有provideName的数据源，作为缺省数据源 与 model中没有指定connectionProvide的model文件 相互对应；我们通常建议db0不配置provideName，作为缺省。
+这里的 modelName 就是：
 
-    事务管理方面，通过http直接访问model的情况，访问的execute对象默认加上了事物，当一个execute对象中执行了多条sql，会开启事物保证一致性；
-
-```xml
-<execute name="update">
-	<sqls>
-		<executeSql>
-			<![CDATA[
-			    update table1
-			 ]]>
-		</executeSql>
-		<executeSql>
-			<![CDATA[
-				update table2
-			 ]]>
-		</executeSql>
-	</sqls>
-</execute>
+```text
+sys/user
 ```
 
-    对于Java代码调用的情况下，使用@Transaction注解进行声明即可；
+## 4. 通过 Java 调用
+
+在 Spring Bean 中注入 `ModelExecutor`：
 
 ```java
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.github.nfwork.dbfound.starter.ModelExecutor;
 import com.nfwork.dbfound.core.Context;
 
 @Service
-public class TestService {
-	
-	@Autowired
-	ModelExecutor modelExecutor;
-	
-	@Transactional
-	public void save(Context context) {
-		modelExecutor.execute(context, "user", "add");
-		modelExecutor.execute(context, "user", "update");
-	}
+public class UserService {
 
+    private final ModelExecutor modelExecutor;
+
+    public UserService(ModelExecutor modelExecutor) {
+        this.modelExecutor = modelExecutor;
+    }
+
+    public List<Map<String, Object>> listUsers(String username) {
+        Context context = new Context().withParam("username", username);
+        return modelExecutor.queryList(context, "sys/user", null);
+    }
 }
-
 ```
 
-## 与SpringMVC的数据交互
+## 5. 通过 HTTP 调用
 
-    熟悉dbfound的朋友都会知道，dbfound所有的参数都保存在Context；Context作为数据载体，model在执行的时候根据数据路径执行匹配，下一次单独写一个文章来说明Context数据交互；今天的重点，如何在springmvc如何获取Context呢？我们推荐了两种方式，方法如下：
+Starter 启动后，也可以直接通过 HTTP 调用 model：
+
+```text
+/sys/user.query
+```
+
+命名 query / execute 的地址规则分别为：
+
+- `{modelName}.query!{queryName}`
+- `{modelName}.execute!{executeName}`
+
+## 核心能力
+
+接入 starter 后，你可以直接使用 `dbfound` 的核心模型能力：
+
+- `query`
+- `execute`
+- `filter`
+- `verifier`
+- `collisionSql`
+- `sqlPart`
+- `batchExecuteSql`
+- `batchSql`
+- `excelReader`
+- `QueryAdapter / ExecuteAdapter`
+
+同时，还可以通过 Spring Boot 的方式把它们整合进已有项目。
+
+## 常见调用方式
+
+`ModelExecutor` 中最常用的方法包括：
+
+### 查询列表
 
 ```java
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.github.nfwork.dbfound.starter.ModelExecutor;
-import com.github.nfwork.dbfound.starter.annotation.ContextAware;
-import com.nfwork.dbfound.core.Context;
-
-@RestController
-public class TestController {
-	
-	@Autowired
-	ModelExecutor modelExecutor;
-	
-	@RequestMapping("query1")
-	public Object query(@ContextAware Context context) {
-		return modelExecutor.query(context, "user", null);
-	}
-	
-	@RequestMapping("query2")
-	public Object query(String userName) {
-		Context context = new Context();
-		context.setParamData("user_name", userName);
-		return modelExecutor.query(context, "user", null);
-	}
-
-}
-
+List<UserDto> list = modelExecutor.queryList(context, "sys/user", "list", UserDto.class);
 ```
 
-## model的调用API
-
-    框架提供了两种调用model文件的方式，一种是http，另外一种的javaapi；在讲api之前，我们先说明下三个重要的参数：modelName、queryName和executeName；我们通过modelName+queryName定位一个query服务，通过modelName+executeName定位一个execute服务；
-
-    当一个user.xml放在classpath/model目录下时，它的modelName就是user； 当一个function.xml放在classpath/model/sys目录下面时，它的modelName就是sys/function；
-
-    queryName和executeName在xml文件中指定；比如<query name="listAll"> 那他的queryName就是 listAll；modelName原理一样；一个model文件中，我们允许一个无名的query和execute；
-
-    http请求方式：
-
-        [http://localhost:8080/user.query](http://localhost:8080/user.query) modelName是user，queryName为缺省；
-
-        [http://localhost:8080/user.query!listAll](http://localhost:8080/user.query!listAll) 时queryName为!后面的内容，即listAll；
-
-        [http://localhost:8080/user.execute](http://localhost:8080/user.execute) modelName是user，executeName为缺省；
-
-        [http://localhost:8080/user.execute!add](http://localhost:8080/user.execute!add) executeName为add；
-
-    javaapi方式：
+### 查询单条
 
 ```java
-@Service
-public class TestService {
-	
-	@Autowired
-	ModelExecutor modelExecutor;
-	
-	public Object query(Context context) {
-		Object object = null;
-		object = modelExecutor.queryList(context, "user", null); //modelName=user  queryName为缺省 返回数据list<map>
-		object = modelExecutor.queryList(context, "user", "listAll"); //modelName=user  queryName为listAll
-		object = modelExecutor.queryList(context, "user", "listAll", User.class); //modelName=user  queryName为listAll 返回List<User>
-		
-		object = modelExecutor.queryOne(context, "user", "listAll"); //modelName=user  queryName为listAll 返回 Map
-		object = modelExecutor.queryOne(context, "user", "listAll", User.class); //modelName=user  queryName为listAll 返回 User
-		
-		object = modelExecutor.query(context, "user", "listAll"); //modelName=user  queryName为listAll 返回QueryResponseObejct带总行数
-		object = modelExecutor.query(context, "user", "listAll", User.class); //modelName=user  queryName为listAll 返回QueryResponseObejct<User>带总行数
-		
-		return object;
-	}
-	
-	@Transactional
-	public void save(Context context) {
-		modelExecutor.execute(context, "user", null); //modelName=user  executeName为缺省
-		modelExecutor.execute(context, "user", "update"); //modelName=user  executeName为update
-		
-		//context保存userlist到param.userList; context.setParamData("userList", list);
-		modelExecutor.batchExecute(context, "user", "update","param.userList");  //modelName=user  executeName为update 数据执行路径为param.userList
-	}
-
-}
+UserDto user = modelExecutor.queryOne(context, "sys/user", "getById", UserDto.class);
 ```
+
+### 查询带分页返回
+
+```java
+QueryResponseObject<UserDto> result = modelExecutor.query(context, "sys/user", "list", UserDto.class);
+```
+
+### 执行写操作
+
+```java
+modelExecutor.execute(context, "sys/user", "update");
+```
+
+### 批量执行
+
+```java
+modelExecutor.batchExecute(context, "sys/user", "update", "param.userList");
+```
+
+## model 文件推荐结构
+
+在 Spring Boot 项目中，推荐采用下面的组织方式：
+
+```text
+src/main/resources/model/
+  sys/
+    user.xml
+    role.xml
+  report/
+    daily.xml
+  base/
+    config.xml
+```
+
+推荐约定：
+
+- 一个业务领域一个目录
+- 一个资源对象一个 model 文件
+- query / execute 命名尽量语义化
+
+这样更适合多人维护。
+
+## 适合放在 XML 的逻辑
+
+推荐放在 model XML 中：
+
+- SQL 查询
+- 动态过滤条件
+- 分页参数
+- 关联查询
+- 批量插入、更新
+- 导入导出
+- 通用校验
+
+## 适合放在 Java / Service 的逻辑
+
+推荐放在 Java 中：
+
+- 认证与权限入口
+- 多个 model 的业务编排
+- 外部系统调用
+- 复杂领域逻辑
+- 对 HTTP 协议或页面协议强绑定的组装逻辑
+
+## 进阶能力
+
+如果简单 query / execute 已经不能满足需求，可以继续使用：
+
+### 1. Adapter
+
+通过 `QueryAdapter` / `ExecuteAdapter` 做：
+
+- 查询前参数预处理
+- 查询后结果增强
+- execute 前后做权限校验、日志记录或补充逻辑
+
+### 2. 多数据源
+
+通过 `dbfound.datasource` 与 `connectionProvide` 组合使用不同数据源。
+
+### 3. 批量处理
+
+使用 `batchExecuteSql`、`batchSql`、`excelReader` 完成批量导入或批量写入。
+
+## 常见问题
+
+### 1. modelName 是什么
+
+modelName 就是 `classpath:model/` 下的相对路径去掉 `.xml` 后的结果。
+
+例如：
+
+- `model/sys/user.xml` -> `sys/user`
+
+### 2. Java 调用时参数放哪里
+
+通常放在 `Context` 的 `param` 区，也就是：
+
+```java
+context.setParamData("id", 1);
+```
+
+### 3. 什么时候用 starter，什么时候直接看 dbfound 主项目
+
+- 想在 Spring Boot 里落地：优先看 starter
+- 想理解 model 语法本身：看 dbfound 主项目 wiki
+
+## 推荐阅读顺序
+
+建议按这个顺序阅读：
+
+1. 本 README
+2. [dbfound model api](https://github.com/nfwork/dbfound/wiki/dbfound-model-api)
+3. [dbfound java api](https://github.com/nfwork/dbfound/wiki/dbfound-java-api)
+4. [dbfound model adapter](https://github.com/nfwork/dbfound/wiki/dbfound-model-adapter)
+5. [dbfound example](https://github.com/nfwork/dbfound/wiki/dbfound-example)
+
+## 相关项目
+
+- [dbfound](https://github.com/nfwork/dbfound)
+- [dbfound-world](https://github.com/nfwork/dbfound-world)
+- [dbfound-springboot-demo](https://github.com/nfwork/dbfound-springboot-demo)
+
+## 一句话总结
+
+如果 `dbfound` 是核心引擎，那么 `dbfound-spring-boot-starter` 就是它在现代 Spring Boot 项目中的推荐接入方式：更容易启动、更容易调用，也更适合现在常见的前后端分离应用。
