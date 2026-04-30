@@ -8,8 +8,8 @@ import com.nfwork.dbfound.util.LogUtil;
 
 public class ExportRequestHandler extends RequestHandler {
 
-    public ExportRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
-        super(service, exceptionHandler);
+    public ExportRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler, WebApiPermissionChecker permissionChecker) throws NoSuchMethodException {
+        super(service, exceptionHandler, permissionChecker);
         LogUtil.info("mappings [ /**/*.export, /**/*.export!{queryName} ], class: " + this.getClass().getName());
     }
 

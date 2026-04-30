@@ -9,12 +9,10 @@ import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.util.LogUtil;
 import com.nfwork.dbfound.web.file.FileDownloadUtil;
 
-import java.util.List;
-
 public class ExecuteRequestHandler extends RequestHandler {
 
-    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
-        super(service, exceptionHandler);
+    public ExecuteRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler, WebApiPermissionChecker permissionChecker) throws NoSuchMethodException {
+        super(service, exceptionHandler, permissionChecker);
         LogUtil.info("mappings [ /**/*.execute, /**/*.execute!{executeName} ], class: " + this.getClass().getName());
     }
 

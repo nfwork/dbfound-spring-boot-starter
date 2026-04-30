@@ -19,11 +19,13 @@ public abstract class RequestHandler {
 
     DBFoundDefaultService service;
     DBFoundExceptionHandler exceptionHandler;
+    WebApiPermissionChecker permissionChecker;
     HandlerMethod handlerMethod;
 
-    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
+    public RequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler, WebApiPermissionChecker permissionChecker) throws NoSuchMethodException {
         this.service = service;
         this.exceptionHandler = exceptionHandler;
+        this.permissionChecker = permissionChecker;
         Method method = getClass().getMethod("handleRequest", HttpServletRequest.class, HttpServletResponse.class);
         this.handlerMethod = new HandlerMethod(this, method);
     }
@@ -44,6 +46,9 @@ public abstract class RequestHandler {
             Context context = Context.getCurrentContext(request,response);
             initFilePart(context, request);
             String requestPath = context.request.getServletPath();
+            if (permissionChecker.isForbidden(requestPath)) {
+                return permissionChecker.forbiddenResponse(response, requestPath);
+            }
             object = doHandle(context, requestPath);
             outMessage = context.isOutMessage();
         } catch (Exception exception){

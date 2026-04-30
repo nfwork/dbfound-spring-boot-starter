@@ -8,8 +8,8 @@ import com.nfwork.dbfound.util.LogUtil;
 
 public class QueryRequestHandler extends RequestHandler {
 
-    public QueryRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler) throws NoSuchMethodException {
-        super(service, exceptionHandler);
+    public QueryRequestHandler(DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandler, WebApiPermissionChecker permissionChecker) throws NoSuchMethodException {
+        super(service, exceptionHandler, permissionChecker);
         LogUtil.info("mappings [ /**/*.query, /**/*.query!{queryName} ], class: " + this.getClass().getName());
     }
 
