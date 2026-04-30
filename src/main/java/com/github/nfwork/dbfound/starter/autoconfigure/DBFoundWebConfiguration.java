@@ -53,7 +53,7 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
     }
 
     @Bean
-    public WebApiPermissionChecker webApiPermissionChecker() {
+    public WebApiPermissionChecker dbfoundWebApiPermissionChecker() {
         return new WebApiPermissionChecker(config);
     }
 
