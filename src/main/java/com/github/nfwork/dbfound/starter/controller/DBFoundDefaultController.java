@@ -1,7 +1,6 @@
 package com.github.nfwork.dbfound.starter.controller;
 
-import java.util.List;
-
+import com.github.nfwork.dbfound.starter.handler.WebApiPermissionChecker;
 import com.nfwork.dbfound.dto.FileDownloadResponseObject;
 import com.nfwork.dbfound.exception.DBFoundErrorException;
 import com.nfwork.dbfound.model.ModelEngine;
@@ -26,6 +25,9 @@ public class DBFoundDefaultController {
 	@Autowired
     DBFoundExceptionHandler exceptionHandler;
 
+	@Autowired
+	WebApiPermissionChecker permissionChecker;
+
 	@RequestMapping("/**/*.query")
 	public ResponseObject query(@ContextAware Context context) {
 		return query(context, null);
@@ -35,6 +37,9 @@ public class DBFoundDefaultController {
 	public ResponseObject query(@ContextAware Context context, @PathVariable String queryName) {
 		try {
 			String uri = context.request.getServletPath();
+			if (permissionChecker.isForbidden(uri)) {
+				return permissionChecker.forbiddenResponse(context.response, uri);
+			}
 			String modelName = uri.substring(1, uri.indexOf(".query"));
 			ResponseObject object = service.query(context, modelName, queryName);
 			if(context.isOutMessage()){
@@ -58,6 +63,9 @@ public class DBFoundDefaultController {
 	public ResponseObject execute(@ContextAware Context context,  @PathVariable String executeName) {
 		try {
 			String uri = context.request.getServletPath();
+			if (permissionChecker.isForbidden(uri)) {
+				return permissionChecker.forbiddenResponse(context.response, uri);
+			}
 			String modelName = uri.substring(1, uri.indexOf(".execute"));
 
 			ResponseObject object;
@@ -92,6 +100,9 @@ public class DBFoundDefaultController {
 	public ResponseObject export(@ContextAware Context context, @PathVariable String queryName) {
 		try {
 			String uri = context.request.getServletPath();
+			if (permissionChecker.isForbidden(uri)) {
+				return permissionChecker.forbiddenResponse(context.response, uri);
+			}
 			String modelName = uri.substring(1, uri.indexOf(".export"));
 			service.export(context,modelName,queryName);
 			return null;

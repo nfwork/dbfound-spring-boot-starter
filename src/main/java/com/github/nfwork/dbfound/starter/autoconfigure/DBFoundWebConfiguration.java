@@ -4,6 +4,7 @@ import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandler;
 import com.github.nfwork.dbfound.starter.exception.DBFoundExceptionHandlerImpl;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultService;
 import com.github.nfwork.dbfound.starter.service.DBFoundDefaultServiceImpl;
+import com.github.nfwork.dbfound.starter.handler.WebApiPermissionChecker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -28,6 +29,9 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 	@Autowired
 	DBFoundEngine dbfoundEngine;
 
+    @Autowired
+    DBFoundConfigProperties config;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         argumentResolvers.add(new ContextArgumentResolver(dbfoundEngine));
@@ -41,11 +45,16 @@ public class DBFoundWebConfiguration implements WebMvcConfigurer {
 
     @Bean
     @ConditionalOnProperty(matchIfMissing = true, name = "dbfound.web.api-expose-strategy", havingValue = "dbfound_request_handler" )
-    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(@Qualifier("requestMappingHandlerMapping")RequestMappingHandlerMapping requestMapping, DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle) throws NoSuchMethodException {
-        DBFoundRequestHandlerMapping dbfoundMapping = new DBFoundRequestHandlerMapping(service, exceptionHandle);
+    public DBFoundRequestHandlerMapping dbfoundRequestHandlerMapping(@Qualifier("requestMappingHandlerMapping")RequestMappingHandlerMapping requestMapping, DBFoundDefaultService service, DBFoundExceptionHandler exceptionHandle, WebApiPermissionChecker permissionChecker) throws NoSuchMethodException {
+        DBFoundRequestHandlerMapping dbfoundMapping = new DBFoundRequestHandlerMapping(service, exceptionHandle, permissionChecker);
         DBFoundMappingUtil.addInterceptors(dbfoundMapping,requestMapping);
         DBFoundMappingUtil.addCorsConfigurationSource(dbfoundMapping,requestMapping);
         return dbfoundMapping;
+    }
+
+    @Bean
+    public WebApiPermissionChecker webApiPermissionChecker() {
+        return new WebApiPermissionChecker(config);
     }
 
     @Bean

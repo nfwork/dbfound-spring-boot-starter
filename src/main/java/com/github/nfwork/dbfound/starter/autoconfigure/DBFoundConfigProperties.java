@@ -4,6 +4,8 @@ import com.nfwork.dbfound.core.DBFoundConfig;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.transaction.annotation.Isolation;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.LinkedHashMap;
 
@@ -225,6 +227,7 @@ public class DBFoundConfigProperties {
 		private ApiExposeStrategy apiExposeStrategy = ApiExposeStrategy.dbfound_request_handler;
 		private String basePath="";
 		private boolean jsonStringAutoCover = true;
+		private List<String> apiAllowUrls = new ArrayList<>();
 
 		public String getI18nProvide() {
 			return i18nProvide;
@@ -272,6 +275,14 @@ public class DBFoundConfigProperties {
 
 		public void setApiExposeStrategy(ApiExposeStrategy apiExposeStrategy) {
 			this.apiExposeStrategy = apiExposeStrategy;
+		}
+
+		public List<String> getApiAllowUrls() {
+			return apiAllowUrls;
+		}
+
+		public void setApiAllowUrls(List<String> apiAllowUrls) {
+			this.apiAllowUrls = apiAllowUrls;
 		}
 	}
 
