@@ -189,6 +189,7 @@ modelExecutor.execute(context, "sys/user", "update");
 ```java
 modelExecutor.batchExecute(context, "sys/user", "update", "param.userList");
 ```
+- 此方法内部仅为单纯的for循环处理，不具备sql批处理能力。如果大量数据需要批处理，请使用model api中的batchExecuteSql 
 
 ## model 文件推荐结构
 
