@@ -3,7 +3,7 @@ package com.github.nfwork.dbfound.starter.handler;
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties;
 import com.nfwork.dbfound.dto.ResponseObject;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
