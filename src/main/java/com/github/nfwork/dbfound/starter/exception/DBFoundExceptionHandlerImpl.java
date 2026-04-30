@@ -14,7 +14,7 @@ public class DBFoundExceptionHandlerImpl implements DBFoundExceptionHandler {
 	public ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response) {
 		ResponseObject ro = new ResponseObject();
 		if (exception instanceof CollisionException){
-			response.setStatus(403);
+			response.setStatus(422);
 		}else{
 			response.setStatus(500);
 		}
