@@ -2,6 +2,7 @@ package com.github.nfwork.dbfound.starter.handler;
 
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties;
 import com.nfwork.dbfound.dto.ResponseObject;
+import com.nfwork.dbfound.util.LogUtil;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashSet;
@@ -37,6 +38,7 @@ public final class WebApiPermissionChecker {
         ResponseObject object = new ResponseObject();
         object.setSuccess(false);
         object.setMessage("URL access is forbidden: " + requestPath);
+        LogUtil.warn(object.getMessage());
         return object;
     }
 
