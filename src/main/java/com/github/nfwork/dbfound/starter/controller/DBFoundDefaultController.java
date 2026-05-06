@@ -2,7 +2,6 @@ package com.github.nfwork.dbfound.starter.controller;
 
 import com.github.nfwork.dbfound.starter.handler.WebApiPermissionChecker;
 import com.nfwork.dbfound.dto.FileDownloadResponseObject;
-import com.nfwork.dbfound.exception.DBFoundErrorException;
 import com.nfwork.dbfound.model.ModelEngine;
 import com.nfwork.dbfound.web.file.FileDownloadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +45,8 @@ public class DBFoundDefaultController {
 				return object;
 			}
 			return null;
-		} catch (Exception exception) {
-			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
-		} catch (Throwable throwable){
-			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandler.handle(exception, context.request, context.response);
+		} catch (Throwable throwable) {
+			return exceptionHandler.handle(exceptionHandler.getException(throwable), context.request, context.response);
 		}
 	}
 
@@ -83,11 +79,8 @@ public class DBFoundDefaultController {
 				}
 			}
 			return null;
-		} catch (Exception exception) {
-			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
-		} catch (Throwable throwable){
-			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandler.handle(exception, context.request, context.response);
+		} catch (Throwable throwable) {
+			return exceptionHandler.handle(exceptionHandler.getException(throwable), context.request, context.response);
 		}
 	}
 
@@ -106,11 +99,8 @@ public class DBFoundDefaultController {
 			String modelName = uri.substring(1, uri.indexOf(".export"));
 			service.export(context,modelName,queryName);
 			return null;
-		} catch (Exception exception) {
-			return exceptionHandler.handle(exceptionHandler.getException(exception), context.request, context.response);
-		} catch (Throwable throwable){
-			Exception exception = new DBFoundErrorException("dbfound execute error, cause by "+ throwable.getMessage(), throwable);
-			return exceptionHandler.handle(exception, context.request, context.response);
+		} catch (Throwable throwable) {
+			return exceptionHandler.handle(exceptionHandler.getException(throwable), context.request, context.response);
 		}
 	}
 }
