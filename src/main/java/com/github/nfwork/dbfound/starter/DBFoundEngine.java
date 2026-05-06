@@ -44,7 +44,7 @@ public class DBFoundEngine {
 		this.systemConfig = config;
 		DBFoundConfig.setOpenLog(config.isOpenLog());
 		DBFoundConfig.setLogWithParamSql(config.isLogWithParamSql());
-		DBFoundConfig.setModelLoadRoot(config.getModelRootPath());
+		DBFoundConfig.setModelRootPath(config.getModelRootPath());
 		DBFoundConfig.setUnderscoreToCamelCase(config.isUnderscoreToCamelCase());
 		DBFoundConfig.setCamelCaseToUnderscore(config.isCamelCaseToUnderscore());
 		DBFoundConfig.setDateFormat(config.getDateFormat());

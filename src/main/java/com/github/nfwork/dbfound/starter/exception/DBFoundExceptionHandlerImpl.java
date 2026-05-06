@@ -11,25 +11,25 @@ import java.sql.SQLException;
 public class DBFoundExceptionHandlerImpl implements DBFoundExceptionHandler {
 
 	@Override
-	public ResponseObject handle(Exception exception, HttpServletRequest request, HttpServletResponse response) {
+	public ResponseObject handle(Throwable throwable, HttpServletRequest request, HttpServletResponse response) {
 		ResponseObject ro = new ResponseObject();
-		if (exception instanceof CollisionException){
+		if (throwable instanceof CollisionException){
 			response.setStatus(422);
 		}else{
 			response.setStatus(500);
 		}
-		String em = exception.getMessage();
+		String em = throwable.getMessage();
 		String code = null;
-		if (exception instanceof CollisionException) {
-			code = ((CollisionException) exception).getCode();
-			LogUtil.info(exception.getClass().getName() + ": " + em);
+		if (throwable instanceof CollisionException) {
+			code = ((CollisionException) throwable).getCode();
+			LogUtil.info(throwable.getClass().getName() + ": " + em);
 		}else {
-			String message = "an exception: "+exception.getClass().getName()+" caused, when request url: "+request.getRequestURI();
-			LogUtil.error(message, exception);
-			if(exception.getCause() instanceof SQLException){
-				em = exception.getCause().getMessage();
+			String message = "an exception: "+throwable.getClass().getName()+" caused, when request url: "+request.getRequestURI();
+			LogUtil.error(message, throwable);
+			if(throwable.getCause() instanceof SQLException){
+				em = throwable.getCause().getMessage();
 			}
-			em =  exception.getClass().getName() +": " + em;
+			em =  throwable.getClass().getName() +": " + em;
 		}
 		ro.setMessage(em);
 		ro.setSuccess(false);

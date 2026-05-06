@@ -225,7 +225,7 @@ public class DBFoundConfigProperties {
 		private String encoding = "UTF-8";
 		private boolean openSession = true;
 		private ApiExposeStrategy apiExposeStrategy = ApiExposeStrategy.dbfound_request_handler;
-		private String basePath="";
+		private String basePath = "${@contextPath}";
 		private boolean jsonStringAutoCover = true;
 		private List<String> apiAllowUrls = new ArrayList<>();
 
