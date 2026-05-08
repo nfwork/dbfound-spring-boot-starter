@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.github.nfwork</groupId>
 			<artifactId>dbfound</artifactId>
-			<version>3.7.1</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -85,8 +85,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>11</source>
-					<target>11</target>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
 				</configuration>
 			</plugin>
 
