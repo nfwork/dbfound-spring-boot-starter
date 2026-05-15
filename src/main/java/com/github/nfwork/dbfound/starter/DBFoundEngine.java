@@ -63,6 +63,7 @@ public class DBFoundEngine {
 		addElement(system, "underscoreToCamelCase", systemConfig.isUnderscoreToCamelCase());
 		addElement(system, "camelCaseToUnderscore", systemConfig.isCamelCaseToUnderscore());
 		addElement(system, "modelRootPath", systemConfig.getModelRootPath());
+		addElement(system, "modelOperator", systemConfig.getModelOperator());
 		addElement(system, "modelModifyCheck", systemConfig.isModelModifyCheck());
 		addElement(system, "dateFormat", systemConfig.getDateFormat());
 		addElement(system, "dateTimeFormat", systemConfig.getDateTimeFormat());

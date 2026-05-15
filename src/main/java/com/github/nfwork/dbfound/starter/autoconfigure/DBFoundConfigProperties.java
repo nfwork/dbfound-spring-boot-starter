@@ -292,6 +292,7 @@ public class DBFoundConfigProperties {
 		private boolean underscoreToCamelCase = false;
 		private boolean camelCaseToUnderscore = false;
 		private String modelRootPath = DBFoundConfig.CLASSPATH + "/model";
+		private String modelOperator;
 		private boolean modelModifyCheck = false;
 		private String dateFormat = "yyyy-MM-dd";
 		private String dateTimeFormat = "yyyy-MM-dd HH:mm:ss";
@@ -305,6 +306,14 @@ public class DBFoundConfigProperties {
 
 		public void setModelRootPath(String modelRootPath) {
 			this.modelRootPath = modelRootPath;
+		}
+
+		public String getModelOperator() {
+			return modelOperator;
+		}
+
+		public void setModelOperator(String modelOperator) {
+			this.modelOperator = modelOperator;
 		}
 
 		public boolean isOpenLog() {
