@@ -1,8 +1,6 @@
 package com.github.nfwork.dbfound.starter;
 
-import java.util.List;
-
-import com.nfwork.dbfound.model.dsql.DSqlConfig;
+import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 import com.nfwork.dbfound.util.DataUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -12,10 +10,12 @@ import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.S
 import com.github.nfwork.dbfound.starter.autoconfigure.DBFoundConfigProperties.WebConfig;
 import com.github.nfwork.dbfound.starter.dbprovide.SpringDataSourceProvide;
 import com.nfwork.dbfound.core.DBFoundConfig;
-import com.nfwork.dbfound.db.DataSourceConnectionProvide;
+import com.nfwork.dbfound.core.DBFoundInitToken;
 import com.nfwork.dbfound.util.JsonUtil;
 import com.nfwork.dbfound.util.LogUtil;
-import com.nfwork.dbfound.web.i18n.MultiLangUtil;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
@@ -35,40 +35,54 @@ public class DBFoundEngine {
 	
 	private WebConfig webConfig;
 
+	private DBFoundInitToken dbfoundInitToken;
+
 
 	/**
-	 * init system config
+	 * init dbfound config
 	 *
 	 */
-	public void initSystem(SystemConfig config) {
-		this.systemConfig = config;
-		DBFoundConfig.setOpenLog(config.isOpenLog());
-		DBFoundConfig.setLogWithParamSql(config.isLogWithParamSql());
-		DBFoundConfig.setModelRootPath(config.getModelRootPath());
-		DBFoundConfig.setUnderscoreToCamelCase(config.isUnderscoreToCamelCase());
-		DBFoundConfig.setCamelCaseToUnderscore(config.isCamelCaseToUnderscore());
-		DBFoundConfig.setDateFormat(config.getDateFormat());
-		DBFoundConfig.setDateTimeFormat(config.getDateTimeFormat());
-		DBFoundConfig.setModelModifyCheck(config.isModelModifyCheck());
-		DSqlConfig.setCompareIgnoreCase(config.isSqlCompareIgnoreCase());
-		DSqlConfig.setOpenDSql(config.isOpenDSql());
+	public void init(SystemConfig systemConfig, WebConfig webConfig) {
+		this.systemConfig = systemConfig;
+		this.webConfig = webConfig;
+		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig));
+		if (dbfoundInitToken == null){
+			throw new DBFoundRuntimeException("dbfound init failed, because dbfoundInitToken is null");
+		}
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.toJson(systemConfig));
+		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.toJson(webConfig));
 	}
 
-	/**
-	 * init web config
-	 *
-	 */
-	public void initWeb(WebConfig config) {
-		this.webConfig = config;
-		if (config.getI18nProvide() != null) {
-			MultiLangUtil.init(config.getI18nProvide());
+	private Document createConfigDocument(SystemConfig systemConfig, WebConfig webConfig) {
+		Document document = DocumentHelper.createDocument();
+		Element root = document.addElement("dbfound");
+
+		Element system = root.addElement("system");
+		addElement(system, "openLog", systemConfig.isOpenLog());
+		addElement(system, "logWithParamSql", systemConfig.isLogWithParamSql());
+		addElement(system, "underscoreToCamelCase", systemConfig.isUnderscoreToCamelCase());
+		addElement(system, "camelCaseToUnderscore", systemConfig.isCamelCaseToUnderscore());
+		addElement(system, "modelRootPath", systemConfig.getModelRootPath());
+		addElement(system, "modelModifyCheck", systemConfig.isModelModifyCheck());
+		addElement(system, "dateFormat", systemConfig.getDateFormat());
+		addElement(system, "dateTimeFormat", systemConfig.getDateTimeFormat());
+		addElement(system, "sqlCompareIgnoreCase", systemConfig.isSqlCompareIgnoreCase());
+		addElement(system, "openDSql", systemConfig.isOpenDSql());
+
+		Element web = root.addElement("web");
+		addElement(web, "i18nProvide", webConfig.getI18nProvide());
+		addElement(web, "encoding", webConfig.getEncoding());
+		addElement(web, "jsonStringAutoCover", webConfig.isJsonStringAutoCover());
+		addElement(web, "basePath", webConfig.getBasePath());
+		addElement(web, "openSession", webConfig.isOpenSession());
+
+		return document;
+	}
+
+	private void addElement(Element parent, String name, Object value) {
+		if (value != null) {
+			parent.addElement(name).setText(String.valueOf(value));
 		}
-		DBFoundConfig.setEncoding(config.getEncoding());
-		DBFoundConfig.setBasePath(webConfig.getBasePath());
-		DBFoundConfig.setOpenSession(webConfig.isOpenSession());
-		DBFoundConfig.setJsonStringAutoCover(config.isJsonStringAutoCover());
-		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.toJson(webConfig));
 	}
 
 	/**
@@ -110,20 +124,17 @@ public class DBFoundEngine {
 		DefaultListableBeanFactory defaultListableBeanFactory = (DefaultListableBeanFactory) configurableApplicationContext.getBeanFactory();
 		defaultListableBeanFactory.registerBeanDefinition(name, beanDefinition);
 	}
-	
-	/**
-	 * get Datasource Provide List
-	 */
-	public  List<DataSourceConnectionProvide> getDatasourceProvideList() {
-		return DBFoundConfig.getDsp();
-	}
 
 	/**
 	 * destroy dbfound engine
 	 */
 	public void destroy() {
 		LogUtil.info("NFWork dbfound " + DBFoundConfig.VERSION + " engine destroy begin");
-		DBFoundConfig.destroy();
+		if (dbfoundInitToken != null) {
+			DBFoundConfig.destroy(dbfoundInitToken);
+		} else {
+			LogUtil.info("dbfound engine destroy skipped, because init token is null");
+		}
 		LogUtil.info("NFWork dbfound " + DBFoundConfig.VERSION + " engine destroy success");
 	}
 
