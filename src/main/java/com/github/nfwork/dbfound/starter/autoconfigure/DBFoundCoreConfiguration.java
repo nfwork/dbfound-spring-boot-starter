@@ -17,6 +17,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.ModelExecutor;
 
+import javax.servlet.ServletContext;
+
 @Configuration
 public class DBFoundCoreConfiguration implements ApplicationContextAware {
 
@@ -24,6 +26,9 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 
 	@Autowired
 	private DBFoundConfigProperties config;
+
+	@Autowired(required = false)
+	private ServletContext servletContext;
 
 	@Bean(destroyMethod = "destroy")
 	public DBFoundEngine dbfoundEngine() {
@@ -33,7 +38,7 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 		LogUtil.info("NFWork dbfound "+ DBFoundConfig.VERSION+" engine init begin");
 
 		// init system and web
-		dbFoundEngine.init(config.getSystem(), config.getWeb());
+		dbFoundEngine.init(config.getSystem(), config.getWeb(), servletContext);
 
 		// init db
 		dbFoundEngine.initDBItem(config.getDatasource().db0,applicationContext);

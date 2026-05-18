@@ -22,6 +22,7 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
+import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 
 /**
@@ -42,10 +43,10 @@ public class DBFoundEngine {
 	 * init dbfound config
 	 *
 	 */
-	public void init(SystemConfig systemConfig, WebConfig webConfig) {
+	public void init(SystemConfig systemConfig, WebConfig webConfig, ServletContext servletContext) {
 		this.systemConfig = systemConfig;
 		this.webConfig = webConfig;
-		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig));
+		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig), servletContext);
 		if (dbfoundInitToken == null){
 			throw new DBFoundRuntimeException("dbfound init failed, because dbfoundInitToken is null");
 		}
