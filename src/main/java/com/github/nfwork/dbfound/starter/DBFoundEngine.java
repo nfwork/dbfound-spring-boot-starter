@@ -1,6 +1,5 @@
 package com.github.nfwork.dbfound.starter;
 
-import com.nfwork.dbfound.exception.DBFoundRuntimeException;
 import com.nfwork.dbfound.util.DataUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -47,9 +46,6 @@ public class DBFoundEngine {
 		this.systemConfig = systemConfig;
 		this.webConfig = webConfig;
 		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig), servletContext);
-		if (dbfoundInitToken == null){
-			throw new DBFoundRuntimeException("dbfound init failed, because dbfoundInitToken is null");
-		}
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.toJson(systemConfig));
 		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.toJson(webConfig));
 	}
