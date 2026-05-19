@@ -3,6 +3,7 @@ package com.github.nfwork.dbfound.starter.autoconfigure;
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundRoutingDataSource;
 import com.github.nfwork.dbfound.starter.dbprovide.DBFoundTransactionManager;
 import com.github.nfwork.dbfound.starter.model.SpringAdapterFactory;
+import com.nfwork.dbfound.core.DBFoundConfig;
 import com.nfwork.dbfound.util.LogUtil;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 
 import com.github.nfwork.dbfound.starter.DBFoundEngine;
 import com.github.nfwork.dbfound.starter.ModelExecutor;
-import com.nfwork.dbfound.core.DBFoundConfig;
+
+import jakarta.servlet.ServletContext;
 
 @Configuration
 public class DBFoundCoreConfiguration implements ApplicationContextAware {
@@ -25,20 +27,18 @@ public class DBFoundCoreConfiguration implements ApplicationContextAware {
 	@Autowired
 	private DBFoundConfigProperties config;
 
+	@Autowired(required = false)
+	private ServletContext servletContext;
+
 	@Bean(destroyMethod = "destroy")
 	public DBFoundEngine dbfoundEngine() {
 
 		DBFoundEngine dbFoundEngine = new DBFoundEngine();
-		
-		DBFoundConfig.setInited(true);
 
 		LogUtil.info("NFWork dbfound "+ DBFoundConfig.VERSION+" engine init begin");
 
-		// init system
-		dbFoundEngine.initSystem(config.getSystem());
-
-		// init web
-		dbFoundEngine.initWeb(config.getWeb());
+		// init system and web
+		dbFoundEngine.init(config.getSystem(), config.getWeb(), servletContext);
 
 		// init db
 		dbFoundEngine.initDBItem(config.getDatasource().db0,applicationContext);
