@@ -1,5 +1,6 @@
 package com.github.nfwork.dbfound.starter;
 
+import com.nfwork.dbfound.db.DataSourceConnectionProvide;
 import com.nfwork.dbfound.util.DataUtil;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -23,6 +24,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * DBFoundEngine
@@ -36,6 +39,8 @@ public class DBFoundEngine {
 	private WebConfig webConfig;
 
 	private DBFoundInitToken dbfoundInitToken;
+
+	private final List<DataSourceConnectionProvide> connectionProvideList = new ArrayList<>();
 
 
 	/**
@@ -104,6 +109,7 @@ public class DBFoundEngine {
 			addToContext(applicationContext, ds.getPoolName(), ds);
 			SpringDataSourceProvide provide = new SpringDataSourceProvide(config.getProvideName(), ds, config.getDialect());
 			provide.register();
+			connectionProvideList.add(provide);
 			LogUtil.info("dbfound engine init datasource success, provideName:" +config.getProvideName() +", url:"+config.getUrl());
 		}
 	}
@@ -133,7 +139,12 @@ public class DBFoundEngine {
 		} else {
 			LogUtil.info("dbfound engine destroy skipped, because init token is null");
 		}
+		connectionProvideList.clear();
 		LogUtil.info("NFWork dbfound " + DBFoundConfig.VERSION + " engine destroy success");
+	}
+
+	public List<DataSourceConnectionProvide> getDatasourceProvideList(){
+		return connectionProvideList;
 	}
 
 	public SystemConfig getSystemConfig() {
