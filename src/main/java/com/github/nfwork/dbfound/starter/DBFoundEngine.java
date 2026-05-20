@@ -22,7 +22,6 @@ import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 
-import javax.servlet.ServletContext;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,10 +46,10 @@ public class DBFoundEngine {
 	 * init dbfound config
 	 *
 	 */
-	public void init(SystemConfig systemConfig, WebConfig webConfig, ServletContext servletContext) {
+	public void init(SystemConfig systemConfig, WebConfig webConfig) {
 		this.systemConfig = systemConfig;
 		this.webConfig = webConfig;
-		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig), servletContext);
+		dbfoundInitToken = DBFoundConfig.initSpringBoot(createConfigDocument(systemConfig, webConfig));
 		LogUtil.info("dbfound engine init system success, config:"+JsonUtil.toJson(systemConfig));
 		LogUtil.info("dbfound engine init web success, config:"+JsonUtil.toJson(webConfig));
 	}
